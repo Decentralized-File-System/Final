@@ -1,5 +1,5 @@
 import { Router } from "express";
-import save_file_post from "../controllers/fileController";
+import save_file_post from "../../controllers/fileController";
 const router = Router();
 import multer from "multer";
 
