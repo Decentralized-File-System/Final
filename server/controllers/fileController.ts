@@ -11,7 +11,7 @@ const save_file_post = async (req: Request, res: Response) => {
   const file: ServerFile = req.files.file;
   file.id = uuidv4();
 
-  const fileChunksArr = splitFile(file, 60537, 60537, 60537);
+  const fileChunksArr = splitFile(file, 60537, 60537);
   console.log(fileChunksArr);
 };
 

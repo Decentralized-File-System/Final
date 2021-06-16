@@ -4,8 +4,7 @@ import { Chunk } from "./classes";
 export const splitFile = (
   file: ServerFile,
   bufferSizeOne: number,
-  bufferSizeTwo: number,
-  bufferSizeThree: number
+  bufferSizeTwo: number
 ) => {
   const fileBuffer = file.data;
   const firstThird = bufferSizeOne + bufferSizeTwo;
