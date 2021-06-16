@@ -9,10 +9,10 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       total_storage: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BIGINT,
       },
       available_storage: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BIGINT,
       },
       created_at: {
         allowNull: false,

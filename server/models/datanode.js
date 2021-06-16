@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   DataNode.init(
     {
-      totalStorage: DataTypes.INTEGER,
-      availableStorage: DataTypes.INTEGER,
+      totalStorage: DataTypes.BIGINT,
+      availableStorage: DataTypes.BIGINT,
     },
     {
       sequelize,
