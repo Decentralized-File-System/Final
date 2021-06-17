@@ -15,4 +15,8 @@ export interface dataNodePercentageStorage {
   availableStorage: number;
   availableStoragePercentage: number;
 }
-
+export interface dataNodeWithOutPercentage {
+  nodeId: number;
+  availableStorage: number;
+  availableStoragePercentage?: number;
+}
