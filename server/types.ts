@@ -10,3 +10,9 @@ export interface ServerFile {
   mv: [mv: Function];
   id: string;
 }
+export interface dataNodePercentageStorage {
+  nodeId: number;
+  availableStorage: number;
+  availableStoragePercentage: number;
+}
+
