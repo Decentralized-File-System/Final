@@ -13,8 +13,9 @@ export const uploadChunks = async (fileChunkArray: Chunk[]) => {
     });
 
     await Promise.all(promiseArray);
-    console.log("success");
+
+    return { message: "success" };
   } catch (error) {
-    console.log(error);
+    return { message: error };
   }
 };
