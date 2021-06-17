@@ -8,6 +8,7 @@ import {
   nodeDivisionPercentage as nodeDivisionPercentage,
 } from "../utils/functions";
 import { getAllNodesData } from "../utils/DBqueries";
+import { uploadChunks } from "../utils/networkFunction";
 
 const save_file_post = async (req: Request, res: Response) => {
   const pathName = path.join(__dirname, "../files");
@@ -24,7 +25,7 @@ const save_file_post = async (req: Request, res: Response) => {
   const dataNodesAvailablePercentage = nodeDivisionPercentage(nodesArray);
   const fileChunksArr = splitFile(file, dataNodesAvailablePercentage);
 
-  console.log(fileChunksArr);
+  await uploadChunks(fileChunksArr);
   // console.log(fileChunksArr);
   // fileChunksArr.forEach((chunk, i) => {
   //   fs.writeFile(
