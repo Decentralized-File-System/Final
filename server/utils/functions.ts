@@ -1,7 +1,7 @@
 import { ServerFile, dataNodePercentageStorage } from "../types";
 import { Chunk } from "./classes";
 
-export const nodeDevisionPercetage = (
+export const nodeDivisionPercentage = (
   firstDataNodeObj: {
     nodeId: number;
     availableStorage: number;
@@ -23,7 +23,7 @@ export const nodeDevisionPercetage = (
     secondDataNodeObj.availableStorage +
     thirdDataNodeObj.availableStorage;
 
-  //Assigining available storage percantage to all dataNode objects
+  //Assigning available storage percentage to all dataNode objects
   firstDataNodeObj.availableStoragePercentage = Math.round(
     (firstDataNodeObj.availableStorage / availableStorageSum) * 100
   );
@@ -34,9 +34,12 @@ export const nodeDevisionPercetage = (
     100 -
     (firstDataNodeObj.availableStoragePercentage +
       secondDataNodeObj.availableStoragePercentage);
-  const newFirstData:dataNodePercentageStorage = Object.assign(firstDataNodeObj , {}); 
-  const newSecondData:dataNodePercentageStorage = Object.assign(firstDataNodeObj , {}); 
-  const newThirdData:dataNodePercentageStorage = Object.assign(firstDataNodeObj , {}); 
+
+  //Changing object type
+  const newFirstData = changeNodeObjectType(firstDataNodeObj);
+  const newSecondData = changeNodeObjectType(secondDataNodeObj);
+  const newThirdData = changeNodeObjectType(thirdDataNodeObj);
+
   return [newFirstData, newSecondData, newThirdData];
 };
 
@@ -73,3 +76,16 @@ export const splitFile = (
   const thirdNodeChunk = new Chunk(thirdChunk, 3, file.id);
   return [firstNodeChunk, secondNodeChunk, thirdNodeChunk];
 };
+
+function changeNodeObjectType(dataNode: {
+  nodeId: number;
+  availableStorage: number;
+  availableStoragePercentage?: number;
+}) {
+  const changedObject: dataNodePercentageStorage = {
+    nodeId: dataNode.nodeId,
+    availableStorage: dataNode.availableStorage,
+    availableStoragePercentage: Number(dataNode.availableStoragePercentage),
+  };
+  return changedObject;
+}
