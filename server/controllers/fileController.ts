@@ -2,11 +2,12 @@ import { Request, Response } from "express";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
-import { ServerFile } from "../types";
+import { ServerFile, nodeDataType } from "../types";
 import {
   splitFile,
   nodeDivisionPercentage as nodeDivisionPercentage,
 } from "../utils/functions";
+import { getAllNodesData } from "../utils/DBqueries";
 
 const save_file_post = async (req: Request, res: Response) => {
   const pathName = path.join(__dirname, "../files");
@@ -14,26 +15,17 @@ const save_file_post = async (req: Request, res: Response) => {
   const file: ServerFile = req.files.file;
   file.id = uuidv4();
 
-  const check = nodeDivisionPercentage(
-    {
-      nodeId: 1,
-      availableStorage: 5368709120 /** 5 gb */,
-    },
-    {
-      nodeId: 2,
-      availableStorage: 10737418240 /** 10 gb */,
-    },
-    {
-      nodeId: 3,
-      availableStorage: 16106127360 /** 15 gb */,
-    }
-  );
+  const nodesCurrentStatus = await getAllNodesData();
+  const nodesArray = nodesCurrentStatus.map((node: nodeDataType) => ({
+    nodeId: node.id,
+    availableStorage: node.availableStorage,
+  }));
 
-  console.log(check);
-  console.log(file);
+  const dataNodesAvailablePercentage = nodeDivisionPercentage(nodesArray);
+  const fileChunksArr = splitFile(file, dataNodesAvailablePercentage);
 
-  const fileChunksArr = splitFile(file, check);
   console.log(fileChunksArr);
+  // console.log(fileChunksArr);
   // fileChunksArr.forEach((chunk, i) => {
   //   fs.writeFile(
   //     `${__dirname}/../files/${chunk.fileId}-${i}.json`,
@@ -56,7 +48,7 @@ const save_file_post = async (req: Request, res: Response) => {
   // console.log(chunkArr);
   // const fileConcat = Buffer.concat([chunkArr[0],chunkArr[1], chunkArr[2]]);
   // console.log(fileConcat);
-  
+
   // fs.writeFileSync(`${__dirname}/../files/${file.name}`, fileConcat);
 };
 

@@ -6,33 +6,29 @@ import {
 import { Chunk } from "./classes";
 
 export const nodeDivisionPercentage = (
-  firstDataNodeObj: dataNodeWithOutPercentage,
-  secondDataNodeObj: dataNodeWithOutPercentage,
-  thirdDataNodeObj: dataNodeWithOutPercentage
+  nodesArray: dataNodeWithOutPercentage[]
 ) => {
-  const availableStorageSum =
-    firstDataNodeObj.availableStorage +
-    secondDataNodeObj.availableStorage +
-    thirdDataNodeObj.availableStorage;
+  let availableStorageSum = 0;
+  nodesArray.forEach((node) => {
+    availableStorageSum += Number(node.availableStorage);
+  });
 
   //Assigning available storage percentage to all dataNode objects
-  firstDataNodeObj.availableStoragePercentage = Math.round(
-    (firstDataNodeObj.availableStorage / availableStorageSum) * 100
-  );
-  secondDataNodeObj.availableStoragePercentage = Math.round(
-    (secondDataNodeObj.availableStorage / availableStorageSum) * 100
-  );
-  thirdDataNodeObj.availableStoragePercentage =
-    100 -
-    (firstDataNodeObj.availableStoragePercentage +
-      secondDataNodeObj.availableStoragePercentage);
+  let totalPercentage = 0;
+  for (let i = 0; i < nodesArray.length; i++) {
+    if (i === nodesArray.length - 1) {
+      nodesArray[i].availableStoragePercentage = 100 - totalPercentage;
+    }
+    nodesArray[i].availableStoragePercentage = Math.round(
+      (Number(nodesArray[i].availableStorage) / availableStorageSum) * 100
+    );
+    totalPercentage += Number(nodesArray[i].availableStoragePercentage);
+  }
 
   //Changing object type
-  const newFirstData = changeNodeObjectType(firstDataNodeObj);
-  const newSecondData = changeNodeObjectType(secondDataNodeObj);
-  const newThirdData = changeNodeObjectType(thirdDataNodeObj);
+  const nodePercentage = nodesArray.map((node) => changeNodeObjectType(node));
 
-  return [newFirstData, newSecondData, newThirdData];
+  return nodePercentage;
 };
 
 export const splitFile = (
