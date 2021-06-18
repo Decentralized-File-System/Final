@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
-import fs from "fs";
 import { ServerFile, nodeDataType } from "../types";
 import {
   splitFile,
