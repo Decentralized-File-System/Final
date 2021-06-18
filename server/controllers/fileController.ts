@@ -16,6 +16,7 @@ const save_file_post = async (req: Request, res: Response) => {
   file.id = uuidv4();
 
   const nodesCurrentStatus = await getAllNodesData();
+
   const nodesArray = nodesCurrentStatus.map((node: nodeDataType) => ({
     nodeId: node.id,
     availableStorage: node.availableStorage,
@@ -25,6 +26,7 @@ const save_file_post = async (req: Request, res: Response) => {
   const fileChunksArr = splitFile(file, dataNodesAvailablePercentage);
 
   const response = await uploadChunks(fileChunksArr);
+
   if (response.message === "success") {
     res.send("success");
   } else {
