@@ -56,6 +56,13 @@ export const splitFile = (
   return chunkArray;
 };
 
+export const concatArrayOfChunks = (chunkArray: any) => {
+  const bufferArray = chunkArray.map((chunk: any) => Buffer.from(chunk.buffer));
+  const file = Buffer.concat(bufferArray);
+
+  return file;
+};
+
 function changeNodeObjectType(dataNode: {
   nodeId: number;
   availableStorage: number;

@@ -19,3 +19,10 @@ export const uploadChunks = async (fileChunkArray: ChunkClass[]) => {
     return { message: error };
   }
 };
+
+export const downloadChunks = async (fileId: string, nodeId: number) => {
+  const node = nodePorts.filter((node: any) => node.id === nodeId)[0];
+  const nodeURL = `http://${node.host}:${node.port}/api/v1/file/download-file?fileId=${fileId}`;
+  const res = await axios.get(nodeURL);
+  return res.data;
+};

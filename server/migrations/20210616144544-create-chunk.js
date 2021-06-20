@@ -15,7 +15,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       node_id: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
       },
       order_index: {
         type: Sequelize.INTEGER,

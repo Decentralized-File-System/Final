@@ -29,6 +29,7 @@ export const addChunk = async (chunksArray: ChunkClass[]) => {
 
 export const addFile = async (file: ServerFile, userId: string) => {
   const data = {
+    id: file.id,
     name: file.name,
     userId,
     type: file.name.split(".")[1],
@@ -59,6 +60,16 @@ export const updateDataNodes = async (chunksArray: ChunkClass[]) => {
         }
       );
     }
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const getChunks = async (fileId: string) => {
+  try {
+    const res = await Chunk.findAll({ where: { fileId: fileId } });
+    const chunksArray = res.map((data: any) => data.toJSON());
+    return chunksArray;
   } catch (error) {
     throw new Error(error);
   }

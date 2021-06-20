@@ -2,19 +2,23 @@ import { Request, Response } from "express";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
 import { ServerFile, nodeDataType } from "../types";
+import fs from "fs";
 import {
   splitFile,
   nodeDivisionPercentage as nodeDivisionPercentage,
+  concatArrayOfChunks,
 } from "../utils/functions";
 import {
   getAllNodesData,
   addChunk,
   addFile,
   updateDataNodes,
+  getChunks,
 } from "../utils/DBqueries";
-import { uploadChunks } from "../utils/networkFunction";
+import { uploadChunks, downloadChunks } from "../utils/networkFunction";
+import { ChunkClass } from "../utils/classes";
 
-const save_file_post = async (req: Request, res: Response) => {
+export const saveFilePost = async (req: Request, res: Response) => {
   const pathName = path.join(__dirname, "../files");
   //@ts-ignore
   const file: ServerFile = req.files.file;
@@ -72,4 +76,26 @@ const save_file_post = async (req: Request, res: Response) => {
   // fs.writeFileSync(`${__dirname}/../files/${file.name}`, fileConcat);
 };
 
-export default save_file_post;
+export const downloadFile = async (req: Request, res: Response) => {
+  const { fileId } = req.query;
+  try {
+    const chunkArray = await getChunks(String(fileId));
+    const chunkPromiseArray = chunkArray.map((chunk: any) => {
+      return downloadChunks(String(fileId), chunk.nodeId);
+    });
+
+    const downloadedChunksArray = await Promise.all(chunkPromiseArray);
+
+    downloadedChunksArray.sort((a: any, b: any) => {
+      return a.index - b.index;
+    });
+
+    // console.log(downloadedChunksArray);
+    const file = concatArrayOfChunks(downloadedChunksArray);
+    fs.writeFileSync(`${__dirname}/password.txt`, file);
+    console.log(file);
+    res.status(200).json(file);
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};

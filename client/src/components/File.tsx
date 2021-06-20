@@ -22,7 +22,20 @@ const File = () => {
     }
   };
 
-  const downloadHandler = async () => {};
+  const downloadHandler = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:3001/api/v1/file/get-file?fileId=1d2d2739-2ab8-45a7-b94a-391a0d172255",
+        { responseType: "blob" }
+      );
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "password.txt"); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {}
+  };
 
   return (
     <div>
