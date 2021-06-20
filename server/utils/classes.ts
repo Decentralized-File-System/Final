@@ -1,4 +1,4 @@
-export class Chunk {
+export class ChunkClass {
   buffer: Buffer;
   index: number;
   fileId: string;

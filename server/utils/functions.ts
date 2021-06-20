@@ -3,7 +3,7 @@ import {
   dataNodePercentageStorage,
   dataNodeWithOutPercentage,
 } from "../types";
-import { Chunk } from "./classes";
+import { ChunkClass } from "./classes";
 
 export const nodeDivisionPercentage = (
   nodesArray: dataNodeWithOutPercentage[]
@@ -41,7 +41,7 @@ export const splitFile = (
   const chunkArray = dataNodesInPercentageArray.map((node, i) => {
     if (i === dataNodesInPercentageArray.length - 1) {
       const lastChunkBuffer = fileBuffer.slice(sumBufferSize);
-      return new Chunk(lastChunkBuffer, i + 1, file.id, node.nodeId);
+      return new ChunkClass(lastChunkBuffer, i + 1, file.id, node.nodeId);
     }
     const chunkSize = Math.floor(
       (node.availableStoragePercentage / 100) * file.size
@@ -51,7 +51,7 @@ export const splitFile = (
       chunkSize + sumBufferSize
     );
     sumBufferSize += chunkSize;
-    return new Chunk(chunkBuffer, i + 1, file.id, node.nodeId);
+    return new ChunkClass(chunkBuffer, i + 1, file.id, node.nodeId);
   });
   return chunkArray;
 };
