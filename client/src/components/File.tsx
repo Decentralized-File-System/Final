@@ -22,6 +22,8 @@ const File = () => {
     }
   };
 
+  const downloadHandler = async () => {};
+
   return (
     <div>
       <input
@@ -29,6 +31,7 @@ const File = () => {
         onChange={(e) => e.target.files && setFile(e.target.files[0])}
       />
       <button onClick={handleUpload}>Upload</button>
+      <button onClick={downloadHandler}>Download</button>
     </div>
   );
 };
