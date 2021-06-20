@@ -1,9 +1,9 @@
 import axios from "axios";
-import { Chunk } from "./classes";
+import { ChunkClass } from "./classes";
 //@ts-ignore
 import nodePorts from "../utils/ports.json";
 
-export const uploadChunks = async (fileChunkArray: Chunk[]) => {
+export const uploadChunks = async (fileChunkArray: ChunkClass[]) => {
   try {
     const promiseArray = fileChunkArray.map((chunk, i) => {
       return axios.post(
