@@ -24,14 +24,15 @@ const save_file_post = async (req: Request, res: Response) => {
 
   const dataNodesAvailablePercentage = nodeDivisionPercentage(nodesArray);
   const fileChunksArr = splitFile(file, dataNodesAvailablePercentage);
+  console.log(fileChunksArr);
 
-  const response = await uploadChunks(fileChunksArr);
+  // const response = await uploadChunks(fileChunksArr);
 
-  if (response.message === "success") {
-    res.send("success");
-  } else {
-    res.status(500).send("fail");
-  }
+  // if (response.message === "success") {
+  //   res.status(200).send("success");
+  // } else {
+  //   res.status(500).send("fail");
+  // }
   // console.log(fileChunksArr);
   // fileChunksArr.forEach((chunk, i) => {
   //   fs.writeFile(

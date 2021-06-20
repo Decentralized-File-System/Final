@@ -8,6 +8,7 @@ import { Chunk } from "./classes";
 export const nodeDivisionPercentage = (
   nodesArray: dataNodeWithOutPercentage[]
 ) => {
+  nodesArray = nodesArray.filter((node) => Number(node.availableStorage) !== 0);
   let availableStorageSum = 0;
   nodesArray.forEach((node) => {
     availableStorageSum += Number(node.availableStorage);
@@ -36,37 +37,23 @@ export const splitFile = (
   dataNodesInPercentageArray: dataNodePercentageStorage[]
 ) => {
   const fileBuffer = file.data;
-
-  // Getting each node obj
-  const firstDataNode = dataNodesInPercentageArray.filter(
-    (dataNodeObj) => dataNodeObj.nodeId === 1
-  )[0];
-  const secondDataNode = dataNodesInPercentageArray.filter(
-    (dataNodeObj) => dataNodeObj.nodeId === 2
-  )[0];
-
-  // Calculating Chunk sizes for each node
-  const firstChunkSize = Math.floor(
-    (firstDataNode.availableStoragePercentage / 100) * file.size
-  );
-  const secondChunkSize = Math.floor(
-    (secondDataNode.availableStoragePercentage / 100) * file.size
-  );
-
-  // Slicing buffer according to the sizes
-  const firstChunk = fileBuffer.slice(0, firstChunkSize);
-  const secondChunk = fileBuffer.slice(
-    firstChunkSize,
-    firstChunkSize + secondChunkSize
-  );
-  const thirdChunk = fileBuffer.slice(firstChunkSize + secondChunkSize);
-
-  // Building chunks for each node
-  const firstNodeChunk = new Chunk(firstChunk, 1, file.id);
-  const secondNodeChunk = new Chunk(secondChunk, 2, file.id);
-  const thirdNodeChunk = new Chunk(thirdChunk, 3, file.id);
-
-  return [firstNodeChunk, secondNodeChunk, thirdNodeChunk];
+  let sumBufferSize = 0;
+  const chunkArray = dataNodesInPercentageArray.map((node, i) => {
+    if (i === dataNodesInPercentageArray.length - 1) {
+      const lastChunkBuffer = fileBuffer.slice(sumBufferSize);
+      return new Chunk(lastChunkBuffer, i + 1, file.id, node.nodeId);
+    }
+    const chunkSize = Math.floor(
+      (node.availableStoragePercentage / 100) * file.size
+    );
+    const chunkBuffer = fileBuffer.slice(
+      sumBufferSize,
+      chunkSize + sumBufferSize
+    );
+    sumBufferSize += chunkSize;
+    return new Chunk(chunkBuffer, i + 1, file.id, node.nodeId);
+  });
+  return chunkArray;
 };
 
 function changeNodeObjectType(dataNode: {
