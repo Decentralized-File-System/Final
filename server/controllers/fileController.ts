@@ -30,6 +30,7 @@ export const saveFilePost = async (req: Request, res: Response) => {
 
     // Create a write stream of the new file
     const fStream = fs.createWriteStream(path.join(mainPath, filename));
+    const chunkStream = fs.createWriteStream(path.join(chunkPath, filename));
     // Pipe it trough
     file.pipe(fStream);
 
