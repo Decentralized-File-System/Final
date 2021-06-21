@@ -33,7 +33,7 @@ export const nodeDivisionPercentage = (
 };
 
 export const splitFile = (
-  file: ServerFile,
+  file: any,
   dataNodesInPercentageArray: dataNodePercentageStorage[]
 ) => {
   const fileBuffer = file.data;
@@ -44,7 +44,7 @@ export const splitFile = (
       return new ChunkClass(lastChunkBuffer, i + 1, file.id, node.nodeId);
     }
     const chunkSize = Math.floor(
-      (node.availableStoragePercentage / 100) * file.size
+      (node.availableStoragePercentage / 100) * file.data.length
     );
     const chunkBuffer = fileBuffer.slice(
       sumBufferSize,
