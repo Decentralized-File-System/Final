@@ -8,7 +8,6 @@ const File = () => {
     if (file === null) {
       return;
     }
-    console.log(file);
     const formData = new FormData();
     formData.append("file", file);
     formData.append("test", "test data");

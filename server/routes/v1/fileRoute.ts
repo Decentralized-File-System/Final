@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { saveFilePost, downloadFile } from "../../controllers/fileController";
-import fileUpload from "express-fileupload";
 import busboy from "connect-busboy";
 
 const router = Router();

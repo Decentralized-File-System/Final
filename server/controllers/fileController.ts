@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
 import { ServerFile, nodeDataType } from "../types";
-import fs from "fs-extra";
+import fs, { writeFileSync } from "fs-extra";
 import {
   splitFile,
   nodeDivisionPercentage as nodeDivisionPercentage,
@@ -32,54 +32,57 @@ export const saveFilePost = async (req: Request, res: Response) => {
     const fStream = fs.createWriteStream(path.join(mainPath, filename));
     // Pipe it trough
     file.pipe(fStream);
-
+    
     // On finish of the upload
     fStream.on("close", async () => {
       console.log(`Upload of '${filename}' finished`);
-
-      const fileBuffer = fs.readFileSync(`${mainPath}/${filename}`);
-
-      const file: any = {};
-
-      file.id = uuidv4();
-      file.data = fileBuffer;
-
-      const nodesCurrentStatus = await getAllNodesData();
-      const nodesArray = nodesCurrentStatus.map((node: nodeDataType) => ({
-        nodeId: node.id,
-        availableStorage: node.availableStorage,
-      }));
-      const dataNodesAvailablePercentage = nodeDivisionPercentage(nodesArray);
-      const fileChunksArr = splitFile(file, dataNodesAvailablePercentage);
-
-      // const response = await uploadChunks(fileChunksArr);
-
-      // fileChunksArr.forEach((chunk) => {
-      //   fs.writeFileSync(
-      //     path.join(mainPath, `${chunk.index}.${filename.split(".")[1]}`),
-      //     chunk.buffer
-      //   );
-      // });
-
-      res.status(200).send("success");
+      
+      const readStream = fs.createReadStream(path.join(mainPath, filename), { highWaterMark: 2 * 1024 * 1024 })
+      let fileBuffer: Buffer;
+      const buffersArray: Buffer[] = [];
+      // const fileBuffer = fs.readFileSync(`${mainPath}/${filename}`);
+      console.log("reading started")
+      readStream.on("data", (chunk: Buffer) => {
+        buffersArray.push(chunk)
+      })
+      readStream.on("end", async () => {
+        fileBuffer = Buffer.concat(buffersArray);
+        const file: ServerFile = {
+          name: filename,
+          data: fileBuffer,
+          size: fileBuffer.length,
+          id: uuidv4(),
+        };
+        const nodesCurrentStatus = await getAllNodesData();
+        const nodesArray = nodesCurrentStatus.map((node: nodeDataType) => ({
+          nodeId: node.id,
+          availableStorage: node.availableStorage,
+        }));
+        const dataNodesAvailablePercentage = nodeDivisionPercentage(nodesArray);
+        const fileChunksArr = splitFile(file, dataNodesAvailablePercentage);
+  
+        const response = await uploadChunks(fileChunksArr);
+  
+        if (response.message === "success") {
+          try {
+            await addFile(file, "test");
+            await addChunk(fileChunksArr);
+            await updateDataNodes(fileChunksArr);
+            res.status(200).send("success");
+          } catch (error) {
+            return res.status(500).send("fail");
+          }
+        } else {
+          res.status(500).send("fail");
+        }
+      })
     });
+
+    fStream.on("error", (err) => {
+      console.log(err);
+      res.status(500).send("fail");
+    })
   });
-  // const pathName = path.join(__dirname, "../files");
-  // //@ts-ignore
-  // const file: ServerFile = req.files.file;
-  // const response = await uploadChunks(fileChunksArr);
-  // if (response.message === "success") {
-  //   try {
-  //     await addFile(file, "test");
-  //     await addChunk(fileChunksArr);
-  //     await updateDataNodes(fileChunksArr);
-  //     res.status(200).send("success");
-  //   } catch (error) {
-  //     return res.status(500).send("fail");
-  //   }
-  // } else {
-  //   res.status(500).send("fail");
-  // }
   // // fileChunksArr.forEach((chunk, i) => {
   // //   fs.writeFile(
   // //     `${__dirname}/../files/${chunk.fileId}-${i}.json`,
