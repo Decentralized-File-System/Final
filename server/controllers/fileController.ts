@@ -32,19 +32,21 @@ export const saveFilePost = async (req: Request, res: Response) => {
     const fStream = fs.createWriteStream(path.join(mainPath, filename));
     // Pipe it trough
     file.pipe(fStream);
-    
+
     // On finish of the upload
     fStream.on("close", async () => {
       console.log(`Upload of '${filename}' finished`);
-      
-      const readStream = fs.createReadStream(path.join(mainPath, filename), { highWaterMark: 2 * 1024 * 1024 })
+
+      const readStream = fs.createReadStream(path.join(mainPath, filename), {
+        highWaterMark: 2 * 1024 * 1024,
+      });
       let fileBuffer: Buffer;
       const buffersArray: Buffer[] = [];
       // const fileBuffer = fs.readFileSync(`${mainPath}/${filename}`);
-      console.log("reading started")
+      console.log("reading started");
       readStream.on("data", (chunk: Buffer) => {
-        buffersArray.push(chunk)
-      })
+        buffersArray.push(chunk);
+      });
       readStream.on("end", async () => {
         fileBuffer = Buffer.concat(buffersArray);
         const file: ServerFile = {
@@ -60,9 +62,9 @@ export const saveFilePost = async (req: Request, res: Response) => {
         }));
         const dataNodesAvailablePercentage = nodeDivisionPercentage(nodesArray);
         const fileChunksArr = splitFile(file, dataNodesAvailablePercentage);
-  
+
         const response = await uploadChunks(fileChunksArr);
-  
+
         if (response.message === "success") {
           try {
             await addFile(file, "test");
@@ -75,13 +77,13 @@ export const saveFilePost = async (req: Request, res: Response) => {
         } else {
           res.status(500).send("fail");
         }
-      })
+      });
     });
 
     fStream.on("error", (err) => {
       console.log(err);
       res.status(500).send("fail");
-    })
+    });
   });
   // // fileChunksArr.forEach((chunk, i) => {
   // //   fs.writeFile(
