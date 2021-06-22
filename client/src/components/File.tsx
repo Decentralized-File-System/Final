@@ -8,9 +8,9 @@ const File = () => {
     if (file === null) {
       return;
     }
-
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("test", "test data");
     try {
       const res = await axios.post(
         "http://localhost:3001/api/v1/file/post-file",

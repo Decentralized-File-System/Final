@@ -47,7 +47,7 @@ export const splitFile = (
       (node.availableStoragePercentage / 100) * file.size
     );
     const chunkBuffer = fileBuffer.slice(
-      sumBufferSize,
+      sumBufferSize,  
       chunkSize + sumBufferSize
     );
     sumBufferSize += chunkSize;

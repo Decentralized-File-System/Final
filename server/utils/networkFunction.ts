@@ -7,32 +7,11 @@ const FormData = require("form-data");
 export const uploadChunks = async (fileChunkArray: ChunkClass[]) => {
   try {
     const promiseArray = fileChunkArray.map((chunk, i) => {
-      const buffer = Buffer.from(JSON.stringify(chunk));
       const form = new FormData();
-      form.append("file", buffer);
-      const formHeaders = form.getHeaders();
-      console.log(formHeaders);
-      // form.submit(
-      //   `http://${nodePorts[i].host}:${nodePorts[i].port}/api/v1/file/upload-file`,
-      //   //@ts-ignore
-      //   (err, res) => {
-      //     if (err) {
-      //       console.log(err);
-      //     } else {
-      //       res.resume();
-      //     }
-      //   }
-      // );
-      // return axios.post(
-      //   `http://${nodePorts[i].host}:${nodePorts[i].port}/api/v1/file/upload-file`,
-      //   form,
-      //   {
-      //     headers: formHeaders,
-      //   }
-      // );
+      form.append("file", chunk.buffer);
       return axios({
         method: "post",
-        url: `http://${nodePorts[i].host}:${nodePorts[i].port}/api/v1/file/upload-file`,
+        url: `http://${nodePorts[i].host}:${nodePorts[i].port}/api/v1/file/upload-file?fileId=${chunk.fileId}`,
         data: form,
         maxContentLength: Infinity,
         maxBodyLength: Infinity,
