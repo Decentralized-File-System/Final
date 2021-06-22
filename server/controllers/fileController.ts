@@ -24,10 +24,10 @@ fs.ensureDir(mainPath);
 
 export const saveFilePost = async (req: Request, res: Response) => {
   req.pipe(req.busboy); // Pipe it trough busboy
+  // console.log(req.body)
 
   req.busboy.on("file", (fieldName, file, filename) => {
     console.log(`Upload of '${filename}' started`);
-
     // Create a write stream of the new file
     const fStream = fs.createWriteStream(path.join(mainPath, filename));
     // Pipe it trough
@@ -52,12 +52,18 @@ export const saveFilePost = async (req: Request, res: Response) => {
       const dataNodesAvailablePercentage = nodeDivisionPercentage(nodesArray);
       const fileChunksArr = splitFile(file, dataNodesAvailablePercentage);
 
-      console.log(fileChunksArr);
+      // const response = await uploadChunks(fileChunksArr);
 
-      res.redirect("back");
+      // fileChunksArr.forEach((chunk) => {
+      //   fs.writeFileSync(
+      //     path.join(mainPath, `${chunk.index}.${filename.split(".")[1]}`),
+      //     chunk.buffer
+      //   );
+      // });
+
+      res.status(200).send("success");
     });
   });
-
   // const pathName = path.join(__dirname, "../files");
   // //@ts-ignore
   // const file: ServerFile = req.files.file;

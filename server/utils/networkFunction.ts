@@ -7,11 +7,11 @@ const FormData = require("form-data");
 export const uploadChunks = async (fileChunkArray: ChunkClass[]) => {
   try {
     const promiseArray = fileChunkArray.map((chunk, i) => {
-      const buffer = Buffer.from(JSON.stringify(chunk));
+      // const buffer = Buffer.from(JSON.stringify(chunk));
       const form = new FormData();
-      form.append("file", buffer);
-      const formHeaders = form.getHeaders();
-      console.log(formHeaders);
+      form.append("file", chunk.buffer);
+      // const formHeaders = form.getHeaders();
+      // console.log(formHeaders);
       // form.submit(
       //   `http://${nodePorts[i].host}:${nodePorts[i].port}/api/v1/file/upload-file`,
       //   //@ts-ignore
