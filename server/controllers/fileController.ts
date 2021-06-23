@@ -121,7 +121,7 @@ export const saveFilePost = async (req: Request, res: Response) => {
 
         const fileChunksArr = splitFile(file, dataNodesAvailablePercentage);
 
-        // const response = await uploadChunks(fileChunksArr);
+        const response = await uploadChunks(fileChunksArr);
       }
     });
 
