@@ -69,16 +69,15 @@ export const saveFilePost = async (req: Request, res: Response) => {
           }
         });
         readStream.on("end", async () => {
-
           bufferBulkArray.push(bufferBulk);
-          
+
           const dataBaseFileInfo = {
             name: filename,
             type: fileType,
             size: fileSize,
             id: uuidv4(),
           };
-          
+
           const fileChunkArray = bufferBulkArray.map(
             (buffer: Buffer[], i: number) => {
               return new ChunkClass(
@@ -86,11 +85,16 @@ export const saveFilePost = async (req: Request, res: Response) => {
                 i + 1,
                 dataBaseFileInfo.id,
                 storagePerNodeArr[i].nodeId
-                );
-              }
               );
+            }
+          );
           const response = await uploadChunks(fileChunkArray);
-        
+          try {
+            await fs.unlink(path.join(mainPath, filename));
+            console.log("successfully deleted");
+          } catch (error) {
+            console.error("there was an error:", error.message);
+          }
 
           if (response.message === "success") {
             try {
@@ -113,17 +117,23 @@ export const saveFilePost = async (req: Request, res: Response) => {
           size: fileBuffer.length,
           id: uuidv4(),
         };
-        
-        const fileChunkArray= splitFile(file, dataNodesAvailablePercentage);
-        
+
+        const fileChunkArray = splitFile(file, dataNodesAvailablePercentage);
+
         const response = await uploadChunks(fileChunkArray);
 
         const dataBaseFileInfo = {
           name: filename,
           type: fileType,
           size: fileSize,
-          id: uuidv4(),
+          id: file.id,
         };
+        try {
+          await fs.unlink(path.join(mainPath, filename));
+          console.log("successfully deleted");
+        } catch (error) {
+          console.error("there was an error:", error.message);
+        }
 
         if (response.message === "success") {
           try {
@@ -141,6 +151,7 @@ export const saveFilePost = async (req: Request, res: Response) => {
     });
 
     fStream.on("error", (err) => {
+      fs.unlinkSync(path.join(mainPath, filename));
       res.status(500).send("fail");
     });
   });
@@ -151,7 +162,7 @@ export const downloadFile = async (req: Request, res: Response) => {
   try {
     const chunkArray = await getChunks(String(fileId));
     const chunkPromiseArray = chunkArray.map((chunk: any) => {
-      return downloadChunks(String(fileId), chunk.nodeId);
+      return downloadChunks(String(fileId), chunk.nodeId, chunk.orderIndex);
     });
 
     const downloadedChunksArray = await Promise.all(chunkPromiseArray);
@@ -159,12 +170,12 @@ export const downloadFile = async (req: Request, res: Response) => {
     downloadedChunksArray.sort((a: any, b: any) => {
       return a.index - b.index;
     });
-
     const file = concatArrayOfChunks(downloadedChunksArray);
     fs.writeFileSync(`${__dirname}/password.txt`, file);
     console.log(file);
     res.status(200).json(file);
   } catch (error) {
+    console.log(error)
     res.status(500).json({ message: error });
   }
 };

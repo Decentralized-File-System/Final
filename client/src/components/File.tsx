@@ -24,7 +24,7 @@ const File = () => {
   const downloadHandler = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:3001/api/v1/file/get-file?fileId=1d2d2739-2ab8-45a7-b94a-391a0d172255",
+        "http://localhost:3001/api/v1/file/get-file?fileId=53aeb0d1-8ecc-4da7-a20e-eccf834c2b1e",
         { responseType: "blob" }
       );
       const url = window.URL.createObjectURL(new Blob([res.data]));

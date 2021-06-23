@@ -6,8 +6,6 @@ const FormData = require("form-data");
 
 export const uploadChunks = async (fileChunkArray: ChunkClass[]) => {
   const promiseArray = fileChunkArray.map((chunk, i) => {
-    console.log(chunk);
-
     const form = new FormData();
     form.append("file", chunk.buffer);
     return axios({
@@ -32,9 +30,9 @@ export const uploadChunks = async (fileChunkArray: ChunkClass[]) => {
   return { message: "success" };
 };
 
-export const downloadChunks = async (fileId: string, nodeId: number) => {
+export const downloadChunks = async (fileId: string, nodeId: number, orderIndex:number) => {
   const node = nodePorts.filter((node: any) => node.id === nodeId)[0];
-  const nodeURL = `http://${node.host}:${node.port}/api/v1/file/download-file?fileId=${fileId}`;
+  const nodeURL = `http://${node.host}:${node.port}/api/v1/file/download-file?fileId=${fileId}&index=${orderIndex}`;
   const res = await axios.get(nodeURL);
   return res.data;
 };

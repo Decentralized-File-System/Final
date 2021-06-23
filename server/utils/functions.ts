@@ -93,7 +93,9 @@ export const splitFile = (
 };
 
 export const concatArrayOfChunks = (chunkArray: any) => {
-  const bufferArray = chunkArray.map((chunk: any) => Buffer.from(chunk.buffer));
+  const bufferArray = chunkArray.map((chunk: any) => {
+    Buffer.from(chunk);
+  });
   const file = Buffer.concat(bufferArray);
 
   return file;
