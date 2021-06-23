@@ -6,6 +6,8 @@ const FormData = require("form-data");
 
 export const uploadChunks = async (fileChunkArray: ChunkClass[]) => {
   const promiseArray = fileChunkArray.map((chunk, i) => {
+    console.log(chunk);
+
     const form = new FormData();
     form.append("file", chunk.buffer);
     return axios({
@@ -24,8 +26,7 @@ export const uploadChunks = async (fileChunkArray: ChunkClass[]) => {
   try {
     await Promise.all(promiseArray);
   } catch (error) {
-    console.log(error.message);
-    console.log(error.code);
+    return { message: error.message };
   }
 
   return { message: "success" };

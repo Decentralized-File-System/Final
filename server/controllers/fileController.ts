@@ -26,6 +26,7 @@ fs.ensureDir(mainPath);
 export const saveFilePost = async (req: Request, res: Response) => {
   req.pipe(req.busboy); // Pipe it trough busboy
   const fileSize: number = Number(req.query.size);
+  const fileType: string = String(req.query.type);
 
   req.busboy.on("file", (fieldName, file, filename) => {
     console.log(`Upload of '${filename}' started`);
@@ -41,9 +42,7 @@ export const saveFilePost = async (req: Request, res: Response) => {
       const readStream = fs.createReadStream(path.join(mainPath, filename), {
         highWaterMark: 2 * 1024 * 1024,
       });
-      let fileBuffer: Buffer;
-      const buffersArray: Buffer[] = [];
-      // const fileBuffer = fs.readFileSync(`${mainPath}/${filename}`);
+
       const nodesCurrentStatus = await getAllNodesData();
       const nodesArray = nodesCurrentStatus.map((node: nodeDataType) => ({
         nodeId: node.id,
@@ -70,45 +69,41 @@ export const saveFilePost = async (req: Request, res: Response) => {
           }
         });
         readStream.on("end", async () => {
+
           bufferBulkArray.push(bufferBulk);
-
-          // const file: ServerFile = {
-          //   name: filename,
-          //   data: fileBuffer,
-          //   size: fileBuffer.length,
-          //   id: uuidv4(),
-          // };
-
-          const fileId = uuidv4();
-
+          
+          const dataBaseFileInfo = {
+            name: filename,
+            type: fileType,
+            size: fileSize,
+            id: uuidv4(),
+          };
+          
           const fileChunkArray = bufferBulkArray.map(
             (buffer: Buffer[], i: number) => {
               return new ChunkClass(
                 Buffer.concat(buffer),
                 i + 1,
-                fileId,
+                dataBaseFileInfo.id,
                 storagePerNodeArr[i].nodeId
+                );
+              }
               );
+          const response = await uploadChunks(fileChunkArray);
+        
+
+          if (response.message === "success") {
+            try {
+              await addFile(dataBaseFileInfo, "test");
+              await addChunk(fileChunkArray);
+              await updateDataNodes(fileChunkArray);
+              res.status(200).send("success");
+            } catch (error) {
+              return res.status(500).send("fail");
             }
-          );
-
-          // fileBuffer = Buffer.concat(buffersArray);
-          // const fileChunksArr = splitFile(file, dataNodesAvailablePercentage);
-
-          // const response = await uploadChunks(fileChunkArray);
-
-          // if (response.message === "success") {
-          //   try {
-          //     await addFile(file, "test");
-          //     await addChunk(fileChunksArr);
-          //     await updateDataNodes(fileChunksArr);
-          //     res.status(200).send("success");
-          //   } catch (error) {
-          //     return res.status(500).send("fail");
-          //   }
-          // } else {
-          //   res.status(500).send("fail");
-          // }
+          } else {
+            res.status(500).send("fail");
+          }
         });
       } else {
         const fileBuffer = readFileSync(path.join(mainPath, filename));
@@ -118,43 +113,37 @@ export const saveFilePost = async (req: Request, res: Response) => {
           size: fileBuffer.length,
           id: uuidv4(),
         };
+        
+        const fileChunkArray= splitFile(file, dataNodesAvailablePercentage);
+        
+        const response = await uploadChunks(fileChunkArray);
 
-        const fileChunksArr = splitFile(file, dataNodesAvailablePercentage);
+        const dataBaseFileInfo = {
+          name: filename,
+          type: fileType,
+          size: fileSize,
+          id: uuidv4(),
+        };
 
-        const response = await uploadChunks(fileChunksArr);
+        if (response.message === "success") {
+          try {
+            await addFile(dataBaseFileInfo, "test");
+            await addChunk(fileChunkArray);
+            await updateDataNodes(fileChunkArray);
+            res.status(200).send("success");
+          } catch (error) {
+            return res.status(500).send("fail");
+          }
+        } else {
+          res.status(500).send("fail");
+        }
       }
     });
 
     fStream.on("error", (err) => {
-      // console.log(err);
       res.status(500).send("fail");
     });
   });
-  // // fileChunksArr.forEach((chunk, i) => {
-  // //   fs.writeFile(
-  // //     `${__dirname}/../files/${chunk.fileId}-${i}.json`,
-  // //     JSON.stringify(chunk),
-  // //     (err) => {
-  // //       if (err) {
-  // //         console.log(err);
-  // //       } else {
-  // //         console.log("success");
-  // //       }
-  // //     }
-  // //   );
-  // // });
-  // // let filesArr = fs.readdirSync(`${__dirname}/../files`);
-  // // const chunkArr: any = [];
-  // // filesArr.forEach((file) => {
-  // //   const data = JSON.parse(
-  // //     fs.readFileSync(`${__dirname}/../files/${file}`).toString()
-  // //   );
-  // //   chunkArr.push(Buffer.from(data.buffer));
-  // // });
-  // // console.log(chunkArr);
-  // // const fileConcat = Buffer.concat([chunkArr[0], chunkArr[1], chunkArr[2]]);
-  // // console.log(fileConcat);
-  // // fs.writeFileSync(`${__dirname}/../files/${file.name}`, fileConcat);
 };
 
 export const downloadFile = async (req: Request, res: Response) => {
@@ -171,7 +160,6 @@ export const downloadFile = async (req: Request, res: Response) => {
       return a.index - b.index;
     });
 
-    // console.log(downloadedChunksArray);
     const file = concatArrayOfChunks(downloadedChunksArray);
     fs.writeFileSync(`${__dirname}/password.txt`, file);
     console.log(file);

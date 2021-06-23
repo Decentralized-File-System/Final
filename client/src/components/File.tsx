@@ -10,10 +10,9 @@ const File = () => {
     }
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("test", "test data");
     try {
       const res = await axios.post(
-        `http://localhost:3001/api/v1/file/post-file?size=${file.size}`,
+        `http://localhost:3001/api/v1/file/post-file?size=${file.size}&type=${file.type}`,
         formData
       );
       console.log(res.data);
