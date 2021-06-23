@@ -32,6 +32,42 @@ export const nodeDivisionPercentage = (
   return nodePercentage;
 };
 
+export const storagePerNode = (
+  fileSize: number,
+  dataNodesInPercentageArray: dataNodePercentageStorage[]
+) => {
+  let sumSize = 0;
+  const storagePerNodeArr = dataNodesInPercentageArray.map((node, i) => {
+    if (i === dataNodesInPercentageArray.length - 1) {
+      return { storage: fileSize - sumSize, nodeId: node.nodeId };
+    }
+    sumSize += Math.floor(fileSize * (node.availableStoragePercentage / 100));
+    return {
+      storage: Math.floor(fileSize * (node.availableStoragePercentage / 100)),
+      nodeId: node.nodeId,
+    };
+  });
+
+  const arr: { storage: number; nodeId: number }[] = [];
+  storagePerNodeArr.forEach((node) => {
+    if (node.storage >= 1572864000 /** 1.5GB */) {
+      let storage = node.storage;
+      while (storage > 0) {
+        if (storage < 1572864000) {
+          arr.push({ storage: storage, nodeId: node.nodeId });
+          storage -= storage;
+        } else {
+          arr.push({ storage: 1572864000, nodeId: node.nodeId });
+          storage -= 1572864000;
+        }
+      }
+    } else {
+      arr.push(node);
+    }
+  });
+  return arr;
+};
+
 export const splitFile = (
   file: ServerFile,
   dataNodesInPercentageArray: dataNodePercentageStorage[]
@@ -47,7 +83,7 @@ export const splitFile = (
       (node.availableStoragePercentage / 100) * file.size
     );
     const chunkBuffer = fileBuffer.slice(
-      sumBufferSize,  
+      sumBufferSize,
       chunkSize + sumBufferSize
     );
     sumBufferSize += chunkSize;
