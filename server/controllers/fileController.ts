@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
 import { ServerFile, nodeDataType } from "../types";
-import fs, { writeFileSync } from "fs-extra";
+import fs, { readFileSync, writeFileSync } from "fs-extra";
 import {
   splitFile,
   nodeDivisionPercentage as nodeDivisionPercentage,
@@ -55,63 +55,74 @@ export const saveFilePost = async (req: Request, res: Response) => {
         dataNodesAvailablePercentage
       );
 
-      let bufferBulk: Buffer[] = [];
-      const bufferBulkArray: any = [];
-      let index = 0;
-      console.log("reading started");
-      readStream.on("data", (chunk: Buffer) => {
-        if (bufferBulk.length * 2097152 < storagePerNodeArr[index].storage) {
-          bufferBulk.push(chunk);
-        } else {
-          bufferBulkArray.push(bufferBulk);
-          bufferBulk = [chunk];
-          index += 1;
-        }
-      });
-      readStream.on("end", async () => {
-        bufferBulkArray.push(bufferBulk);
-
-        // const file: ServerFile = {
-        //   name: filename,
-        //   data: fileBuffer,
-        //   size: fileBuffer.length,
-        //   id: uuidv4(),
-        // };
-
-        const fileId = uuidv4();
-
-        const fileChunkArray = bufferBulkArray.map(
-          (buffer: Buffer[], i: number) => {
-            return new ChunkClass(
-              Buffer.concat(buffer),
-              i + 1,
-              fileId,
-              storagePerNodeArr[i].nodeId
-            );
+      if (fileSize >= 1073741824) {
+        let bufferBulk: Buffer[] = [];
+        const bufferBulkArray: any = [];
+        let index = 0;
+        console.log("reading started");
+        readStream.on("data", (chunk: Buffer) => {
+          if (bufferBulk.length * 2097152 < storagePerNodeArr[index].storage) {
+            bufferBulk.push(chunk);
+          } else {
+            bufferBulkArray.push(bufferBulk);
+            bufferBulk = [chunk];
+            index += 1;
           }
-        );
+        });
+        readStream.on("end", async () => {
+          bufferBulkArray.push(bufferBulk);
 
-        console.log(fileChunkArray);
+          // const file: ServerFile = {
+          //   name: filename,
+          //   data: fileBuffer,
+          //   size: fileBuffer.length,
+          //   id: uuidv4(),
+          // };
 
-        // fileBuffer = Buffer.concat(buffersArray);
-        // const fileChunksArr = splitFile(file, dataNodesAvailablePercentage);
+          const fileId = uuidv4();
 
-        const response = await uploadChunks(fileChunkArray);
-        console.log(response.message);
+          const fileChunkArray = bufferBulkArray.map(
+            (buffer: Buffer[], i: number) => {
+              return new ChunkClass(
+                Buffer.concat(buffer),
+                i + 1,
+                fileId,
+                storagePerNodeArr[i].nodeId
+              );
+            }
+          );
 
-        // if (response.message === "success") {
-        //   try {
-        //     await addFile(file, "test");
-        //     await addChunk(fileChunksArr);
-        //     await updateDataNodes(fileChunksArr);
-        //     res.status(200).send("success");
-        //   } catch (error) {
-        //     return res.status(500).send("fail");
-        //   }
-        // } else {
-        //   res.status(500).send("fail");
-        // }
-      });
+          // fileBuffer = Buffer.concat(buffersArray);
+          // const fileChunksArr = splitFile(file, dataNodesAvailablePercentage);
+
+          // const response = await uploadChunks(fileChunkArray);
+
+          // if (response.message === "success") {
+          //   try {
+          //     await addFile(file, "test");
+          //     await addChunk(fileChunksArr);
+          //     await updateDataNodes(fileChunksArr);
+          //     res.status(200).send("success");
+          //   } catch (error) {
+          //     return res.status(500).send("fail");
+          //   }
+          // } else {
+          //   res.status(500).send("fail");
+          // }
+        });
+      } else {
+        const fileBuffer = readFileSync(path.join(mainPath, filename));
+        const file: ServerFile = {
+          name: filename,
+          data: fileBuffer,
+          size: fileBuffer.length,
+          id: uuidv4(),
+        };
+
+        const fileChunksArr = splitFile(file, dataNodesAvailablePercentage);
+
+        // const response = await uploadChunks(fileChunksArr);
+      }
     });
 
     fStream.on("error", (err) => {
