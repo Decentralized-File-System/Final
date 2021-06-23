@@ -7,7 +7,7 @@ import {
   splitFile,
   nodeDivisionPercentage as nodeDivisionPercentage,
   concatArrayOfChunks,
-  storagePerNode
+  storagePerNode,
 } from "../utils/functions";
 import {
   getAllNodesData,
@@ -25,9 +25,8 @@ fs.ensureDir(mainPath);
 
 export const saveFilePost = async (req: Request, res: Response) => {
   req.pipe(req.busboy); // Pipe it trough busboy
-  const fileSize:number = Number(req.query.size);
+  const fileSize: number = Number(req.query.size);
 
-  // console.log(req.body)
   req.busboy.on("file", (fieldName, file, filename) => {
     console.log(`Upload of '${filename}' started`);
     // Create a write stream of the new file
@@ -51,31 +50,51 @@ export const saveFilePost = async (req: Request, res: Response) => {
         availableStorage: node.availableStorage,
       }));
       const dataNodesAvailablePercentage = nodeDivisionPercentage(nodesArray);
-      const storagePerNodeArr = storagePerNode(fileSize,dataNodesAvailablePercentage)
-      console.log(storagePerNodeArr);
-      console.log(fileSize);
-      let bufferBulk:any = [];
-      const bufferBulkArray = [];
+      const storagePerNodeArr = storagePerNode(
+        fileSize,
+        dataNodesAvailablePercentage
+      );
+
+      let bufferBulk: Buffer[] = [];
+      const bufferBulkArray: any = [];
       let index = 0;
       console.log("reading started");
       readStream.on("data", (chunk: Buffer) => {
-        if((bufferBulk.length * 2097152) < storagePerNodeArr[index].storage){
+        if (bufferBulk.length * 2097152 < storagePerNodeArr[index].storage) {
           bufferBulk.push(chunk);
-        }else{
+        } else {
           bufferBulkArray.push(bufferBulk);
           bufferBulk = [chunk];
           index += 1;
         }
       });
       readStream.on("end", async () => {
-        fileBuffer = Buffer.concat(buffersArray);
-        const file: ServerFile = {
-          name: filename,
-          data: fileBuffer,
-          size: fileBuffer.length,
-          id: uuidv4(),
-        };
-        const fileChunksArr = splitFile(file, dataNodesAvailablePercentage);
+        bufferBulkArray.push(bufferBulk);
+
+        // const file: ServerFile = {
+        //   name: filename,
+        //   data: fileBuffer,
+        //   size: fileBuffer.length,
+        //   id: uuidv4(),
+        // };
+
+        const fileId = uuidv4();
+
+        const fileChunkArray = bufferBulkArray.map(
+          (buffer: Buffer[], i: number) => {
+            return new ChunkClass(
+              Buffer.concat(buffer),
+              i + 1,
+              fileId,
+              storagePerNodeArr[i].nodeId
+            );
+          }
+        );
+
+        console.log(fileChunkArray);
+
+        // fileBuffer = Buffer.concat(buffersArray);
+        // const fileChunksArr = splitFile(file, dataNodesAvailablePercentage);
 
         // const response = await uploadChunks(fileChunksArr);
 
