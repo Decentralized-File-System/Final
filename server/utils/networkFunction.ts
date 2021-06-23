@@ -11,7 +11,9 @@ export const uploadChunks = async (fileChunkArray: ChunkClass[]) => {
       form.append("file", chunk.buffer);
       return axios({
         method: "post",
-        url: `http://${nodePorts[i].host}:${nodePorts[i].port}/api/v1/file/upload-file?fileId=${chunk.fileId}&index=${chunk.index}`,
+        url: `http://${nodePorts[chunk.nodeId - 1].host}:${
+          nodePorts[chunk.nodeId - 1].port
+        }/api/v1/file/upload-file?fileId=${chunk.fileId}&index=${chunk.index}`,
         data: form,
         maxContentLength: Infinity,
         maxBodyLength: Infinity,

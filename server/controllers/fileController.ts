@@ -96,7 +96,8 @@ export const saveFilePost = async (req: Request, res: Response) => {
         // fileBuffer = Buffer.concat(buffersArray);
         // const fileChunksArr = splitFile(file, dataNodesAvailablePercentage);
 
-        // const response = await uploadChunks(fileChunksArr);
+        const response = await uploadChunks(fileChunkArray);
+        console.log(response.message);
 
         // if (response.message === "success") {
         //   try {
