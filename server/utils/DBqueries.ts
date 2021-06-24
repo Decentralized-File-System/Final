@@ -80,20 +80,26 @@ export const getChunks = async (fileId: string) => {
 
 export const getUserByUserName = async (userName: string) => {
   try {
-    const res =  await User.findOne({where: {name: userName}});
-    const user = res.map((data: any) => data.toJSON());
-    return user
+    const res = await User.findOne({ where: { name: userName } });
+    let user;
+    if (res !== null) {
+      user = res.dataValues;
+    }
+    return user;
   } catch (error) {
     throw new Error(error);
   }
-}
+};
 
 export const getUserByEmail = async (userEmail: string) => {
   try {
-    const res =  await User.findOne({where: {email: userEmail}});
-    const user = res.map((data: any) => data.toJSON());
-    return user
+    const res = await User.findOne({ where: { email: userEmail } });
+    let user;
+    if (res !== null) {
+      user = res.dataValues;
+    }
+    return user;
   } catch (error) {
     throw new Error(error);
   }
-}
+};

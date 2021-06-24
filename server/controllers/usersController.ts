@@ -6,19 +6,20 @@ import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { user } from "../types";
 import { getUserByUserName, getUserByEmail } from "../utils/DBqueries";
-const secretKey: any = process.env.SECRET_KEY;
+const accessSecretKey: any = process.env.ACCESS_SECRET_KEY;
+const refreshSecretKey: any = process.env.REFRESH_SECRET_KEY;
 
 // create json web token
-const createAccessToken = (user:user) => {
+export const createAccessToken = (user: user) => {
   user.password = undefined;
-  return jwt.sign({ user }, secretKey, {
+  return jwt.sign({ user }, accessSecretKey, {
     expiresIn: "10m",
   });
 };
 
-const createRefreshToken = (user:user) => {
+const createRefreshToken = (user: user) => {
   user.password = undefined;
-  return jwt.sign({ user }, secretKey);
+  return jwt.sign({ user }, refreshSecretKey);
 };
 
 export const signUp_post = async (req: Request, res: Response) => {
@@ -61,13 +62,13 @@ export const login_post = async (req: Request, res: Response) => {
     if (!existUser) {
       return res.status(404).send("Incorrect email or password");
     }
-    const auth = compareSync(password, existUser.dataValues.password);
+    const auth = compareSync(password, existUser.password);
     if (!auth) {
       return res.status(404).send("Incorrect email or password");
     }
-    const userToken:any = {
-      username: existUser.dataValues.userName,
-      email: existUser.dataValues.email,
+    const userToken: any = {
+      username: existUser.name,
+      email: existUser.email,
     };
     const token = createAccessToken(userToken);
     const refreshToken = createRefreshToken(userToken);
