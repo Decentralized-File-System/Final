@@ -39,10 +39,6 @@ export const saveFilePost = async (req: Request, res: Response) => {
     fStream.on("close", async () => {
       console.log(`Upload of '${filename}' finished`);
 
-      const readStream = fs.createReadStream(path.join(mainPath, filename), {
-        highWaterMark: 2 * 1024 * 1024,
-      });
-
       const nodesCurrentStatus = await getAllNodesData();
       const nodesArray = nodesCurrentStatus.map((node: nodeDataType) => ({
         nodeId: node.id,
@@ -55,6 +51,9 @@ export const saveFilePost = async (req: Request, res: Response) => {
       );
 
       if (fileSize >= 1073741824) {
+        const readStream = fs.createReadStream(path.join(mainPath, filename), {
+          highWaterMark: 2 * 1024 * 1024,
+        });
         let bufferBulk: Buffer[] = [];
         const bufferBulkArray: any = [];
         let index = 0;
@@ -175,7 +174,7 @@ export const downloadFile = async (req: Request, res: Response) => {
     console.log(file);
     res.status(200).json(file);
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).json({ message: error });
   }
 };
