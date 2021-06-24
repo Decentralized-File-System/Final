@@ -9,11 +9,16 @@ import { getUserByUserName, getUserByEmail } from "../utils/DBqueries";
 const secretKey: any = process.env.SECRET_KEY;
 
 // create json web token
-const maxAge = 3 * 24 * 60 * 60;
-const createToken = (user: any) => {
+const createAccessToken = (user:user) => {
+  user.password = undefined;
   return jwt.sign({ user }, secretKey, {
-    expiresIn: maxAge,
+    expiresIn: "10m",
   });
+};
+
+const createRefreshToken = (user:user) => {
+  user.password = undefined;
+  return jwt.sign({ user }, secretKey);
 };
 
 export const signUp_post = async (req: Request, res: Response) => {
@@ -38,8 +43,10 @@ export const signUp_post = async (req: Request, res: Response) => {
     await User.create(newUser);
 
     newUser.password = undefined;
-    const token = createToken(newUser);
-    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+    const token = createAccessToken(newUser);
+    const refreshToken = createRefreshToken(newUser);
+    res.cookie("Access-Token", `Bearer ${token}`, { httpOnly: true });
+    res.cookie("Refresh-Token", `Bearer ${refreshToken}`, { httpOnly: true });
     return res.status(201).json({ user: username });
   } catch (error) {
     return res.status(500).send();
@@ -58,12 +65,14 @@ export const login_post = async (req: Request, res: Response) => {
     if (!auth) {
       return res.status(404).send("Incorrect email or password");
     }
-    const userToken = {
+    const userToken:any = {
       username: existUser.dataValues.userName,
       email: existUser.dataValues.email,
     };
-    const token = createToken(userToken);
-    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+    const token = createAccessToken(userToken);
+    const refreshToken = createRefreshToken(userToken);
+    res.cookie("Access-Token", `Bearer ${token}`, { httpOnly: true });
+    res.cookie("Refresh-Token", `Bearer ${refreshToken}`, { httpOnly: true });
     return res.status(200).json({ user: userToken.username });
   } catch (error) {
     res.status(500).send(error);
@@ -71,6 +80,7 @@ export const login_post = async (req: Request, res: Response) => {
 };
 
 export const logout_get = (req: Request, res: Response) => {
-  res.cookie("jwt", "logged out", { maxAge: 1 });
+  res.cookie("Access-Token", "logged out", { maxAge: 1 });
+  res.cookie("Refresh-Token", "logged out", { maxAge: 1 });
   res.status(200).send("user logged out");
 };
