@@ -1,5 +1,6 @@
 import { Request, Response, Router } from "express";
 import fileRoute from "./fileRoute";
+import userRoute from "./userRoute"
 const router = Router();
 
 const unknownEndpoint = (req: Request, res: Response) => {
@@ -7,6 +8,7 @@ const unknownEndpoint = (req: Request, res: Response) => {
 };
 
 router.use("/file", fileRoute);
+router.use("/user", userRoute);
 router.use(unknownEndpoint);
 
 export default router;
