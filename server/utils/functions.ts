@@ -50,15 +50,15 @@ export const storagePerNode = (
 
   const arr: { storage: number; nodeId: number }[] = [];
   storagePerNodeArr.forEach((node) => {
-    if (node.storage >= 1572864000 /** 1.5GB */) {
+    if (node.storage >= 314572800 /** 300MB */) {
       let storage = node.storage;
       while (storage > 0) {
-        if (storage < 1572864000) {
+        if (storage < 314572800) {
           arr.push({ storage: storage, nodeId: node.nodeId });
           storage -= storage;
         } else {
-          arr.push({ storage: 1572864000, nodeId: node.nodeId });
-          storage -= 1572864000;
+          arr.push({ storage: 314572800, nodeId: node.nodeId });
+          storage -= 314572800;
         }
       }
     } else {
