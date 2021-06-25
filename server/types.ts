@@ -21,3 +21,8 @@ export interface nodeDataType {
   createdAt: Date;
   updatedAt: Date;
 }
+export interface user {
+  name: string;
+  email: string;
+  password: string | undefined;
+}

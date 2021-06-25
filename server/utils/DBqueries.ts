@@ -1,5 +1,5 @@
 // @ts-ignore
-import { DataNode, Chunk, File, sequelize } from "../models";
+import { DataNode, Chunk, File, sequelize, User } from "../models";
 import { ChunkClass } from "./classes";
 import { ServerFile } from "../types";
 
@@ -73,6 +73,32 @@ export const getChunks = async (fileId: string) => {
     const res = await Chunk.findAll({ where: { fileId: fileId } });
     const chunksArray = res.map((data: any) => data.toJSON());
     return chunksArray;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const getUserByUserName = async (userName: string) => {
+  try {
+    const res = await User.findOne({ where: { name: userName } });
+    let user;
+    if (res !== null) {
+      user = res.dataValues;
+    }
+    return user;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const getUserByEmail = async (userEmail: string) => {
+  try {
+    const res = await User.findOne({ where: { email: userEmail } });
+    let user;
+    if (res !== null) {
+      user = res.dataValues;
+    }
+    return user;
   } catch (error) {
     throw new Error(error);
   }
