@@ -10,37 +10,6 @@ const FormData = require("form-data");
 export const uploadChunks = async (
   fileChunkArray: ChunkClass[]
 ): Promise<string> => {
-  // const promiseArray = fileChunkArray.map((chunk, i) => {
-  //   console.log("chunk sent");
-  //   console.log(chunk.buffer.byteLength);
-  //   console.log(
-  //     `http://${nodePorts[chunk.nodeId - 1].host}:${
-  //       nodePorts[chunk.nodeId - 1].port
-  //     }/api/v1/file/upload-file?fileId=${chunk.fileId}&index=${chunk.index}`
-  //   );
-  //   const form = new FormData();
-  //   form.append("file", chunk.buffer);
-  //   return axios({
-  //     method: "post",
-  //     url: `http://${nodePorts[chunk.nodeId - 1].host}:${
-  //       nodePorts[chunk.nodeId - 1].port
-  //     }/api/v1/file/upload-file?fileId=${chunk.fileId}&index=${chunk.index}`,
-  //     data: form,
-  //     maxContentLength: Infinity,
-  //     maxBodyLength: Infinity,
-  //     headers: {
-  //       "Content-Type": "multipart/form-data;boundary=" + form.getBoundary(),
-  //     },
-  //   });
-  // });
-  // try {
-  //   await Promise.all(promiseArray);
-  // } catch (error) {
-  //   return { message: error.message };
-  // }
-
-  // return { message: "success" };
-
   for (const chunk of fileChunkArray) {
     console.log("chunk sent");
     console.log(chunk.buffer.byteLength);
