@@ -25,16 +25,21 @@ const File = () => {
   const downloadHandler = async () => {
     try {
       const res = await axios.get(
+        //Need to change Here!!!
         "http://localhost:3001/api/v1/file/get-file?fileId=53aeb0d1-8ecc-4da7-a20e-eccf834c2b1e",
         { responseType: "blob", withCredentials: true }
       );
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "password.txt"); //or any other extension
+
+      //Need to change Here!!!
+      link.setAttribute("download", "Horizons TheDooo.mp4"); //or any other extension
       document.body.appendChild(link);
       link.click();
-    } catch (error) {}
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (
