@@ -13,7 +13,8 @@ const File = () => {
     try {
       const res = await axios.post(
         `http://localhost:3001/api/v1/file/post-file?size=${file.size}&type=${file.type}`,
-        formData
+        formData,
+        { withCredentials: true }
       );
       console.log(res.data);
     } catch (error) {
@@ -25,7 +26,7 @@ const File = () => {
     try {
       const res = await axios.get(
         "http://localhost:3001/api/v1/file/get-file?fileId=53aeb0d1-8ecc-4da7-a20e-eccf834c2b1e",
-        { responseType: "blob" }
+        { responseType: "blob", withCredentials: true }
       );
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");

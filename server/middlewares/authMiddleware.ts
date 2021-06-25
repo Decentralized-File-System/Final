@@ -5,7 +5,6 @@ import { createAccessToken } from "../controllers/usersController";
 const jwt = require("jsonwebtoken");
 
 const checkUser: RequestHandler = async (req, res, next) => {
-  const { body } = req;
   let token = req.cookies["Access-Token"];
   let refreshToken = req.cookies["Refresh-Token"];
   if (!token) {
@@ -20,7 +19,6 @@ const checkUser: RequestHandler = async (req, res, next) => {
 
   jwt.verify(token, process.env.ACCESS_SECRET_KEY, (err: any, decoded: any) => {
     if (err) {
-      console.log(err.message);
       if (err.message === "jwt expired") {
         jwt.verify(
           refreshToken,
@@ -29,9 +27,11 @@ const checkUser: RequestHandler = async (req, res, next) => {
             if (err) {
               return res.status(403).json({ message: "Invalid refresh token" });
             } else {
-              res.clearCookie("Access-Token");
-              const accessToken = createAccessToken(body);
-              res.cookie("Access-Token", `Bearer ${accessToken}`);
+              const accessToken = createAccessToken(decoded.user);
+              res.cookie("Access-Token", `Bearer ${accessToken}`, {
+                httpOnly: true,
+              });
+              res.locals.user = decoded.user.username;
               next();
             }
           }
@@ -40,8 +40,7 @@ const checkUser: RequestHandler = async (req, res, next) => {
         return res.status(403).json({ message: "Invalid access token" });
       }
     } else {
-      // //@ts-ignore
-      // req.decoded = decoded;
+      res.locals.user = decoded.user.username;
       next();
     }
   });

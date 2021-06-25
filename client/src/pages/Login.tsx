@@ -2,6 +2,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
+import { useHistory } from "react-router-dom";
 
 type FormValues = {
   email: string;
@@ -9,13 +10,15 @@ type FormValues = {
 };
 
 export const Login = () => {
+  const history = useHistory();
   const { register, handleSubmit } = useForm<FormValues>();
-  const { login } = useAuth();
+  const { login, setCurrentUser } = useAuth();
 
   const submitForm: SubmitHandler<FormValues> = async (data) => {
     try {
       const res = await login(data.email, data.password);
-      console.log(res.data);
+      setCurrentUser(res.data.user);
+      history.push("/");
     } catch (error) {
       console.log(error.response.data);
     }

@@ -8,38 +8,57 @@ export function useAuth() {
 }
 
 export const AuthProvider: React.FC = ({ children }) => {
-  //   const [loading, setLoading] = useState(true);
-  //   const [currentUser, setCurrentUser] = useState();
+  const [loading, setLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState();
 
   const signup = (email: string, username: string, password: string) => {
-    return axios.post("http://localhost:3001/api/v1/user/signup", {
-      username,
-      email,
-      password,
-    });
+    return axios.post(
+      "http://localhost:3001/api/v1/user/signup",
+      {
+        username,
+        email,
+        password,
+      },
+      { withCredentials: true }
+    );
   };
 
   const login = (email: string, password: string) => {
-    return axios.post("http://localhost:3001/api/v1/user/login", {
-      email,
-      password,
-    });
+    return axios.post(
+      "http://localhost:3001/api/v1/user/login",
+      {
+        email,
+        password,
+      },
+      { withCredentials: true }
+    );
   };
 
   //   const logout = () => {};
 
-  //   useEffect(() => {}, []);
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/api/v1/user/token", { withCredentials: true })
+      .then((data) => {
+        setCurrentUser(data.data.user);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
+  }, []);
 
   const value = {
+    currentUser,
     login,
     // logout,
     signup,
+    setCurrentUser,
   };
 
   return (
     <AuthContext.Provider value={value}>
-      {/* {!loading && children} */}
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 };

@@ -11,6 +11,7 @@ import { Main } from "./pages/Main";
 import { SignUp } from "./pages/SignUp";
 import { Login } from "./pages/Login";
 import { AuthProvider } from "./context/AuthContext";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
       <AuthProvider>
         <Router>
           <Switch>
-            <Route exact path="/" component={Main} />
+            <PrivateRoute exact path="/" component={Main} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={SignUp} />
             {/* <Route path="/404" component={NotFound} />

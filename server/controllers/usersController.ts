@@ -46,7 +46,9 @@ export const signUp_post = async (req: Request, res: Response) => {
     newUser.password = undefined;
     const token = createAccessToken(newUser);
     const refreshToken = createRefreshToken(newUser);
-    res.cookie("Access-Token", `Bearer ${token}`, { httpOnly: true });
+    res.cookie("Access-Token", `Bearer ${token}`, {
+      httpOnly: true,
+    });
     res.cookie("Refresh-Token", `Bearer ${refreshToken}`, { httpOnly: true });
     return res.status(201).json({ user: username });
   } catch (error) {
@@ -72,7 +74,9 @@ export const login_post = async (req: Request, res: Response) => {
     };
     const token = createAccessToken(userToken);
     const refreshToken = createRefreshToken(userToken);
-    res.cookie("Access-Token", `Bearer ${token}`, { httpOnly: true });
+    res.cookie("Access-Token", `Bearer ${token}`, {
+      httpOnly: true,
+    });
     res.cookie("Refresh-Token", `Bearer ${refreshToken}`, { httpOnly: true });
     return res.status(200).json({ user: userToken.username });
   } catch (error) {
@@ -84,4 +88,8 @@ export const logout_get = (req: Request, res: Response) => {
   res.cookie("Access-Token", "logged out", { maxAge: 1 });
   res.cookie("Refresh-Token", "logged out", { maxAge: 1 });
   res.status(200).send("user logged out");
+};
+
+export const token_get = (req: Request, res: Response) => {
+  res.status(200).json({ user: res.locals.user });
 };

@@ -1,5 +1,10 @@
 import React from "react";
+import File from "../components/File";
 
 export const Main = () => {
-  return <div>main</div>;
+  return (
+    <div>
+      <File />
+    </div>
+  );
 };
