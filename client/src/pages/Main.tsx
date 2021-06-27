@@ -1,10 +1,21 @@
 import React from "react";
+import { AdminDashboard } from "../components/AdminDashboard";
+import { EmployeeDashboard } from "../components/EmployeeDashboard";
 import File from "../components/File";
+import SuperDashboard from "../components/SuperDashboard";
+import { useAuth } from "../context/AuthContext";
 
 export const Main = () => {
+  const { currentUser } = useAuth();
   return (
     <div>
-      <File />
+      {currentUser.isSuperAdmin ? (
+        <SuperDashboard />
+      ) : currentUser.isAdmin ? (
+        <AdminDashboard />
+      ) : (
+        <EmployeeDashboard />
+      )}
     </div>
   );
 };
