@@ -1,31 +1,37 @@
 "use strict";
-
+const { hashSync, genSaltSync } = require("bcrypt");
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.insertBulk("users", [
+    await queryInterface.bulkInsert("users", [
       {
         name: "super",
-        teamId: null,
-        isAdmin: true,
-        isSuperAdmin: true,
+        team_id: null,
+        is_admin: true,
+        is_super_admin: true,
         email: "super@super.com",
-        password: "super",
+        password: hashSync("super", genSaltSync(10)),
+        created_at: new Date(),
+        updated_at: new Date(),
       },
       {
         name: "admin",
-        teamId: null,
-        isAdmin: true,
-        isSuperAdmin: false,
+        team_id: "team 1",
+        is_admin: true,
+        is_super_admin: false,
         email: "admin@admin.com",
-        password: "admin",
+        password: hashSync("admin", genSaltSync(10)),
+        created_at: new Date(),
+        updated_at: new Date(),
       },
       {
         name: "normal",
-        teamId: null,
-        isAdmin: false,
-        isSuperAdmin: false,
+        team_id: "team 1",
+        is_admin: false,
+        is_super_admin: false,
         email: "normal@normal.com",
-        password: "normal",
+        password: hashSync("normal", genSaltSync(10)),
+        created_at: new Date(),
+        updated_at: new Date(),
       },
     ]);
   },
