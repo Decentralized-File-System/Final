@@ -40,7 +40,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     axios
       .get("http://localhost:3001/api/v1/user/token", { withCredentials: true })
       .then((data) => {
-        setCurrentUser(data.data);
+        setCurrentUser(data.data.user);
         setLoading(false);
       })
       .catch((err) => {

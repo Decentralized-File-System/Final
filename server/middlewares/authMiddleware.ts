@@ -31,7 +31,7 @@ const checkUser: RequestHandler = async (req, res, next) => {
               res.cookie("Access-Token", `Bearer ${accessToken}`, {
                 httpOnly: true,
               });
-              res.locals.user = decoded.user.username;
+              res.locals.user = decoded.user;
               next();
             }
           }
@@ -40,7 +40,8 @@ const checkUser: RequestHandler = async (req, res, next) => {
         return res.status(403).json({ message: "Invalid access token" });
       }
     } else {
-      res.locals.user = decoded.user.username;
+      console.log(decoded);
+      res.locals.user = decoded.user;
       next();
     }
   });
