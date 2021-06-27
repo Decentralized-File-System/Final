@@ -176,7 +176,7 @@ export const saveFilePost = async (req: Request, res: Response) => {
   });
 };
 
-//Downloading chunks from data nodes
+//Downloading chunks from data nodes-----------------------------------------------
 export const downloadFile = async (req: Request, res: Response) => {
   const { fileId } = req.query;
   const chunksFolderPath = `${__dirname}/../chunks`;
