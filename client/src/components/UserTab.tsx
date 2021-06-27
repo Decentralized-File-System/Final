@@ -13,7 +13,13 @@ type userType = {
 export const UserTab = ({ user }: userType) => {
   const [isAdmin, setIsAdmin] = useState(user.isAdmin);
   const switchHandler = async () => {
-    // await axios.put(`${BASE_URL}/user`, [user]);
+    await axios.put(
+      `${BASE_URL}/user/change-props?isAdmin=${!isAdmin}`,
+      [user],
+      {
+        withCredentials: true,
+      }
+    );
     setIsAdmin(!isAdmin);
   };
 
