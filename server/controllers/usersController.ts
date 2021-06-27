@@ -117,6 +117,14 @@ export const users_get = async (req: Request, res: Response) => {
   if (!user.isSuperAdmin && !user.isAdmin) {
     return res.status(401).send("Bad request");
   }
+  if (user.isSuperAdmin) {
+    try {
+      const usersArray = await getAllUsers();
+      return res.status(200).json({ usersArray });
+    } catch (error) {
+      return res.status(500).send("failed");
+    }
+  }
   if (user.isAdmin) {
     if (teamId === "none") {
       try {
@@ -132,14 +140,6 @@ export const users_get = async (req: Request, res: Response) => {
       } catch (error) {
         return res.status(500).send("failed");
       }
-    }
-  }
-  if (user.isSuperAdmin) {
-    try {
-      const usersArray = await getAllUsers();
-      return res.status(200).json({ usersArray });
-    } catch (error) {
-      return res.status(500).send("failed");
     }
   }
 };
