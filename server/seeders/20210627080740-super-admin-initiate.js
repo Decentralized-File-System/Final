@@ -2,14 +2,32 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.insert("users", {
-      name: "admin",
-      teamId: null,
-      isAdmin: true,
-      isSuperAdmin: true,
-      email: "admin@admin.com",
-      password: "admin",
-    });
+    await queryInterface.insertBulk("users", [
+      {
+        name: "super",
+        teamId: null,
+        isAdmin: true,
+        isSuperAdmin: true,
+        email: "super@super.com",
+        password: "super",
+      },
+      {
+        name: "admin",
+        teamId: null,
+        isAdmin: true,
+        isSuperAdmin: true,
+        email: "admin@admin.com",
+        password: "admin",
+      },
+      {
+        name: "normal",
+        teamId: null,
+        isAdmin: true,
+        isSuperAdmin: true,
+        email: "normal@normal.com",
+        password: "normal",
+      },
+    ]);
   },
 
   down: async (queryInterface, Sequelize) => {
