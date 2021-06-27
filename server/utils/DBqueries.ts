@@ -1,12 +1,62 @@
 // @ts-ignore
 import { DataNode, Chunk, File, sequelize, User } from "../models";
 import { ChunkClass } from "./classes";
-import { ServerFile } from "../types";
+import { ServerFile, user } from "../types";
 
 export const getAllNodesData = async () => {
   const response = await DataNode.findAll({ order: [["id", "ASC"]] });
   const nodes = response.map((data: any) => data.toJSON());
   return nodes;
+};
+
+export const getAllUsers = async () => {
+  const response = await User.findAll({});
+  const usersArray = response.map((data: any) => data.toJSON());
+  return usersArray;
+};
+
+export const updateTeam = async (usersArray: user[], newTeamId: string) => {
+  try {
+    for (const user of usersArray) {
+      await User.update(
+        { teamId: "Doe" },
+        {
+          where: {
+            email: user.email,
+          },
+        }
+      );
+    }
+    return "success";
+  } catch (error) {
+    return "failed";
+  }
+};
+
+export const updateAdmin = async (usersArray: user[], adminBool: string) => {
+  try {
+    for (const user of usersArray) {
+      await User.update(
+        { isAdmin: adminBool },
+        {
+          where: {
+            email: user.email,
+          },
+        }
+      );
+    }
+    return "success";
+  } catch (error) {
+    return "failed";
+  }
+};
+
+export const getAllRegularEmployees = async () => {
+  const response = await User.findAll({
+    where: { team_id: null, isAdmin: "false", isSuperAdmin: "false" },
+  });
+  const regularEmployeesArray = response.map((data: any) => data.toJSON());
+  return regularEmployeesArray;
 };
 
 export const addChunk = async (chunksArray: ChunkClass[]) => {
