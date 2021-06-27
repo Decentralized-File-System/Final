@@ -38,6 +38,9 @@ export const signUp_post = async (req: Request, res: Response) => {
     const newUser: user = {
       name: username,
       email: email,
+      isAdmin: false,
+      isSuperAdmin: false,
+      teamId: null,
       password: hashSync(password, genSaltSync(10)),
     };
 
@@ -50,9 +53,15 @@ export const signUp_post = async (req: Request, res: Response) => {
       httpOnly: true,
     });
     res.cookie("Refresh-Token", `Bearer ${refreshToken}`, { httpOnly: true });
-    return res.status(201).json({ user: username });
+    return res.status(201).json({
+      user: username,
+      email: email,
+      isAdmin: false,
+      isSuperAdmin: false,
+      teamId: null,
+    });
   } catch (error) {
-    return res.status(500).send();
+    return res.status(500).send("Signup failed");
   }
 };
 
@@ -78,7 +87,14 @@ export const login_post = async (req: Request, res: Response) => {
       httpOnly: true,
     });
     res.cookie("Refresh-Token", `Bearer ${refreshToken}`, { httpOnly: true });
-    return res.status(200).json({ user: userToken.username });
+
+    return res.status(200).json({
+      name: existUser.name,
+      email: existUser.email,
+      teamId: existUser.teamId,
+      isAdmin: existUser.isAdmin,
+      isSuperAdmin: existUser.isSuperAdmin,
+    });
   } catch (error) {
     res.status(500).send(error);
   }

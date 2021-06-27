@@ -24,5 +24,8 @@ export interface nodeDataType {
 export interface user {
   name: string;
   email: string;
+  isAdmin: boolean,
+  isSuperAdmin: boolean,
+  teamId: string | null
   password: string | undefined;
 }
