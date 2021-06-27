@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import File from "./File";
 import Table from "react-bootstrap/Table";
+import FileActions from "./FileActions";
 
 export type file = {
   id: number;
@@ -10,42 +11,23 @@ export type file = {
   userId: number;
   teamId: string;
   type: string;
-  size: string;
+  size: number;
 };
-
-const mockFiles = [
-  {
-    id: 1,
-    name: "Text.txt",
-    userId: 1,
-    teamId: "team 1",
-    type: "text",
-    size: "150kb",
-  },
-  {
-    id: 2,
-    name: "movie.mp4",
-    userId: 1,
-    teamId: "team 1",
-    type: "mp4",
-    size: "1.2gb",
-  },
-];
 
 export const EmployeeDashboard = () => {
   const [files, setFiles] = useState<file[]>([]);
-  //   const getFiles = async () => {
-  //     try {
-  //       const res = await axios.get("http://localhost:3001/api/v1/file");
-  //       setFiles(res.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
+  const getFiles = async () => {
+    try {
+      const res = await axios.get("http://localhost:3001/api/v1/file/files");
+      console.log(res.data);
+      setFiles(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    //   getFiles()
-    setFiles(mockFiles);
+    getFiles();
   }, []);
 
   return (
@@ -64,6 +46,7 @@ export const EmployeeDashboard = () => {
       {files.map((file: file) => (
         <File file={file} />
       ))}
+      <FileActions />
     </div>
   );
 };
