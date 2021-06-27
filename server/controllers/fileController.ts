@@ -15,6 +15,7 @@ import {
   addFile,
   updateDataNodes,
   getChunks,
+  getFilesByTeamId,
 } from "../utils/DBqueries";
 import { uploadChunks, downloadChunks } from "../utils/networkFunction";
 import { ChunkClass } from "../utils/classes";
@@ -243,5 +244,18 @@ export const downloadFile = async (req: Request, res: Response) => {
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error });
+  }
+};
+
+export const filesGet = async (req: Request, res: Response) => {
+  const { teamId }: any = req.query;
+  if (!teamId) {
+    return res.status(401).send("Bad request");
+  }
+  try {
+    const fileArray = getFilesByTeamId(teamId);
+    return res.status(200).json({ fileArray });
+  } catch (error) {
+    res.status(500).send("failed");
   }
 };

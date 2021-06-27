@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { saveFilePost, downloadFile } from "../../controllers/fileController";
+import { saveFilePost, downloadFile,filesGet } from "../../controllers/fileController";
 import busboy from "connect-busboy";
 
 const router = Router();
@@ -12,6 +12,7 @@ router.use(
 );
 
 router.post("/post-file", saveFilePost);
-router.get("/get-file", downloadFile);
+router.get("/download-file", downloadFile);
+router.get("/files", filesGet);
 
 export default router;

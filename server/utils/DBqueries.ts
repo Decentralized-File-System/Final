@@ -51,7 +51,15 @@ export const updateAdmin = async (usersArray: user[], adminBool: string) => {
   }
 };
 
-export const getAllRegularEmployees = async () => {
+export const getEmployeesByTeamId = async (teamId: string) => {
+  const response = await User.findAll({
+    where: { team_id: teamId, isAdmin: "false", isSuperAdmin: "false" },
+  });
+  const regularEmployeesArray = response.map((data: any) => data.toJSON());
+  return regularEmployeesArray;
+};
+
+export const getAllEmployeesWithoutTeam = async () => {
   const response = await User.findAll({
     where: { team_id: null, isAdmin: "false", isSuperAdmin: "false" },
   });
@@ -95,6 +103,12 @@ export const addFile = async (
   } catch (error) {
     throw new Error(error);
   }
+};
+
+export const getFilesByTeamId = async (teamId: string) => {
+  const res = File.findAll({where:{team_id: teamId}});
+  const filesArray = res.map((data: any) => data.toJSON());
+  return filesArray;
 };
 
 export const updateDataNodes = async (chunksArray: ChunkClass[]) => {
