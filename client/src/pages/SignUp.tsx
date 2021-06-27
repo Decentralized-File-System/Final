@@ -18,7 +18,7 @@ export const SignUp = () => {
   const submitForm: SubmitHandler<FormValues> = async (data) => {
     try {
       const res = await signup(data.email, data.username, data.password);
-      setCurrentUser(res.data.user);
+      setCurrentUser(res.data);
       history.push("/");
     } catch (error) {
       console.log(error.response.data);

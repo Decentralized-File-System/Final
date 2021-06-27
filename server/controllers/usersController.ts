@@ -87,6 +87,9 @@ export const login_post = async (req: Request, res: Response) => {
     const userToken: any = {
       username: existUser.name,
       email: existUser.email,
+      teamId: existUser.teamId,
+      isAdmin: existUser.isAdmin,
+      isSuperAdmin: existUser.isSuperAdmin,
     };
     const token = createAccessToken(userToken);
     const refreshToken = createRefreshToken(userToken);
