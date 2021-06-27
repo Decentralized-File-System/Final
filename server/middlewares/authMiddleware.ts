@@ -40,7 +40,6 @@ const checkUser: RequestHandler = async (req, res, next) => {
         return res.status(403).json({ message: "Invalid access token" });
       }
     } else {
-      console.log(decoded);
       res.locals.user = decoded.user;
       next();
     }

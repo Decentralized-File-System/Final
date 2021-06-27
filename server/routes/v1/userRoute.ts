@@ -13,7 +13,7 @@ const {
 router.post("/signup", signUp_post);
 router.post("/login", login_post);
 router.get("/token", checkUser, token_get);
-router.get("/employees", checkUser, users_get);
+router.post("/employees", checkUser, users_get);
 router.put("/change-props", checkUser, change_props_put);
 
 export default router;
