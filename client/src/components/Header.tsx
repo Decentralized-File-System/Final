@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import companyLogo from '../Images/TeamShareLogo.png'
 import Clock from './Clock'
+import Sidebar from './Sidebar'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,14 +34,7 @@ export default function Header() {
     <div id="header" className={classes.root}>
       <AppBar position="static">
         <Toolbar className={classes.toolbar}>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          >
-            <MenuIcon />
-          </IconButton>
+            <Sidebar/>
           <Typography className={classes.title} variant="h5" noWrap>
             <div className="clock-header">
               <Clock />
