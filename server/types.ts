@@ -24,8 +24,18 @@ export interface nodeDataType {
 export interface user {
   name: string;
   email: string;
-  isAdmin: boolean,
-  isSuperAdmin: boolean,
-  teamId: string | null
+  isAdmin: boolean;
+  isSuperAdmin: boolean;
+  teamId: string | null;
   password: string | undefined;
+}
+
+export interface task {
+  title: string;
+  content: string;
+  userName: string;
+  status: string;
+  teamId: string;
+  createdAt: Date;
+  updatedAt: Date;
 }

@@ -1,7 +1,11 @@
 const { Router } = require("express");
 const router = Router();
-import { getAllTasksOfTeam } from "../../controllers/taskController";
+import {
+  addNewTask,
+  getAllTasksOfTeam,
+} from "../../controllers/taskController";
 
-router.get("/", getAllTasksOfTeam);
+router.get("/all-tasks", getAllTasksOfTeam);
+router.post("/new", addNewTask);
 
 export default router;
