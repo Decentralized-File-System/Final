@@ -169,8 +169,12 @@ export const getUserByEmail = async (userEmail: string) => {
 };
 
 export const getTaskOfTeam = async (teamId: string) => {
-  const allTasks = await Task.findAll({ where: { team_id: teamId } });
-  return allTasks;
+  try {
+    const allTasks = await Task.findAll({ where: { team_id: teamId } });
+    return allTasks;
+  } catch (error) {
+    throw new Error(error);
+  }
 };
 
 export const addTask = async (taskObject: {

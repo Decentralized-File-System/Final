@@ -3,17 +3,21 @@ import { addTask, changeStatus, getTaskOfTeam } from "../utils/DBqueries";
 
 export const getAllTasksOfTeam = async (req: Request, res: Response) => {
   const teamId = String(req.query.teamId);
-  const tasks = await getTaskOfTeam(teamId);
-  res.json(tasks);
+  try {
+    const tasks = await getTaskOfTeam(teamId);
+    res.json(tasks);
+  } catch (error) {
+    res.json({ message: "Error" });
+  }
 };
 
 export const addNewTask = async (req: Request, res: Response) => {
   const { task } = req.body;
   try {
     await addTask(task);
-    res.send("success");
+    res.json({ message: "Success" });
   } catch (error) {
-    res.json(error);
+    res.json({ message: "Error" });
   }
 };
 
@@ -22,8 +26,8 @@ export const updateTaskStatus = async (req: Request, res: Response) => {
   const status = String(req.query.status);
   try {
     await changeStatus(taskId, status);
-    res.send("success");
+    res.json({ message: "Success" });
   } catch (error) {
-    res.json(error);
+    res.json({ message: "Error" });
   }
 };
