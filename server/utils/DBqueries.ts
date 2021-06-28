@@ -195,3 +195,11 @@ export const addTask = async (taskObject: {
     throw new Error(error);
   }
 };
+
+export const changeStatus = async (taskId: number, newStatus: string) => {
+  try {
+    await Task.update({ status: newStatus }, { where: { id: taskId } });
+  } catch (error) {
+    throw new Error(error);
+  }
+};
