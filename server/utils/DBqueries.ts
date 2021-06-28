@@ -1,5 +1,5 @@
 // @ts-ignore
-import { DataNode, Chunk, File, sequelize, User } from "../models";
+import { DataNode, Chunk, File, sequelize, User, Task } from "../models";
 import { ChunkClass } from "./classes";
 import { ServerFile, user } from "../types";
 
@@ -10,7 +10,7 @@ export const getAllNodesData = async () => {
 };
 
 export const getAllUsers = async () => {
-  const response = await User.findAll({ order: [['id', 'ASC']]});
+  const response = await User.findAll({ order: [["id", "ASC"]] });
   const usersArray = response.map((data: any) => data.toJSON());
   return usersArray;
 };
@@ -106,7 +106,7 @@ export const addFile = async (
 };
 
 export const getFilesByTeamId = async (teamId: string) => {
-  const res = File.findAll({where:{team_id: teamId}});
+  const res = File.findAll({ where: { team_id: teamId } });
   const filesArray = res.map((data: any) => data.toJSON());
   return filesArray;
 };
@@ -166,4 +166,9 @@ export const getUserByEmail = async (userEmail: string) => {
   } catch (error) {
     throw new Error(error);
   }
+};
+
+export const getTaskOfTeam = async (teamId: string) => {
+  const allTasks = await Task.findAll({ where: { team_id: teamId } });
+  return allTasks;
 };
