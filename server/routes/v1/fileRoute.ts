@@ -4,7 +4,6 @@ import busboy from "connect-busboy";
 
 const router = Router();
 
-// router.use(fileUpload());
 router.use(
   busboy({
     highWaterMark: 2 * 1024 * 1024, // Set 2MiB buffer
