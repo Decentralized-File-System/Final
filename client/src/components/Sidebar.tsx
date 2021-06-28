@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Button from '@material-ui/core/Button';
@@ -12,6 +13,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { BASE_URL } from '../Utils/Variables';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -26,9 +30,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-type Anchor = 'top' | 'left' | 'bottom' | 'right';
+type Anchor = 'left';
 
 export default function Sidebar() {
+    const history = useHistory();
   const classes = useStyles();
   const [state, setState] = React.useState({
     top: false,
@@ -52,17 +57,24 @@ export default function Sidebar() {
     setState({ ...state, [anchor]: open });
   };
 
+  const logoutHandler = async () => {
+      try {
+          await axios.get(`${BASE_URL}/user/logout`,{withCredentials: true});
+          history.push('/login');
+      } catch (error) {
+        console.log(error);
+      }
+  }
+
   const list = (anchor: Anchor) => (
     <div
-      className={clsx(classes.list, {
-        [classes.fullList]: anchor === 'top' || anchor === 'bottom',
-      })}
+      className={clsx(classes.list)}
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+        {['Tasks', 'Files'].map((text, index) => (
           <ListItem button key={text}>
             <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
             <ListItemText primary={text} />
@@ -71,12 +83,12 @@ export default function Sidebar() {
       </List>
       <Divider />
       <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
+          <ListItem button>
+            <ListItemIcon>
+            <ExitToAppIcon/>
+            </ListItemIcon>
+            <ListItemText onClick={logoutHandler} primary={"Logout"} />
           </ListItem>
-        ))}
       </List>
     </div>
   );

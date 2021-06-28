@@ -41,7 +41,7 @@ export default function Header() {
             </div>
               <div className="logo">
                 <img src={companyLogo} width="100" height="60" />
-                Work better - together
+                Team-Share
               </div>
           </Typography>
         </Toolbar>
