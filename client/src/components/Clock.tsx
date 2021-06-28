@@ -7,7 +7,6 @@ interface isState {
   two: any;
   three: any;
   four: any;
-  background: any;
   class: any;
 }
 
@@ -20,11 +19,6 @@ export default class Clock extends React.Component<any, isState> {
       two: false,
       three: false,
       four: false,
-      background: {
-        backgroundColor: "#000000".replace(/0/g, function () {
-          return (~~(Math.random() * 16)).toString(16);
-        }),
-      },
       class: "",
     };
     this.clicked = this.clicked.bind(this);
@@ -43,13 +37,6 @@ export default class Clock extends React.Component<any, isState> {
     }, 1000);
   }
   clicked() {
-    this.setState({
-      background: {
-        backgroundColor: "#000000".replace(/0/g, function () {
-          return (~~(Math.random() * 16)).toString(16);
-        }),
-      },
-    });
     if (this.state.one == true) {
       this.setState({ class: "faded" });
       setTimeout(() => {
@@ -94,8 +81,8 @@ export default class Clock extends React.Component<any, isState> {
   }
   render() {
     return (
-      <div id="clock" style={this.state.background} onClick={this.clicked}>
-        <h1 className={this.state.class}>{this.state.time}</h1>
+      <div id="clock"  onClick={this.clicked}>
+        <h1 id="clock-font" className={this.state.class}>{this.state.time}</h1>
       </div>
     );
   }

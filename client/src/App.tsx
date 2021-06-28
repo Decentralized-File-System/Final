@@ -11,6 +11,7 @@ import { Main } from "./pages/Main";
 import { SignUp } from "./pages/SignUp";
 import { Login } from "./pages/Login";
 import { AuthProvider } from "./context/AuthContext";
+import Header from "./components/Header"
 import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
     <div className="App">
       <AuthProvider>
         <Router>
+          <Header />
           <Switch>
             <PrivateRoute exact path="/" component={Main} />
             <Route exact path="/login" component={Login} />
