@@ -1,4 +1,24 @@
-.user-tab {
-  display: flex;
+.table {
+  max-width: 60em;
   margin: auto;
+}
+tr {
+  width: fit-content;
+}
+#clock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background-color: #111;
+  transition: 0.5s;
+}
+h1 {
+  font-size: 7em;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.faded {
+  opacity: 0;
 }
