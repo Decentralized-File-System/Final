@@ -24,17 +24,19 @@ export const UserTab = ({ user }: userType) => {
   };
 
   return (
-    <div className="user-tab">
-      <div className="user-tab-id">{user.id}</div>
-      <div className="user-tab-name">{user.name}</div>
-      <div className="user-tab-email">{user.email}</div>
-      <Switch
-        className="user-tab-switch"
-        checked={isAdmin}
-        onChange={switchHandler}
-        color="primary"
-        inputProps={{ "aria-label": "primary checkbox" }}
-      />
-    </div>
+    <tr>
+      <th scope="row">{user.id}</th>
+      <td>{user.name}</td>
+      <td>{user.email}</td>
+      <td>
+        <Switch
+          className="user-tab-switch"
+          checked={isAdmin}
+          onChange={switchHandler}
+          color="primary"
+          inputProps={{ "aria-label": "primary checkbox" }}
+        />
+      </td>
+    </tr>
   );
 };

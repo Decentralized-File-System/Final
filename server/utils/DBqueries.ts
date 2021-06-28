@@ -10,7 +10,7 @@ export const getAllNodesData = async () => {
 };
 
 export const getAllUsers = async () => {
-  const response = await User.findAll({});
+  const response = await User.findAll({ order: [['id', 'ASC']]});
   const usersArray = response.map((data: any) => data.toJSON());
   return usersArray;
 };
