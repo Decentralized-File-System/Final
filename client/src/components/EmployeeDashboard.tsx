@@ -4,11 +4,8 @@ import { useEffect } from "react";
 import FileActions from "./FileActions";
 import { useAuth } from "../context/AuthContext";
 import FileTable from "./FileTable";
-<<<<<<< Updated upstream
 import { TaskTable } from "./TaskTable";
-=======
 import { useData } from "../context/AppDataContext";
->>>>>>> Stashed changes
 export type file = {
   id: number;
   name: string;
@@ -20,7 +17,7 @@ export type file = {
 };
 
 export const EmployeeDashboard = () => {
-  const { currentPage, setCurrentPage } = useData();
+  const { currentPage } = useData();
   const [files, setFiles] = useState<file[]>([]);
   const { currentUser } = useAuth();
   const getFiles = async () => {
