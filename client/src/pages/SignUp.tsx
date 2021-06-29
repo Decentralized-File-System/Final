@@ -25,6 +25,10 @@ export const SignUp = () => {
     }
   };
 
+  const anchorHandler = () => {
+    history.push("/login");
+  };
+
   return (
     <div>
       <h1>Sign Up</h1>
@@ -60,6 +64,7 @@ export const SignUp = () => {
           Sign Up
         </Button>
       </Form>
+      <p onClick={anchorHandler}>Login Here</p>
     </div>
   );
 };

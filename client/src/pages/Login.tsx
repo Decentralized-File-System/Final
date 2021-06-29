@@ -24,6 +24,10 @@ export const Login = () => {
     }
   };
 
+  const anchorHandler = () => {
+    history.push("/signup");
+  };
+
   return (
     <div>
       <h1>Login</h1>
@@ -50,6 +54,7 @@ export const Login = () => {
           Login
         </Button>
       </Form>
+      <p onClick={anchorHandler}>Sign up Here</p>
     </div>
   );
 };

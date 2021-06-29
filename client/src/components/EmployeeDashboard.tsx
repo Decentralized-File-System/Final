@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import FileActions from "./FileActions";
 import { useAuth } from "../context/AuthContext";
 import FileTable from "./FileTable";
+import { TaskTable } from "./TaskTable";
 export type file = {
   id: number;
   name: string;
@@ -32,12 +33,13 @@ export const EmployeeDashboard = () => {
 
   useEffect(() => {
     getFiles();
-  }, []); 
+  }, []);
 
   return (
     <div>
       <FileTable files={files} />
       <FileActions />
+      <TaskTable />
     </div>
   );
 };
