@@ -26,9 +26,10 @@ const useRowStyles = makeStyles({
 
 type propsRowType = {
   task: task;
+  index: number;
 };
 
-function Row({ task }: propsRowType) {
+function Row({ task, index }: propsRowType) {
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
   useEffect(() => {
@@ -37,7 +38,9 @@ function Row({ task }: propsRowType) {
 
   return (
     <React.Fragment>
-      <TableRow className={classes.root}>
+      <TableRow
+        className={`${classes.root} ${index % 2 === 0 ? "grey-row" : ""}`}
+      >
         <TableCell>
           <IconButton
             aria-label="expand row"
@@ -82,23 +85,29 @@ type propsType = {
 
 export default function CollapsibleTable({ tasks }: propsType) {
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            <TableCell style={{ fontWeight: "bolder" }}>Content</TableCell>
-            <TableCell style={{ fontWeight: "bolder" }}>Title</TableCell>
-            <TableCell style={{ fontWeight: "bolder" }}>Username</TableCell>
-            <TableCell style={{ fontWeight: "bolder" }}>Status</TableCell>
-            <TableCell style={{ fontWeight: "bolder" }}>Uploaded at</TableCell>
-            <TableCell style={{ fontWeight: "bolder" }}>Updated at</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {tasks &&
-            tasks.map((task, i) => <Row key={`${i} task`} task={task} />)}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div className="tasks-div-container">
+      <TableContainer component={Paper}>
+        <Table aria-label="collapsible table">
+          <TableHead>
+            <TableRow>
+              <TableCell style={{ fontWeight: "bolder" }}>Content</TableCell>
+              <TableCell style={{ fontWeight: "bolder" }}>Title</TableCell>
+              <TableCell style={{ fontWeight: "bolder" }}>Username</TableCell>
+              <TableCell style={{ fontWeight: "bolder" }}>Status</TableCell>
+              <TableCell style={{ fontWeight: "bolder" }}>
+                Uploaded at
+              </TableCell>
+              <TableCell style={{ fontWeight: "bolder" }}>Updated at</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {tasks &&
+              tasks.map((task, i) => (
+                <Row key={`${i} task`} task={task} index={i} />
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
   );
 }
