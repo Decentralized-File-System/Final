@@ -83,7 +83,10 @@ export default function Sidebar() {
     >
       <List>
         <ListItem button key={"Tasks"}>
-          <span style={{display:"flex"}} onClick={() => navigateHandler("Tasks")}>
+          <span
+            style={{ display: "flex" }}
+            onClick={() => navigateHandler("tasks")}
+          >
             <ListItemIcon>
               <InboxIcon />
             </ListItemIcon>
@@ -91,7 +94,10 @@ export default function Sidebar() {
           </span>
         </ListItem>
         <ListItem button key={"Files"}>
-          <span style={{display:"flex"}} onClick={() => navigateHandler("files")}>
+          <span
+            style={{ display: "flex" }}
+            onClick={() => navigateHandler("files")}
+          >
             <ListItemIcon>
               <MailIcon />
             </ListItemIcon>
