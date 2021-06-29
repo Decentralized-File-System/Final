@@ -4,11 +4,11 @@ import { useEffect } from "react";
 import FileActions from "./FileActions";
 import { useAuth } from "../context/AuthContext";
 import FileTable from "./FileTable";
-import { TaskTable } from "./TaskTable";
 import { useData } from "../context/AppDataContext";
 import { BASE_URL } from "../Utils/Variables";
 import { file, task } from "../types";
 import UploadNewFileDialog from "./UploadFileForm";
+import CollapsibleTable from "./CollapsibleTable";
 
 export const EmployeeDashboard = () => {
   const { currentPage } = useData();
@@ -51,7 +51,7 @@ export const EmployeeDashboard = () => {
           <UploadNewFileDialog />
         </>
       ) : currentPage === "tasks" ? (
-        <TaskTable tasks={tasks} />
+        <CollapsibleTable tasks={tasks} />
       ) : null}
     </div>
   );

@@ -19,9 +19,9 @@ export type task = {
   id: number;
   title: string;
   content: string;
-  user_name: string;
+  userName: string;
   status: string;
-  team_id: string;
-  created_at: Date;
-  updated_at: Date;
+  teamId: string;
+  createdAt: Date;
+  updatedAt: Date;
 };
