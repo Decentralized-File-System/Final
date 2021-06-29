@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useEffect } from "react";
-import FileActions from "./FileActions";
 import { useAuth } from "../context/AuthContext";
 import FileTable from "./FileTable";
 import { useData } from "../context/AppDataContext";
@@ -47,7 +46,6 @@ export const EmployeeDashboard = () => {
       {currentPage === "files" ? (
         <>
           <FileTable files={files} />
-          <FileActions />
           <UploadNewFileDialog />
         </>
       ) : currentPage === "tasks" ? (
