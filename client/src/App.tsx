@@ -11,25 +11,27 @@ import { Main } from "./pages/Main";
 import { SignUp } from "./pages/SignUp";
 import { Login } from "./pages/Login";
 import { AuthProvider } from "./context/AuthContext";
-import Header from "./components/Header"
+import { DataProvider } from "./context/AppDataContext";
+import Header from "./components/Header";
 import PrivateRoute from "./components/PrivateRoute";
-
 function App() {
   return (
     <div className="App">
       <AuthProvider>
-        <Router>
-          <Header />
-          <Switch>
-            <PrivateRoute exact path="/" component={Main} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/signup" component={SignUp} />
-            {/* <Route path="/404" component={NotFound} />
+        <DataProvider>
+          <Router>
+            <Header />
+            <Switch>
+              <PrivateRoute exact path="/" component={Main} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/signup" component={SignUp} />
+              {/* <Route path="/404" component={NotFound} />
             <Route>
-              <Redirect to="/404"></Redirect>
-            </Route> */}
-          </Switch>
-        </Router>
+            <Redirect to="/404"></Redirect>
+          </Route> */}
+            </Switch>
+          </Router>
+        </DataProvider>
       </AuthProvider>
     </div>
   );

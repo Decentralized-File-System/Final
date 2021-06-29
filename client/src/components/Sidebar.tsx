@@ -1,39 +1,42 @@
-import React from 'react';
-import clsx from 'clsx';
-import axios from 'axios'
-import { makeStyles } from '@material-ui/core/styles';
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { BASE_URL } from '../Utils/Variables';
-import { useHistory } from 'react-router-dom';
+import React from "react";
+import clsx from "clsx";
+import axios from "axios";
+import { makeStyles } from "@material-ui/core/styles";
+import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
+import Button from "@material-ui/core/Button";
+import List from "@material-ui/core/List";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import Divider from "@material-ui/core/Divider";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import InboxIcon from "@material-ui/icons/MoveToInbox";
+import MailIcon from "@material-ui/icons/Mail";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import { BASE_URL } from "../Utils/Variables";
+import { useHistory } from "react-router-dom";
+import { ColorLensOutlined } from "@material-ui/icons";
+import { useData } from "../context/AppDataContext";
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(-1.2),
-    color: "white"
-    },
+    color: "white",
+  },
   list: {
     width: 250,
   },
   fullList: {
-    width: 'auto',
+    width: "auto",
   },
 }));
 
-type Anchor = 'left';
+type Anchor = "left";
 
 export default function Sidebar() {
-    const history = useHistory();
+  const {currentPage, setCurrentPage} = useData()
+  const history = useHistory();
   const classes = useStyles();
   const [state, setState] = React.useState({
     top: false,
@@ -42,28 +45,32 @@ export default function Sidebar() {
     right: false,
   });
 
-  const toggleDrawer = (anchor: Anchor, open: boolean) => (
-    event: React.KeyboardEvent | React.MouseEvent,
-  ) => {
-    if (
-      event &&
-      event.type === 'keydown' &&
-      ((event as React.KeyboardEvent).key === 'Tab' ||
-        (event as React.KeyboardEvent).key === 'Shift')
-    ) {
-      return;
-    }
+  const toggleDrawer =
+    (anchor: Anchor, open: boolean) =>
+    (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (
+        event &&
+        event.type === "keydown" &&
+        ((event as React.KeyboardEvent).key === "Tab" ||
+          (event as React.KeyboardEvent).key === "Shift")
+      ) {
+        return;
+      }
 
-    setState({ ...state, [anchor]: open });
-  };
+      setState({ ...state, [anchor]: open });
+    };
 
   const logoutHandler = async () => {
-      try {
-          await axios.get(`${BASE_URL}/user/logout`,{withCredentials: true});
-          history.push('/login');
-      } catch (error) {
-        console.log(error);
-      }
+    try {
+      await axios.get(`${BASE_URL}/user/logout`, { withCredentials: true });
+      history.push("/login");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const navigateHandler = (destination:string) => {
+    setCurrentPage(destination);
   }
 
   const list = (anchor: Anchor) => (
@@ -74,29 +81,35 @@ export default function Sidebar() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {['Tasks', 'Files'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
+        <ListItem button key={"Tasks"}>
+          <ListItemIcon onClick={() => navigateHandler("Tasks")}>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Tasks"} />
+        </ListItem>
+        <ListItem button key={"Files"}>
+          <ListItemIcon onClick={() => navigateHandler("files")}>
+            <MailIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Files"} />
+        </ListItem>
       </List>
       <Divider />
       <List>
-          <ListItem button>
-            <ListItemIcon>
-            <ExitToAppIcon/>
-            </ListItemIcon>
-            <ListItemText onClick={logoutHandler} primary={"Logout"} />
-          </ListItem>
+        <ListItem button>
+          <ListItemIcon>
+            <ExitToAppIcon />
+          </ListItemIcon>
+          <ListItemText onClick={logoutHandler} primary={"Logout"} />
+        </ListItem>
       </List>
     </div>
   );
 
   return (
     <div>
-        <React.Fragment key={"left"}>
-          <Button onClick={toggleDrawer("left", true)}>            
+      <React.Fragment key={"left"}>
+        <Button onClick={toggleDrawer("left", true)}>
           <IconButton
             edge="start"
             className={classes.menuButton}
@@ -105,16 +118,16 @@ export default function Sidebar() {
           >
             <MenuIcon />
           </IconButton>
-          </Button>
-          <SwipeableDrawer
-            anchor={"left"}
-            open={state["left"]}
-            onClose={toggleDrawer("left", false)}
-            onOpen={toggleDrawer("left", true)}
-          >
-            {list("left")}
-          </SwipeableDrawer>
-        </React.Fragment>
+        </Button>
+        <SwipeableDrawer
+          anchor={"left"}
+          open={state["left"]}
+          onClose={toggleDrawer("left", false)}
+          onOpen={toggleDrawer("left", true)}
+        >
+          {list("left")}
+        </SwipeableDrawer>
+      </React.Fragment>
     </div>
   );
 }
