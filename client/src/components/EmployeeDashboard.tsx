@@ -46,7 +46,7 @@ export const EmployeeDashboard = () => {
       {currentPage === "files" ? (
         <>
           <FileTable files={files} />
-          <UploadNewFileDialog />
+          <UploadNewFileDialog getFiles={getFiles} />
         </>
       ) : currentPage === "tasks" ? (
         <CollapsibleTable tasks={tasks} />

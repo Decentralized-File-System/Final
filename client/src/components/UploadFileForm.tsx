@@ -15,7 +15,13 @@ import { useAuth } from "../context/AuthContext";
 
 const swal = withReactContent(Swal);
 
-export default function UploadNewFileDialog() {
+type UploadNewFileDialogProps = {
+    getFiles: Function;
+};
+
+export default function UploadNewFileDialog({
+    getFiles,
+}: UploadNewFileDialogProps) {
   /* This component creates the add new ticket functionallity, using material-ui dialog
   and a trigger AddButton */
 
@@ -46,7 +52,8 @@ export default function UploadNewFileDialog() {
     if (file === null) {
       return;
     }
-    console.log(currentUser)
+    closeDialog();
+    console.log(currentUser);
     const formData = new FormData();
     formData.append("file", file);
     try {
@@ -55,7 +62,6 @@ export default function UploadNewFileDialog() {
         formData,
         { withCredentials: true }
       );
-      console.log(res.data);
       const status = "File has uploaded Successfully!";
       swal.fire({
         title: "✔",
@@ -63,12 +69,13 @@ export default function UploadNewFileDialog() {
         timer: 5000,
         showConfirmButton: true,
       });
+      getFiles();
     } catch (error) {
       console.log(error);
-      const status = "File has uploaded Successfully!";
+      const status = "it seems there's been an with the server. Oof :(";
       swal.fire({
         title: "Attention!",
-        text: "it seems there's been an with the server. Oof :(",
+        text: status,
         timer: 5000,
         showConfirmButton: true,
       });
