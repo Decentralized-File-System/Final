@@ -272,6 +272,7 @@ export const deleteFile = async (req: Request, res: Response) => {
     await deleteChunks(chunks);
     res.status(200).json({ message: "Success deleting" });
   } catch (error) {
+    console.log(error)
     res.status(500).json({ message: "Error deleting" });
   }
 };

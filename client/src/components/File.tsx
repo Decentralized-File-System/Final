@@ -3,16 +3,23 @@ import { file } from "../types";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
 import { BASE_URL } from "../Utils/Variables";
+import { useAuth } from "../context/AuthContext";
+import DeleteDialog from "./DeleteDialog";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+const swal = withReactContent(Swal);
 
 type fileType = {
   file: file;
   index: number;
+  getFiles: Function;
 };
 
-const File = ({ file, index }: fileType) => {
+const File = ({ file, index, getFiles }: fileType) => {
+  const { currentUser } = useAuth();
   const downloadHandler = async () => {
     try {
-      console.log("download")
       const res = await axios.get(
         `${BASE_URL}/file/download-file?fileId=${file.id}&&fileName=${file.name}`,
         { responseType: "blob", withCredentials: true }
@@ -36,10 +43,16 @@ const File = ({ file, index }: fileType) => {
       <td>{file.size}</td>
       <td>{file.type}</td>
       <td>{new Date(file.createdAt).toDateString()}</td>
-      <td>
-        <Button onClick={downloadHandler} variant="outline-success">
-          Download
-        </Button>
+      <td className="td-class">
+        <div style={{ display: "flex", justifyContent: "space-around" }}>
+          <Button onClick={downloadHandler} variant="outline-success">
+            Download
+          </Button>
+          {currentUser.email === "admin" ||
+          currentUser.email === file.userId ? (
+            <DeleteDialog file={file} getFiles={getFiles} />
+          ) : null}
+        </div>
       </td>
     </tr>
   );

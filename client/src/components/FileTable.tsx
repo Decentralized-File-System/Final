@@ -5,9 +5,10 @@ import File from "./File";
 
 type fileTableProps = {
   files: file[];
+  getFiles: Function;
 };
 
-function FileTable({ files }: fileTableProps) {
+function FileTable({ files, getFiles }: fileTableProps) {
   return (
     <div>
       <Table striped bordered hover size="sm">
@@ -24,7 +25,7 @@ function FileTable({ files }: fileTableProps) {
         <tbody>
           {files &&
             files.map((file: file, i: number) => (
-              <File file={file} index={i} key={`${i}`} />
+              <File getFiles={getFiles} file={file} index={i} key={`${i}`} />
             ))}
         </tbody>
       </Table>

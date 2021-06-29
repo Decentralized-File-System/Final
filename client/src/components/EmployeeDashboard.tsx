@@ -29,7 +29,6 @@ export const EmployeeDashboard = () => {
         `${BASE_URL}/file/files?teamId=${currentUser.teamId}`,
         { withCredentials: true }
       );
-      console.log(res.data);
       setFiles(res.data);
     } catch (error) {
       console.log(error);
@@ -45,7 +44,7 @@ export const EmployeeDashboard = () => {
     <div>
       {currentPage === "files" ? (
         <>
-          <FileTable files={files} />
+          <FileTable files={files} getFiles={getFiles} />
           <UploadNewFileDialog getFiles={getFiles} />
         </>
       ) : currentPage === "tasks" ? (

@@ -7,11 +7,11 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import axios from "axios";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
 import AddButton from "./AddButton";
 import { Chip } from "@material-ui/core";
 import { useAuth } from "../context/AuthContext";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const swal = withReactContent(Swal);
 
