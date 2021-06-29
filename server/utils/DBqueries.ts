@@ -106,7 +106,7 @@ export const addFile = async (
 };
 
 export const getFilesByTeamId = async (teamId: string) => {
-  const res = File.findAll({ where: { team_id: teamId } });
+  const res = await File.findAll({ where: { team_id: teamId } });
   const filesArray = res.map((data: any) => data.toJSON());
   return filesArray;
 };

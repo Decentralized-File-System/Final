@@ -1,10 +1,9 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useEffect } from "react";
-import File from "./File";
-import Table from "react-bootstrap/Table";
 import FileActions from "./FileActions";
-
+import { useAuth } from "../context/AuthContext";
+import FileTable from "./FileTable";
 export type file = {
   id: number;
   name: string;
@@ -12,13 +11,18 @@ export type file = {
   teamId: string;
   type: string;
   size: number;
+  createdAt: Date;
 };
 
 export const EmployeeDashboard = () => {
   const [files, setFiles] = useState<file[]>([]);
+  const { currentUser } = useAuth();
   const getFiles = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/api/v1/file/files");
+      const res = await axios.get(
+        `http://localhost:3001/api/v1/file/files?teamId=${currentUser.teamId}`,
+        { withCredentials: true }
+      );
       console.log(res.data);
       setFiles(res.data);
     } catch (error) {
@@ -28,24 +32,11 @@ export const EmployeeDashboard = () => {
 
   useEffect(() => {
     getFiles();
-  }, []);
+  }, []); 
 
   return (
     <div>
-      <Table striped bordered hover size="sm">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Username</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </Table>
-      {files.map((file: file) => (
-        <File file={file} />
-      ))}
+      <FileTable files={files} />
       <FileActions />
     </div>
   );

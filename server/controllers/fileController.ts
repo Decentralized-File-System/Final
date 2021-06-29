@@ -253,8 +253,8 @@ export const filesGet = async (req: Request, res: Response) => {
     return res.status(401).send("Bad request");
   }
   try {
-    const fileArray = getFilesByTeamId(teamId);
-    return res.status(200).json({ fileArray });
+    const fileArray = await getFilesByTeamId(teamId);
+    return res.status(200).json(fileArray);
   } catch (error) {
     res.status(500).send("failed");
   }
