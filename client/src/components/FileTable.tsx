@@ -1,13 +1,13 @@
 import React from "react";
 import Table from "react-bootstrap/Table";
-import { file } from "./EmployeeDashboard";
+import { file } from "../types";
 import File from "./File";
 
 type fileTableProps = {
-    files: file[];
-  };
+  files: file[];
+};
 
-function FileTable({ files }:fileTableProps ) {
+function FileTable({ files }: fileTableProps) {
   return (
     <div>
       <Table striped bordered hover size="sm">

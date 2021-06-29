@@ -1,11 +1,11 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { task } from "../types";
 
-export type task = {};
+type propsType = {
+  tasks: task[];
+};
 
-export const TaskTable = () => {
-  const [tasks, setTasks] = useState([]);
-
+export const TaskTable = ({ tasks }: propsType) => {
   return (
     <div>
       <h1>Task table</h1>

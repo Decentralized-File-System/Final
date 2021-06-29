@@ -5,16 +5,7 @@ import { useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { BASE_URL } from "../Utils/Variables";
 import { UserTab } from "./UserTab";
-import Clock from "./Clock";
-
-export type user = {
-  id: string;
-  name: string;
-  teamId: string | null;
-  isAdmin: boolean;
-  isSuperAdmin: boolean;
-  email: string;
-};
+import { user } from "../types";
 
 export default function SuperDashboard() {
   const { currentUser } = useAuth();

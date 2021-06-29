@@ -1,5 +1,5 @@
 import React from "react";
-import { user } from "./SuperDashboard";
+import { user } from "../types";
 import Switch from "@material-ui/core/Switch";
 import { useState } from "react";
 import axios from "axios";
