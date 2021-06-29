@@ -16,8 +16,15 @@ import {
   updateDataNodes,
   getChunks,
   getFilesByTeamId,
+  getFileById,
+  dataNodeStorageAfterDelete,
+  deleteFileAndChunks,
 } from "../utils/DBqueries";
-import { uploadChunks, downloadChunks } from "../utils/networkFunction";
+import {
+  uploadChunks,
+  downloadChunks,
+  deleteChunks,
+} from "../utils/networkFunction";
 import { ChunkClass } from "../utils/classes";
 
 const mainPath = path.join(__dirname, "../main");
@@ -28,8 +35,8 @@ export const saveFilePost = async (req: Request, res: Response) => {
   req.pipe(req.busboy); // Pipe it trough busboy
   const fileSize: number = Number(req.query.size);
   const fileType: string = String(req.query.type);
-  const teamId:string = String(req.query.teamId);
-  const email:string = String(req.query.email);
+  const teamId: string = String(req.query.teamId);
+  const email: string = String(req.query.email);
 
   req.busboy.on("file", (fieldName, file, filename) => {
     console.log(`Upload of '${filename}' started`);
@@ -241,6 +248,7 @@ export const downloadFile = async (req: Request, res: Response) => {
   }
 };
 
+//Get all files of a specific team-----------------------------------------
 export const filesGet = async (req: Request, res: Response) => {
   const { teamId }: any = req.query;
   if (!teamId) {
@@ -251,5 +259,19 @@ export const filesGet = async (req: Request, res: Response) => {
     return res.status(200).json(fileArray);
   } catch (error) {
     res.status(500).send("failed");
+  }
+};
+
+//Remove specific file-----------------------------------------------------
+export const deleteFile = async (req: Request, res: Response) => {
+  const { fileId }: any = req.query;
+  const chunks = await getChunks(fileId);
+  try {
+    await dataNodeStorageAfterDelete(chunks);
+    await deleteFileAndChunks(fileId);
+    await deleteChunks(chunks);
+    res.status(200).json({ message: "Success deleting" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting" });
   }
 };

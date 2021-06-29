@@ -39,3 +39,13 @@ export interface task {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface chunk {
+  id: number;
+  fileId: string;
+  size: number;
+  nodeId: number;
+  orderIndex: number;
+  createdAt: Date;
+  updatedAt: Date;
+}

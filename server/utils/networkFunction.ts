@@ -4,6 +4,7 @@ import { ChunkClass } from "./classes";
 import nodePorts from "../utils/ports.json";
 import fs from "fs-extra";
 import path from "path";
+import { chunk } from "../types";
 
 const FormData = require("form-data");
 
@@ -64,5 +65,21 @@ export const downloadChunks = async (
     );
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const deleteChunks = async (chunkArray: chunk[]) => {
+  const promiseArray = chunkArray.map((chunk) => {
+    return axios.delete(
+      `http://${nodePorts[chunk.nodeId - 1].host}:${
+        nodePorts[chunk.nodeId - 1].port
+      }/api/v1/file?fileId=${chunk.fileId}`
+    );
+  });
+  try {
+    await Promise.all(promiseArray);
+    return "success";
+  } catch (error) {
+    throw new Error(error);
   }
 };
