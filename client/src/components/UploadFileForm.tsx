@@ -16,11 +16,11 @@ import withReactContent from "sweetalert2-react-content";
 const swal = withReactContent(Swal);
 
 type UploadNewFileDialogProps = {
-    getFiles: Function;
+  getFiles: Function;
 };
 
 export default function UploadNewFileDialog({
-    getFiles,
+  getFiles,
 }: UploadNewFileDialogProps) {
   /* This component creates the add new ticket functionallity, using material-ui dialog
   and a trigger AddButton */
@@ -53,7 +53,6 @@ export default function UploadNewFileDialog({
       return;
     }
     closeDialog();
-    console.log(currentUser);
     const formData = new FormData();
     formData.append("file", file);
     try {
@@ -66,20 +65,22 @@ export default function UploadNewFileDialog({
       swal.fire({
         title: "✔",
         text: status,
-        timer: 5000,
+        timer: 3000,
         showConfirmButton: true,
       });
       getFiles();
+      setFile(null);
     } catch (error) {
       console.log(error);
-      const status = "it seems there's been an with the server. Oof :(";
+      const status = "It seems there's been an error with the server.";
       swal.fire({
         title: "Attention!",
         text: status,
-        timer: 5000,
+        timer: 3000,
         showConfirmButton: true,
       });
       setOpen(false);
+      setFile(null);
     }
   };
 
