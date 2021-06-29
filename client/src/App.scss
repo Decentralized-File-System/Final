@@ -1,0 +1,56 @@
+#admin-management-title {
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 5rem;
+  }
+  
+  /* Table user*/
+  .table {
+    max-width: 60em;
+    margin: auto;
+  }
+  tr {
+    width: fit-content;
+  }
+  
+  /* Clock component */
+  #clock {
+    float: right;
+    color: #fff;
+    margin: auto;
+    background-color: #3f51b5;
+    transition: 0.5s;
+  }
+  
+  #clock-font {
+    font-size: 3rem;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  
+  .faded {
+    opacity: 0;
+  }
+  
+  /* Disable text select **/
+  thead,
+  #header,
+  #clock {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  @media screen and (max-width: 320px) {
+    #clock-font {
+      font-size: 0.1em;
+    }
+  }
+  @media screen and (max-width: 1000px) {
+    #clock-font {
+      font-size: 2.5rem;
+    }
+  }
+  
