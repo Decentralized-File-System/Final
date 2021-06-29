@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 type Anchor = "left";
 
 export default function Sidebar() {
-  const {currentPage, setCurrentPage} = useData()
+  const { currentPage, setCurrentPage } = useData();
   const history = useHistory();
   const classes = useStyles();
   const [state, setState] = React.useState({
@@ -69,9 +69,10 @@ export default function Sidebar() {
     }
   };
 
-  const navigateHandler = (destination:string) => {
+  const navigateHandler = (destination: string) => {
+    console.log(destination);
     setCurrentPage(destination);
-  }
+  };
 
   const list = (anchor: Anchor) => (
     <div
@@ -82,16 +83,20 @@ export default function Sidebar() {
     >
       <List>
         <ListItem button key={"Tasks"}>
-          <ListItemIcon onClick={() => navigateHandler("Tasks")}>
-            <InboxIcon />
-          </ListItemIcon>
-          <ListItemText primary={"Tasks"} />
+          <span style={{display:"flex"}} onClick={() => navigateHandler("Tasks")}>
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Tasks"} />
+          </span>
         </ListItem>
         <ListItem button key={"Files"}>
-          <ListItemIcon onClick={() => navigateHandler("files")}>
-            <MailIcon />
-          </ListItemIcon>
-          <ListItemText primary={"Files"} />
+          <span style={{display:"flex"}} onClick={() => navigateHandler("files")}>
+            <ListItemIcon>
+              <MailIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Files"} />
+          </span>
         </ListItem>
       </List>
       <Divider />

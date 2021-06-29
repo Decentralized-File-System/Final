@@ -39,9 +39,14 @@ export const EmployeeDashboard = () => {
 
   return (
     <div>
-      <FileTable files={files} />
-      <FileActions />
-      <TaskTable />
+      {currentPage === "files" ? (
+        <>
+          <FileTable files={files} />
+          <FileActions />
+        </> 
+      ) : currentPage === "tasks" ? (
+        <TaskTable />
+      ) : null}
     </div>
   );
 };
