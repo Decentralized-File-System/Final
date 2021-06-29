@@ -8,6 +8,7 @@ import { BASE_URL } from "../Utils/Variables";
 import { file, task } from "../types";
 import UploadNewFileDialog from "./UploadFileForm";
 import CollapsibleTable from "./CollapsibleTable";
+import AddNewTask from "./AddNewTask";
 
 export const EmployeeDashboard = () => {
   const { currentPage } = useData();
@@ -48,7 +49,10 @@ export const EmployeeDashboard = () => {
           <UploadNewFileDialog getFiles={getFiles} />
         </>
       ) : currentPage === "tasks" ? (
+        <>
         <CollapsibleTable tasks={tasks} />
+        <AddNewTask />
+        </>
       ) : null}
     </div>
   );
