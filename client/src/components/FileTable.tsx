@@ -15,7 +15,7 @@ function FileTable({ files }: fileTableProps) {
           <tr>
             <th>#</th>
             <th>File Name</th>
-            <th>User Name</th>
+            <th>User</th>
             <th>Size</th>
             <th>Extension</th>
             <th>Uploaded at</th>

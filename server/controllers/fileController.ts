@@ -28,6 +28,8 @@ export const saveFilePost = async (req: Request, res: Response) => {
   req.pipe(req.busboy); // Pipe it trough busboy
   const fileSize: number = Number(req.query.size);
   const fileType: string = String(req.query.type);
+  const teamId:string = String(req.query.teamId);
+  const email:string = String(req.query.email);
 
   req.busboy.on("file", (fieldName, file, filename) => {
     console.log(`Upload of '${filename}' started`);
@@ -111,7 +113,7 @@ export const saveFilePost = async (req: Request, res: Response) => {
           //If uploading chunks was successful updating the DB
           if (response === "success") {
             try {
-              await addFile(dataBaseFileInfo, "test");
+              await addFile(dataBaseFileInfo, email, teamId);
               await addChunk(fileChunkArray);
               await updateDataNodes(fileChunkArray);
               res.status(200).send("success");
@@ -157,7 +159,7 @@ export const saveFilePost = async (req: Request, res: Response) => {
         //If upload was successful updating the DB
         if (response === "success") {
           try {
-            await addFile(dataBaseFileInfo, "test");
+            await addFile(dataBaseFileInfo, email, teamId);
             await addChunk(fileChunkArray);
             await updateDataNodes(fileChunkArray);
             res.status(200).send("success");
@@ -179,7 +181,7 @@ export const saveFilePost = async (req: Request, res: Response) => {
 
 //Downloading chunks from data nodes-----------------------------------------------
 export const downloadFile = async (req: Request, res: Response) => {
-  const { fileId } = req.query;
+  const { fileId, fileName } = req.query;
   const chunksFolderPath = `${__dirname}/../chunks`;
   let bufferArray: any = [];
 
@@ -206,10 +208,7 @@ export const downloadFile = async (req: Request, res: Response) => {
     //Concat to one buffer
     bufferArray = Buffer.concat(bufferArray);
     try {
-      fs.writeFileSync(
-        `${__dirname}/../main/Horizons TheDooo.mp4` /* Need to change here!!*/,
-        bufferArray
-      );
+      fs.writeFileSync(`${__dirname}/../main/${fileName}`, bufferArray);
       console.log("write file success");
       const chunkFileDir = fs.readdirSync(chunkPath);
       console.log("Read dir success");
@@ -224,23 +223,18 @@ export const downloadFile = async (req: Request, res: Response) => {
     } catch (error) {
       console.log(error.message);
     }
-
-    res
-      .status(200)
-      .download(path.join(mainPath, "Horizons TheDooo.mp4"), (err) => {
-        /*Need to change here!!*/
-        if (err) {
-          throw err;
-        } else {
-          //Deleting file from local server
-          fs.unlink(path.join(mainPath, "Horizons TheDooo.mp4"), (err) => {
-            /*Need to change here!!*/
-            if (err) {
-              throw err;
-            }
-          });
-        }
-      });
+    res.status(200).download(path.join(mainPath, String(fileName)), (err) => {
+      if (err) {
+        throw err;
+      } else {
+        //Deleting file from local server
+        fs.unlink(path.join(mainPath, String(fileName)), (err) => {
+          if (err) {
+            throw err;
+          }
+        });
+      }
+    });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error });

@@ -87,12 +87,14 @@ export const addChunk = async (chunksArray: ChunkClass[]) => {
 
 export const addFile = async (
   file: { name: string; size: number; type: string; id: string },
-  userId: string
+  userId: string,
+  teamId:string
 ) => {
   const data = {
     id: file.id,
     name: file.name,
     userId,
+    teamId,
     type: file.type,
     size: file.size,
     createdAt: new Date(),

@@ -8,6 +8,7 @@ import { TaskTable } from "./TaskTable";
 import { useData } from "../context/AppDataContext";
 import { BASE_URL } from "../Utils/Variables";
 import { file, task } from "../types";
+import UploadNewFileDialog from "./UploadFileForm";
 
 export const EmployeeDashboard = () => {
   const { currentPage } = useData();
@@ -47,6 +48,7 @@ export const EmployeeDashboard = () => {
         <>
           <FileTable files={files} />
           <FileActions />
+          <UploadNewFileDialog />
         </>
       ) : currentPage === "tasks" ? (
         <TaskTable tasks={tasks} />
