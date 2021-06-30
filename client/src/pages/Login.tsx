@@ -28,8 +28,8 @@ export const Login = () => {
     history.push("/signup");
   };
   return (
-    <div className="login-container .shadow1 .content">
-      <div className="login-Card ">
+    <div className="login-signup-container">
+      <div className="login-signup-card ">
         <h1>Login</h1>
         <Form onSubmit={handleSubmit(submitForm)}>
           <Form.Group className="mb-3">
@@ -54,7 +54,7 @@ export const Login = () => {
             Login
           </Button>
         </Form>
-        <div className="signup-link">
+        <div className="login-signup-link">
           <p onClick={anchorHandler}>Sign up Here</p>
         </div>
       </div>

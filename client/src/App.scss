@@ -17,15 +17,15 @@
   width: 12em;
 }
 
-/* ============ Login =============== */
+/* ============ Login - Signup =============== */
 
-.login-container {
+.login-signup-container {
   display: flex;
   justify-content: center;
   margin-top: 6rem;
 }
 
-.login-Card {
+.login-signup-card {
   border: 0.1 solid black;
   background-color: f2f2f2;
   border-radius: 50px;
@@ -35,13 +35,13 @@
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
-.signup-link{
+.login-signup-link{
   display: flex;
   justify-content: center;
   color: rgb(241, 241, 72);
 }
 
-.signup-link:hover{
+.login-signup-link:hover{
   cursor: pointer;
 }
 

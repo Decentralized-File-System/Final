@@ -30,41 +30,46 @@ export const SignUp = () => {
   };
 
   return (
-    <div>
-      <h1>Sign Up</h1>
-      <Form onSubmit={handleSubmit(submitForm)}>
-        <Form.Group className="mb-3">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter email"
-            required
-            {...register("email")}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Username</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter username"
-            required
-            {...register("username")}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Enter password"
-            required
-            {...register("password")}
-          />
-        </Form.Group>
-        <Button variant="primary" type="submit">
-          Sign Up
-        </Button>
-      </Form>
-      <p onClick={anchorHandler}>Login Here</p>
+    <div className="login-signup-container">
+      <div className="login-signup-card">
+        <h1>Sign Up</h1>
+        <Form onSubmit={handleSubmit(submitForm)}>
+          <Form.Group className="mb-3">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="Enter email"
+              required
+              {...register("email")}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Username</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter username"
+              required
+              {...register("username")}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Enter password"
+              required
+              {...register("password")}
+            />
+          </Form.Group>
+          <Button variant="primary" type="submit">
+            Sign Up
+          </Button>
+        </Form>
+        <div className="login-signup-link">
+
+        <p onClick={anchorHandler}>Login Here</p>
+        </div>
+      </div>
     </div>
   );
 };
