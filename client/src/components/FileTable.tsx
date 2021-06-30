@@ -10,7 +10,7 @@ type fileTableProps = {
 
 function FileTable({ files, getFiles }: fileTableProps) {
   return (
-    <div>
+    <div className="fileTable-container">
       <Table striped bordered hover size="sm">
         <thead>
           <tr>

@@ -15,6 +15,8 @@ import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import { task } from "../types";
 import { useEffect } from "react";
+import { Chip } from "@material-ui/core";
+import { useState } from "react";
 
 const useRowStyles = makeStyles({
   root: {
@@ -31,10 +33,14 @@ type propsRowType = {
 
 function Row({ task, index }: propsRowType) {
   const [open, setOpen] = React.useState(false);
+  const statusColor =
+    task.status === "Done"
+      ? "secondary"
+      : task.status === "In Progress"
+      ? "primary"
+      : undefined;
+
   const classes = useRowStyles();
-  useEffect(() => {
-    console.log(task);
-  }, [task]);
 
   return (
     <React.Fragment>
@@ -54,7 +60,10 @@ function Row({ task, index }: propsRowType) {
           {task.title}
         </TableCell>
         <TableCell>{task.userName}</TableCell>
-        <TableCell>{task.status}</TableCell>
+        <TableCell>
+          {console.log(statusColor)}
+          <Chip color={statusColor} label={task.status} />
+        </TableCell>
         <TableCell>{new Date(task.createdAt).toDateString()}</TableCell>
         <TableCell>{new Date(task.updatedAt).toDateString()}</TableCell>
       </TableRow>
