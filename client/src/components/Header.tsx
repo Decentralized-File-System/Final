@@ -30,28 +30,22 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header() {
   const classes = useStyles();
-  const history = useHistory();
-  const pathName = history.location.pathname;
   return (
-    <>
-      {pathName === "/login" || pathName === "/signup" ? null : (
-        <div id="header" className={classes.root}>
-          <AppBar position="static">
-            <Toolbar className={classes.toolbar}>
-              <Sidebar />
-              <Typography className={classes.title} variant="h5" noWrap>
-                <div className="clock-header">
-                  <Clock />
-                </div>
-                <div className="logo">
-                  <img src={companyLogo} width="100" height="60" />
-                  Team-Share
-                </div>
-              </Typography>
-            </Toolbar>
-          </AppBar>
-        </div>
-      )}
-    </>
+    <div id="header" className={classes.root}>
+      <AppBar position="static">
+        <Toolbar className={classes.toolbar}>
+          <Sidebar />
+          <Typography className={classes.title} variant="h5" noWrap>
+            <div className="clock-header">
+              <Clock />
+            </div>
+            <div className="logo">
+              <img src={companyLogo} width="100" height="60" />
+              Team-Share
+            </div>
+          </Typography>
+        </Toolbar>
+      </AppBar>
+    </div>
   );
 }

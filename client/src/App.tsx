@@ -12,7 +12,6 @@ import { SignUp } from "./pages/SignUp";
 import { Login } from "./pages/Login";
 import { AuthProvider } from "./context/AuthContext";
 import { DataProvider } from "./context/AppDataContext";
-import Header from "./components/Header";
 import PrivateRoute from "./components/PrivateRoute";
 function App() {
   return (
@@ -20,7 +19,6 @@ function App() {
       <AuthProvider>
         <DataProvider>
           <Router>
-            <Header />
             <Switch>
               <PrivateRoute exact path="/" component={Main} />
               <Route exact path="/login" component={Login} />
