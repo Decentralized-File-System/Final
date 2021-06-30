@@ -247,3 +247,12 @@ export const changeStatus = async (taskId: number, newStatus: string) => {
     throw new Error(error);
   }
 };
+
+export const deleteTaskById = async (taskId: number) => {
+  try {
+    await Task.destroy({ where: { id: taskId } });
+    return "success";
+  } catch (error) {
+    throw new Error(error);
+  }
+};

@@ -2,6 +2,7 @@ const { Router } = require("express");
 const router = Router();
 import {
   addNewTask,
+  deleteTask,
   getAllTasksOfTeam,
   updateTaskStatus,
 } from "../../controllers/taskController";
@@ -9,5 +10,6 @@ import {
 router.get("/all-tasks", getAllTasksOfTeam);
 router.post("/new", addNewTask);
 router.put("/update-status", updateTaskStatus);
+router.delete("/", deleteTask);
 
 export default router;

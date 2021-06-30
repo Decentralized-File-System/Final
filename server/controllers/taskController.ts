@@ -1,5 +1,10 @@
 import { query, Request, Response } from "express";
-import { addTask, changeStatus, getTaskOfTeam } from "../utils/DBqueries";
+import {
+  addTask,
+  changeStatus,
+  deleteTaskById,
+  getTaskOfTeam,
+} from "../utils/DBqueries";
 
 export const getAllTasksOfTeam = async (req: Request, res: Response) => {
   const teamId = String(req.query.teamId);
@@ -29,5 +34,15 @@ export const updateTaskStatus = async (req: Request, res: Response) => {
     res.json({ message: "Success" });
   } catch (error) {
     res.json({ message: "Error" });
+  }
+};
+
+export const deleteTask = async (req: Request, res: Response) => {
+  const { taskId }: any = req.query;
+  try {
+    await deleteTaskById(taskId);
+    res.status(200).json({ message: "success" });
+  } catch (error) {
+    res.status(500).json({ message: "Error" });
   }
 };
