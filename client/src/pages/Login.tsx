@@ -27,34 +27,37 @@ export const Login = () => {
   const anchorHandler = () => {
     history.push("/signup");
   };
-
   return (
-    <div>
-      <h1>Login</h1>
-      <Form onSubmit={handleSubmit(submitForm)}>
-        <Form.Group className="mb-3">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter email"
-            required
-            {...register("email")}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Enter password"
-            required
-            {...register("password")}
-          />
-        </Form.Group>
-        <Button variant="primary" type="submit">
-          Login
-        </Button>
-      </Form>
-      <p onClick={anchorHandler}>Sign up Here</p>
+    <div className="login-container .shadow1 .content">
+      <div className="login-Card ">
+        <h1>Login</h1>
+        <Form onSubmit={handleSubmit(submitForm)}>
+          <Form.Group className="mb-3">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="Enter email"
+              required
+              {...register("email")}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Enter password"
+              required
+              {...register("password")}
+            />
+          </Form.Group>
+          <Button variant="primary" type="submit">
+            Login
+          </Button>
+        </Form>
+        <div className="signup-link">
+          <p onClick={anchorHandler}>Sign up Here</p>
+        </div>
+      </div>
     </div>
   );
 };
