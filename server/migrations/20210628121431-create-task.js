@@ -26,6 +26,9 @@ module.exports = {
       deadline: {
         type: Sequelize.DATE,
       },
+      finish_date: {
+        type: Sequelize.DATE,
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,

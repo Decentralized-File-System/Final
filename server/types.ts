@@ -37,6 +37,7 @@ export interface task {
   status: string;
   teamId: string;
   deadline: Date;
+  finishDate: Date | null;
   createdAt: Date;
   updatedAt: Date;
 }

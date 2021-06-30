@@ -1,5 +1,11 @@
 "use strict";
 
+const weekAgo = new Date();
+weekAgo.setDate(weekAgo.getDate() - 7);
+
+const dayAgo = new Date();
+dayAgo.setDate(dayAgo.getDate() - 1);
+
 const oneDay = new Date();
 oneDay.setDate(oneDay.getDate() + 1);
 
@@ -20,9 +26,10 @@ module.exports = {
         content:
           "Please find me a good title for this task I'm bad at thinking of titles",
         user_name: "admin",
-        status: "Didn't Start",
+        status: "Not Started",
         team_id: "team 1",
         deadline: oneDay,
+        finish_date: null,
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -31,9 +38,10 @@ module.exports = {
         content:
           "Need to finish the front end of the team share website that includes the sidebar as well",
         user_name: "admin",
-        status: "Started",
+        status: "In Progress",
         team_id: "team 1",
         deadline: twoDays,
+        finish_date: null,
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -42,9 +50,10 @@ module.exports = {
         content:
           "Finish all the server route and the new db migrations need to be imported to the posteSql",
         user_name: "admin",
-        status: "Mid Way",
+        status: "In Progress",
         team_id: "team 1",
         deadline: week,
+        finish_date: null,
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -52,11 +61,12 @@ module.exports = {
         title: "Types",
         content: "Make all the typescript types that you can think of",
         user_name: "admin",
-        status: "Finished",
+        status: "Done",
         team_id: "team 1",
         deadline: twoWeeks,
-        created_at: new Date(),
-        updated_at: new Date(),
+        finish_date: dayAgo,
+        created_at: weekAgo,
+        updated_at: weekAgo,
       },
     ]);
   },
