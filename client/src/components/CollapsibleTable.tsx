@@ -13,6 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import StatusSelection from "./StatusSelection";
 import { task } from "../types";
 import { useEffect } from "react";
 import { Chip } from "@material-ui/core";
@@ -123,6 +124,9 @@ function Row({ task, index }: propsRowType) {
           >
             {new Date(task.deadline).toDateString()}
           </div>
+        </TableCell>
+        <TableCell>
+          <StatusSelection color={statusColor} label={task.status} />
         </TableCell>
       </TableRow>
       <TableRow>

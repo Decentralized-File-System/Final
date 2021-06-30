@@ -54,14 +54,9 @@ export const downloadChunks = async (
   const nodeURL = `http://${node.host}:${node.port}/api/v1/file/download-file?fileId=${fileId}&index=${orderIndex}`;
   try {
     const res = await axios.get(nodeURL);
-    fs.writeFile(
+    fs.writeFileSync(
       path.join(chunksFolder, String(orderIndex)),
-      Buffer.from(res.data, "base64"),
-      (err) => {
-        if (err) {
-          throw new Error("Failed to download" + err.message);
-        }
-      }
+      Buffer.from(res.data, "base64")
     );
   } catch (error) {
     console.log(error);

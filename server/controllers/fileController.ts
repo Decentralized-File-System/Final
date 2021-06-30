@@ -195,28 +195,23 @@ export const downloadFile = async (req: Request, res: Response) => {
   try {
     //getting chunks info from DB
     const chunkArray = await getChunks(String(fileId));
-    for (const chunk of chunkArray) {
-      try {
-        //Downloading chunks from data nodes to Server
-        await downloadChunks(String(fileId), chunk.nodeId, chunk.orderIndex);
-      } catch (error) {
-        console.log("error");
-      }
-    }
+    const promiseArr = chunkArray.map((chunk: any) => {
+      return downloadChunks(String(fileId), chunk.nodeId, chunk.orderIndex);
+    });
 
-    const chunksFiles = await fs.readdir(chunksFolderPath);
+    await Promise.all(promiseArr);
+
+    const chunksFiles = fs.readdirSync(chunksFolderPath);
 
     const promiseArray = chunksFiles.map((file) => {
       return fs.readFile(path.join(chunksFolderPath, file));
     });
 
-    //Getting all chunks buffers from local server
+    // Getting all chunks buffers from local server
     bufferArray = await Promise.all(promiseArray);
 
-    console.log(bufferArray);
     //Concat to one buffer
     bufferArray = Buffer.concat(bufferArray);
-    console.log(bufferArray);
     try {
       fs.writeFileSync(`${__dirname}/../main/${fileName}`, bufferArray);
       console.log("write file success");

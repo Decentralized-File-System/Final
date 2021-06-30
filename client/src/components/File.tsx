@@ -7,6 +7,7 @@ import { useAuth } from "../context/AuthContext";
 import DeleteDialog from "./DeleteDialog";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { bytesToSize } from "../Utils/function";
 
 const swal = withReactContent(Swal);
 
@@ -40,7 +41,7 @@ const File = ({ file, index, getFiles }: fileType) => {
       <td>{index + 1}</td>
       <td>{file.name}</td>
       <td>{file.userId}</td>
-      <td>{file.size}</td>
+      <td>{bytesToSize(String(file.size))}</td>
       <td>{file.type}</td>
       <td>{new Date(file.createdAt).toDateString()}</td>
       <td className="td-class">
