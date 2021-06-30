@@ -19,7 +19,7 @@ import {
   getFileById,
   dataNodeStorageAfterDelete,
   deleteFileAndChunks,
-} from "../utils/DBqueries";
+} from "../DBQueries/fileQueries";
 import {
   uploadChunks,
   downloadChunks,

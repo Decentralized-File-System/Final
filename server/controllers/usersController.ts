@@ -13,7 +13,7 @@ import {
   updateTeam,
   updateAdmin,
   getEmployeesByTeamId,
-} from "../utils/DBqueries";
+} from "../DBQueries/userQueries";
 const accessSecretKey: any = process.env.ACCESS_SECRET_KEY;
 const refreshSecretKey: any = process.env.REFRESH_SECRET_KEY;
 

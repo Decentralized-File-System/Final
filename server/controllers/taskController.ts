@@ -4,7 +4,7 @@ import {
   changeStatus,
   deleteTaskById,
   getTaskOfTeam,
-} from "../utils/DBqueries";
+} from "../DBQueries/taskQueries";
 
 export const getAllTasksOfTeam = async (req: Request, res: Response) => {
   const teamId = String(req.query.teamId);
@@ -46,3 +46,5 @@ export const deleteTask = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error" });
   }
 };
+
+export const getRelevant = async (req: Request, res: Response) => {};
