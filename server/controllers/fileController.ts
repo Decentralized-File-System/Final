@@ -205,15 +205,18 @@ export const downloadFile = async (req: Request, res: Response) => {
     }
 
     const chunksFiles = await fs.readdir(chunksFolderPath);
+
     const promiseArray = chunksFiles.map((file) => {
-      return fs.readFileSync(path.join(chunksFolderPath, file));
+      return fs.readFile(path.join(chunksFolderPath, file));
     });
 
     //Getting all chunks buffers from local server
     bufferArray = await Promise.all(promiseArray);
 
+    console.log(bufferArray);
     //Concat to one buffer
     bufferArray = Buffer.concat(bufferArray);
+    console.log(bufferArray);
     try {
       fs.writeFileSync(`${__dirname}/../main/${fileName}`, bufferArray);
       console.log("write file success");
@@ -272,7 +275,7 @@ export const deleteFile = async (req: Request, res: Response) => {
     await deleteChunks(chunks);
     res.status(200).json({ message: "Success deleting" });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).json({ message: "Error deleting" });
   }
 };
