@@ -33,6 +33,11 @@
   width: 40%;
   height: 50%;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  transition-property: width;
+  transition-duration: 2s;
+}
+.login-signup-card:hover{
+  width: 42%;
 }
 
 .login-signup-link{
