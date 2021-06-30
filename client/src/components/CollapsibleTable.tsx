@@ -40,6 +40,7 @@ function Row({ task, index }: propsRowType) {
       ? "primary"
       : undefined;
 
+  console.log(task);
   const classes = useRowStyles();
 
   return (
@@ -65,7 +66,7 @@ function Row({ task, index }: propsRowType) {
           <Chip color={statusColor} label={task.status} />
         </TableCell>
         <TableCell>{new Date(task.createdAt).toDateString()}</TableCell>
-        <TableCell>{new Date(task.updatedAt).toDateString()}</TableCell>
+        <TableCell>{new Date(task.deadline).toDateString()}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -106,7 +107,7 @@ export default function CollapsibleTable({ tasks }: propsType) {
               <TableCell style={{ fontWeight: "bolder" }}>
                 Uploaded at
               </TableCell>
-              <TableCell style={{ fontWeight: "bolder" }}>Updated at</TableCell>
+              <TableCell style={{ fontWeight: "bolder" }}>Deadline at</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

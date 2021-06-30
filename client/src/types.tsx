@@ -21,6 +21,7 @@ export type task = {
   content: string;
   userName: string;
   status: string;
+  deadline: Date;
   teamId: string;
   createdAt: Date;
   updatedAt: Date;
