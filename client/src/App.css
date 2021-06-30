@@ -101,6 +101,19 @@ tr {
   opacity: 0;
 }
 
+/* ===============tasks table================*/
+.deadline-div {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 0.3rem 0.6rem;
+  border-radius: 50px;
+  border-width: 2px;
+  border-style: solid;
+  font-size: 0.8125rem;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+
 /* Disable text select **/
 thead,
 #header,

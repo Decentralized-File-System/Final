@@ -15,7 +15,7 @@
   margin-top: 2em;
 }
 
-.fileTable-container{
+.fileTable-container {
   margin-top: 2em;
 }
 
@@ -42,17 +42,17 @@
   transition-property: width;
   transition-duration: 2s;
 }
-.login-signup-card:hover{
+.login-signup-card:hover {
   width: 42%;
 }
 
-.login-signup-link{
+.login-signup-link {
   display: flex;
   justify-content: center;
   color: rgb(241, 241, 72);
 }
 
-.login-signup-link:hover{
+.login-signup-link:hover {
   cursor: pointer;
 }
 
@@ -84,6 +84,17 @@ tr {
 
 .faded {
   opacity: 0;
+}
+
+/* ===============tasks table================*/
+.deadline-div {
+  width: fit-content;
+  padding: 0.3rem 0.6rem;
+  border-radius: 50px;
+  border-width: 2px;
+  border-style: solid;
+  font-size: 0.8125rem;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 /* Disable text select **/

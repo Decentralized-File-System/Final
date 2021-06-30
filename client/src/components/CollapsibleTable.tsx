@@ -31,8 +31,55 @@ type propsRowType = {
   index: number;
 };
 
+const getNumberOfDays = (start: Date, end: Date) => {
+  const date1 = new Date(start);
+  const date2 = new Date(end);
+
+  // One day in milliseconds
+  const oneDay = 1000 * 60 * 60 * 24;
+
+  // Calculating the time difference between two dates
+  const diffInTime = date2.getTime() - date1.getTime();
+
+  // Calculating the no. of days between two dates
+  const diffInDays = Math.round(diffInTime / oneDay);
+
+  return diffInDays;
+};
+
+const percentColors = [
+  { pct: 0.0, color: { r: 0xff, g: 0x00, b: 0 } },
+  { pct: 0.5, color: { r: 0xff, g: 0xff, b: 0 } },
+  { pct: 1.0, color: { r: 0x00, g: 0xff, b: 0 } },
+];
+
+const getColorForPercentage = (pct: number) => {
+  for (var i = 1; i < percentColors.length - 1; i++) {
+    if (pct < percentColors[i].pct) {
+      break;
+    }
+  }
+  var lower = percentColors[i - 1];
+  var upper = percentColors[i];
+  var range = upper.pct - lower.pct;
+  var rangePct = (pct - lower.pct) / range;
+  var pctLower = 1 - rangePct;
+  var pctUpper = rangePct;
+  var color = {
+    r: Math.floor(lower.color.r * pctLower + upper.color.r * pctUpper),
+    g: Math.floor(lower.color.g * pctLower + upper.color.g * pctUpper),
+    b: Math.floor(lower.color.b * pctLower + upper.color.b * pctUpper),
+  };
+  return "rgb(" + [color.r, color.g, color.b].join(",") + ")";
+  // or output as hex if preferred
+};
+
 function Row({ task, index }: propsRowType) {
   const [open, setOpen] = React.useState(false);
+  const [daysDifference, setDaysDifference] = useState<number>(
+    getNumberOfDays(new Date(), task.deadline)
+  );
+
   const statusColor =
     task.status === "Done"
       ? "secondary"
@@ -40,7 +87,10 @@ function Row({ task, index }: propsRowType) {
       ? "primary"
       : undefined;
 
-  console.log(task);
+  const daysPercent = (daysDifference > 10 ? 10 : daysDifference) / 10;
+
+  const daysPercentColor = getColorForPercentage(daysPercent);
+
   const classes = useRowStyles();
 
   return (
@@ -66,7 +116,14 @@ function Row({ task, index }: propsRowType) {
           <Chip color={statusColor} label={task.status} />
         </TableCell>
         <TableCell>{new Date(task.createdAt).toDateString()}</TableCell>
-        <TableCell>{new Date(task.deadline).toDateString()}</TableCell>
+        <TableCell>
+          <div
+            className="deadline-div"
+            style={{ borderColor: `${daysPercentColor}` }}
+          >
+            {new Date(task.deadline).toDateString()}
+          </div>
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -107,7 +164,9 @@ export default function CollapsibleTable({ tasks }: propsType) {
               <TableCell style={{ fontWeight: "bolder" }}>
                 Uploaded at
               </TableCell>
-              <TableCell style={{ fontWeight: "bolder" }}>Deadline at</TableCell>
+              <TableCell style={{ fontWeight: "bolder" }}>
+                Deadline at
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
