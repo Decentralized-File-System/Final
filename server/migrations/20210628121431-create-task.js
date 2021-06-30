@@ -23,6 +23,9 @@ module.exports = {
       team_id: {
         type: Sequelize.STRING,
       },
+      deadline: {
+        type: Sequelize.DATE,
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,

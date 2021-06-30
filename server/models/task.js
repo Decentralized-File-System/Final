@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       userName: DataTypes.STRING,
       status: DataTypes.STRING,
       teamId: DataTypes.STRING,
+      deadline: DataTypes.DATE,
     },
     {
       sequelize,

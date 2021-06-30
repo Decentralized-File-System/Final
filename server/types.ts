@@ -36,6 +36,7 @@ export interface task {
   userName: string;
   status: string;
   teamId: string;
+  deadline: Date;
   createdAt: Date;
   updatedAt: Date;
 }

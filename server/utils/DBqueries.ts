@@ -223,6 +223,7 @@ export const addTask = async (taskObject: {
   userName: string;
   status: string;
   teamId: string;
+  deadline:Date
 }) => {
   const task: task = {
     title: taskObject.title,
@@ -230,6 +231,7 @@ export const addTask = async (taskObject: {
     userName: taskObject.userName,
     status: taskObject.status,
     teamId: taskObject.teamId,
+    deadline:taskObject.deadline,
     createdAt: new Date(),
     updatedAt: new Date(),
   };
