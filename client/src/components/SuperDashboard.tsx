@@ -29,26 +29,26 @@ export default function SuperDashboard() {
   }, []);
 
   return (
-    <div className="super-admin-div" >
-      <div style={{background : "#EEFBFB", width:"fit-content"}}>
-      <h1 id="admin-management-title">Admin Management</h1>
-      <div className="super-admin-users-div"></div>
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Set Admin</th>
-          </tr>
-        </thead>
-        <tbody>
-          {allUsers &&
-            allUsers.map((user, i) => {
-              return <UserTab key={`${i} user`} user={user} />;
-            })}
-        </tbody>
-      </table>
+    <div className="super-admin-div">
+      <div className="super-admin-div-card">
+        <h1 id="admin-management-title">Admin Management</h1>
+        <div className="super-admin-users-div"></div>
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Set Admin</th>
+            </tr>
+          </thead>
+          <tbody>
+            {allUsers &&
+              allUsers.map((user, i) => {
+                return <UserTab key={`${i} user`} user={user} />;
+              })}
+          </tbody>
+        </table>
       </div>
     </div>
   );
