@@ -50,8 +50,8 @@ export const AdminDashboard = () => {
         </>
       ) : currentPage === "tasks" ? (
         <>
-        <CollapsibleTable tasks={tasks} />
-        <AddNewTask />
+          <CollapsibleTable tasks={tasks} />
+          <AddNewTask />
         </>
       ) : null}
     </div>
