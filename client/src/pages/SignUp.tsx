@@ -31,7 +31,7 @@ export const SignUp = () => {
 
   return (
     <div className="login-signup-container">
-      <div className="login-signup-card">
+      <div className="login-signup-card" style={{background:"white"}}>
         <h1>Sign Up</h1>
         <Form onSubmit={handleSubmit(submitForm)}>
           <Form.Group className="mb-3">
