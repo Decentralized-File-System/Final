@@ -29,7 +29,8 @@ export default function SuperDashboard() {
   }, []);
 
   return (
-    <div className="super-admin-div">
+    <div className="super-admin-div" >
+      <div style={{background : "#EEFBFB", width:"fit-content"}}>
       <h1 id="admin-management-title">Admin Management</h1>
       <div className="super-admin-users-div"></div>
       <table className="table">
@@ -48,6 +49,7 @@ export default function SuperDashboard() {
             })}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }

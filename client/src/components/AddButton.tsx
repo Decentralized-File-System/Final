@@ -12,7 +12,7 @@ export default function ({ handleClickOpen }: addButton) {
       position: fixed;
       top: 88vh;
       left: 93vw;
-      background-color: rgba(230, 210, 40, 0.7);
+      background-color: #fed161;
       width: 4em;
       height: 4em;
       border-radius: 50%;
