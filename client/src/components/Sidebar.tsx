@@ -82,22 +82,16 @@ export default function Sidebar() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        <ListItem button key={"Tasks"}>
-          <span
-            style={{ display: "flex" }}
-            onClick={() => navigateHandler("tasks")}
-          >
+        <ListItem button key={"Tasks"} onClick={() => navigateHandler("tasks")}>
+          <span style={{ display: "flex" }}>
             <ListItemIcon>
               <InboxIcon />
             </ListItemIcon>
             <ListItemText primary={"Tasks"} />
           </span>
         </ListItem>
-        <ListItem button key={"Files"}>
-          <span
-            style={{ display: "flex" }}
-            onClick={() => navigateHandler("files")}
-          >
+        <ListItem button key={"Files"} onClick={() => navigateHandler("files")}>
+          <span style={{ display: "flex" }}>
             <ListItemIcon>
               <MailIcon />
             </ListItemIcon>
