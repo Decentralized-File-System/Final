@@ -5,7 +5,7 @@ import File from "../components/File";
 import Header from "../components/Header";
 import SuperDashboard from "../components/SuperDashboard";
 import { useAuth } from "../context/AuthContext";
-import Sidebar from "../components/newSidebar";
+import Sidebar from "../components/NewSidebar";
 
 export const Main = () => {
   const { currentUser } = useAuth();

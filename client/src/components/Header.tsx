@@ -49,7 +49,7 @@ export default function Header() {
               />
             </div>
           </Typography>
-          <Sidebar />
+          {/* <Sidebar /> */}
         </Toolbar>
       </AppBar>
     </div>

@@ -14,7 +14,6 @@ const whiteRowStyle = {
 function FileTable({ files, getFiles }: fileTableProps) {
   return (
     <div className="fileTable-container">
-      <div>
         <Table striped bordered hover size="sm" className="file-Table">
           <thead style={whiteRowStyle}>
             <tr>
@@ -34,7 +33,6 @@ function FileTable({ files, getFiles }: fileTableProps) {
               ))}
           </tbody>
         </Table>
-      </div>
     </div>
   );
 }

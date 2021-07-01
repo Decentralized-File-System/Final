@@ -1,12 +1,10 @@
-.header-bar {
-  background: #555;
-}
-.header {
+#root {
   background-color: #555;
 }
-body{
+html {
   background-color: #555;
 }
+
 #admin-management-title {
   text-align: center;
   margin-top: 2rem;
@@ -17,7 +15,7 @@ body{
   background-color: #f2f2f2;
 }
 
-.logo{
+.logo {
   float: left;
 }
 
@@ -97,12 +95,18 @@ tr {
 
 // ==================file-table===================
 
-.file-Table{
+.file-Table {
+  width: 100%;
+  font-size: 1em;
 }
 
 .fileTable-container {
+  padding: 2rem;
+  margin: auto;
   margin-top: 2em;
   background-color: ghostwhite;
+  width: 60%;
+  border-radius: 5px;
 }
 
 /* ===============tasks table================*/
@@ -131,22 +135,33 @@ thead,
   #clock-font {
     font-size: 0.1em;
   }
+  .file-Table {
+    font-size: 0.5em;
+  }
+}
+@media screen and (max-width: 823px) {
+  .file-Table {
+    font-size: 1px;
+  }
 }
 @media screen and (max-width: 1000px) {
   #clock-font {
     font-size: 2.5rem;
   }
+  .file-Table {
+    font-size: 0.8rem;
+  }
 }
 // =====================================
 
-.super-admin-div{
+.super-admin-div {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.super-admin-div-card{
-  background-color:  #EEFBFB;
+.super-admin-div-card {
+  background-color: #eefbfb;
   width: 40%;
   margin-top: 2em;
   padding: 2em;
