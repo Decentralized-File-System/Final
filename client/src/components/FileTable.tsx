@@ -7,19 +7,23 @@ type fileTableProps = {
   files: file[];
   getFiles: Function;
 };
+const whiteRowStyle = {
+  background: "white"
+}
 
 function FileTable({ files, getFiles }: fileTableProps) {
   return (
     <div className="fileTable-container">
-      <Table striped bordered hover size="sm">
-        <thead>
-          <tr>
+      <Table striped bordered hover size="sm" className="file-Table">
+        <thead style={whiteRowStyle}>
+          <tr >
             <th>#</th>
             <th>File Name</th>
             <th>User</th>
             <th>Size</th>
             <th>Extension</th>
             <th>Uploaded at</th>
+            <th>Option</th>
           </tr>
         </thead>
         <tbody>

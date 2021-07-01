@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-type Anchor = "left";
+type Anchor = "right";
 
 export default function Sidebar() {
   const { currentPage, setCurrentPage } = useData();
@@ -119,8 +119,8 @@ export default function Sidebar() {
 
   return (
     <div>
-      <React.Fragment key={"left"}>
-        <Button onClick={toggleDrawer("left", true)}>
+      <React.Fragment key={"right"}>
+        <Button onClick={toggleDrawer("right", true)}>
           <IconButton
             edge="start"
             className={classes.menuButton}
@@ -131,12 +131,12 @@ export default function Sidebar() {
           </IconButton>
         </Button>
         <SwipeableDrawer
-          anchor={"left"}
-          open={state["left"]}
-          onClose={toggleDrawer("left", false)}
-          onOpen={toggleDrawer("left", true)}
+          anchor={"right"}
+          open={state["right"]}
+          onClose={toggleDrawer("right", false)}
+          onOpen={toggleDrawer("right", true)}
         >
-          {list("left")}
+          {list("right")}
         </SwipeableDrawer>
       </React.Fragment>
     </div>

@@ -126,7 +126,13 @@ function Row({ task, index }: propsRowType) {
           </div>
         </TableCell>
         <TableCell>
-          <StatusSelection color={statusColor} label={task.status} />
+          {task.status !== "Done" ? (
+            <StatusSelection
+              currentStatus={task.status}
+              color={statusColor}
+              label={task.status}
+            />
+          ) : null}
         </TableCell>
       </TableRow>
       <TableRow>
@@ -170,6 +176,9 @@ export default function CollapsibleTable({ tasks }: propsType) {
               </TableCell>
               <TableCell style={{ fontWeight: "bolder" }}>
                 Deadline at
+              </TableCell>
+              <TableCell style={{ fontWeight: "bolder" }}>
+                Change Status
               </TableCell>
             </TableRow>
           </TableHead>

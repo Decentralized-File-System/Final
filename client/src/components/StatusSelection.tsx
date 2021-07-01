@@ -23,33 +23,44 @@ const useStyles = makeStyles((theme: Theme) =>
 type propsType = {
   color: string | undefined;
   label: string;
+  currentStatus: string;
 };
 
-export default function StatusSelection({ color, label }: propsType) {
+export default function StatusSelection({
+  color,
+  label,
+  currentStatus,
+}: propsType) {
   const classes = useStyles();
-  const [age, setAge] = React.useState("");
+  const [status, setStatus] = React.useState("");
+  const statusArray = ["Not Started", "In Progress", "Done"].filter(
+    (status) => status !== currentStatus && status !== "Not Started"
+  );
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setAge(event.target.value as string);
+    console.log(event.target.value);
+    setStatus(event.target.value as string);
   };
   return (
     <div>
       <FormControl className={classes.formControl}>
         <Select
-          value={age}
+          value={status}
           onChange={handleChange}
           displayEmpty
           className={classes.selectEmpty}
         >
           <MenuItem value="">
-            <Chip label="Not Started" />
+            <em>None</em>
           </MenuItem>
-          <MenuItem value={20}>
-            <Chip color="primary" label="In Progress" />
-          </MenuItem>
-          <MenuItem value={30}>
-            <Chip color="secondary" label="Done" />
-          </MenuItem>
+          {statusArray.map((status, i) => (
+            <MenuItem value={i * 10}>
+              <Chip
+                color={status !== "Done" ? "primary" : "secondary"}
+                label={status}
+              />
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
     </div>
