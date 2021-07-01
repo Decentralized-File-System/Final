@@ -60,6 +60,7 @@ export const downloadChunks = async (
     );
   } catch (error) {
     console.log(error);
+    throw Error(error.message);
   }
 };
 
