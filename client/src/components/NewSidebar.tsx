@@ -2,16 +2,14 @@ import React from "react";
 import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
-import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
+import AssignmentIcon from "@material-ui/icons/Assignment";
+import FileCopyIcon from "@material-ui/icons/FileCopy";
+import SettingsIcon from "@material-ui/icons/Settings";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useData } from "../context/AppDataContext";
 import { useHistory } from "react-router-dom";
@@ -77,32 +75,52 @@ export default function PermanentDrawerLeft() {
       >
         <Divider />
         <List>
-        <ListItem button key={"Tasks"} onClick={() => navigateHandler("tasks")}>
-          <span style={{ display: "flex" }}>
+          <ListItem
+            button
+            key={"Tasks"}
+            onClick={() => navigateHandler("tasks")}
+          >
+            <span style={{ display: "flex" }}>
+              <ListItemIcon>
+                <AssignmentIcon />
+              </ListItemIcon>
+              <ListItemText primary={"Tasks"} />
+            </span>
+          </ListItem>
+          <ListItem
+            button
+            key={"Files"}
+            onClick={() => navigateHandler("files")}
+          >
+            <span style={{ display: "flex" }}>
+              <ListItemIcon>
+                <FileCopyIcon />
+              </ListItemIcon>
+              <ListItemText primary={"Files"} />
+            </span>
+          </ListItem>
+          <ListItem
+            button
+            key={"Settings"}
+            onClick={() => navigateHandler("settings")}
+          >
+            <span style={{ display: "flex" }}>
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
+              <ListItemText primary={"Settings"} />
+            </span>
+          </ListItem>
+        </List>
+        <Divider />
+        <List>
+          <ListItem button onClick={logoutHandler}>
             <ListItemIcon>
-              <InboxIcon />
+              <ExitToAppIcon />
             </ListItemIcon>
-            <ListItemText primary={"Tasks"} />
-          </span>
-        </ListItem>
-        <ListItem button key={"Files"} onClick={() => navigateHandler("files")}>
-          <span style={{ display: "flex" }}>
-            <ListItemIcon>
-              <MailIcon />
-            </ListItemIcon>
-            <ListItemText primary={"Files"} />
-          </span>
-        </ListItem>
-      </List>
-      <Divider />
-      <List>
-        <ListItem button>
-          <ListItemIcon>
-            <ExitToAppIcon />
-          </ListItemIcon>
-          <ListItemText onClick={logoutHandler} primary={"Logout"} />
-        </ListItem>
-      </List>
+            <ListItemText primary={"Logout"} />
+          </ListItem>
+        </List>
       </Drawer>
     </div>
   );

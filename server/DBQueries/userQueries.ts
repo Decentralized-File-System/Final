@@ -1,6 +1,6 @@
 // @ts-ignore
 import { User } from "../models";
-
+import { hashSync, genSaltSync } from "bcrypt";
 import { user } from "../types";
 
 export const getUserByUserName = async (userName: string) => {
@@ -75,6 +75,35 @@ export const updateAdmin = async (usersArray: user[], adminBool: string) => {
     }
     return "success";
   } catch (error) {
+    return "failed";
+  }
+};
+
+export const updateEmailOrPassword = async (
+  user: user,
+  newEmail: string,
+  newPassword: string
+) => {
+  let changes;
+  if (newEmail && newPassword) {
+    changes = {
+      email: newEmail,
+      password: hashSync(newPassword, genSaltSync(10)),
+    };
+  } else if (newEmail) {
+    changes = { email: newEmail };
+  } else {
+    changes = { password: hashSync(newPassword, genSaltSync(10)) };
+  }
+  try {
+    await User.update(changes, {
+      where: {
+        email: user.email,
+      },
+    });
+    return "success";
+  } catch (error) {
+    console.log(error);
     return "failed";
   }
 };

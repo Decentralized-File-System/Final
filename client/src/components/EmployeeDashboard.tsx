@@ -9,6 +9,7 @@ import { file, task } from "../types";
 import UploadNewFileDialog from "./UploadFileForm";
 import CollapsibleTable from "./CollapsibleTable";
 import AddNewTask from "./AddNewTask";
+import { Settings } from "./Settings";
 
 export const EmployeeDashboard = () => {
   const { currentPage } = useData();
@@ -50,9 +51,11 @@ export const EmployeeDashboard = () => {
         </>
       ) : currentPage === "tasks" ? (
         <>
-        <CollapsibleTable tasks={tasks} />
-        <AddNewTask />
+          <CollapsibleTable tasks={tasks} />
+          <AddNewTask />
         </>
+      ) : currentPage === "settings" ? (
+        <Settings />
       ) : null}
     </div>
   );

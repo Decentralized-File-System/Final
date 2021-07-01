@@ -190,4 +190,13 @@ thead,
   padding: 2em;
   border-radius: 50px;
 }
+
+.settings-container {
+  padding: 2rem;
+  width: 50rem;
+  margin: auto;
+  margin-top: 2em;
+  background-color: ghostwhite;
+  border-radius: 5px;
+}
 /*# sourceMappingURL=App.css.map */

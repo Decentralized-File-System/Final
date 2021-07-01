@@ -1,5 +1,5 @@
 require("dotenv").config();
-import bcrypt, { hashSync, genSaltSync, compareSync } from "bcrypt";
+import { hashSync, genSaltSync, compareSync } from "bcrypt";
 // @ts-ignore
 import { User } from "../models";
 import jwt from "jsonwebtoken";
@@ -13,6 +13,7 @@ import {
   updateTeam,
   updateAdmin,
   getEmployeesByTeamId,
+  updateEmailOrPassword,
 } from "../DBQueries/userQueries";
 const accessSecretKey: any = process.env.ACCESS_SECRET_KEY;
 const refreshSecretKey: any = process.env.REFRESH_SECRET_KEY;
@@ -145,22 +146,44 @@ export const users_get = async (req: Request, res: Response) => {
 };
 
 export const change_props_put = async (req: Request, res: Response) => {
-  const users: [] = req.body;
-  const { teamId, isAdmin }: any = req.query;
+  const users: user[] = req.body;
+  const { teamId, isAdmin, newEmail, currentPassword, newPassword }: any =
+    req.query;
   if (teamId) {
     const response = await updateTeam(users, teamId);
     if (response === "success") {
-      res.status(200).send("Successfully updated");
+      return res.status(200).send("Successfully updated");
     } else {
-      res.status(400).send("Failed to updated");
+      return res.status(400).send("Failed to updated");
     }
   }
   if (isAdmin) {
     const response = await updateAdmin(users, isAdmin);
     if (response === "success") {
-      res.status(200).send("Successfully updated");
+      return res.status(200).send("Successfully updated");
     } else {
-      res.status(400).send("Failed to updated");
+      return res.status(400).send("Failed to updated");
+    }
+  }
+  if (currentPassword) {
+    try {
+      const user = await getUserByEmail(users[0].email);
+      const auth = compareSync(currentPassword, user.password);
+      if (!auth) {
+        return res.status(404).send("Incorrect password");
+      }
+      const response = await updateEmailOrPassword(
+        users[0],
+        newEmail,
+        newPassword
+      );
+      if (response === "success") {
+        return res.status(200).send("Successfully updated");
+      } else {
+        return res.status(400).send("Failed to updated");
+      }
+    } catch (error) {
+      return res.status(500).send("Failed to updated");
     }
   }
 };
