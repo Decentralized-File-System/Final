@@ -12,19 +12,25 @@ import { Chip } from "@material-ui/core";
 import { useAuth } from "../context/AuthContext";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { BASE_URL } from "../Utils/Variables";
 
 const swal = withReactContent(Swal);
 
-export default function AddNewTask() {
+type addNewTaskProps = {
+  getTasks: Function;
+};
+
+export default function AddNewTask({ getTasks }: addNewTaskProps) {
   /* This component creates the add new ticket functionallity, using material-ui dialog
   and a trigger AddButton */
 
   const { currentUser } = useAuth();
   const [open, setOpen] = React.useState(false);
 
-  const newTicket = {
+  const newTask = {
     title: "",
     content: "",
+    deadline: "",
     email: "",
     labels: "",
   };
@@ -37,7 +43,30 @@ export default function AddNewTask() {
     setOpen(false);
   };
 
-  const addTask = async () => {};
+  const addTask = async () => {
+    try {
+      axios.post(`${BASE_URL}/task/new`, newTask, { withCredentials: true });
+      const status = "Task has uploaded Successfully!";
+      swal.fire({
+        title: "✔",
+        text: status,
+        timer: 3000,
+        showConfirmButton: true,
+      });
+      getTasks();
+      setOpen(false);
+    } catch (error) {
+      console.log(error);
+      const status = "It seems there's been an error with the server.";
+      swal.fire({
+        title: "Attention!",
+        text: status,
+        timer: 3000,
+        showConfirmButton: true,
+      });
+      setOpen(false);
+    }
+  };
 
   return (
     <div>
@@ -62,7 +91,19 @@ export default function AddNewTask() {
             margin="normal"
             helperText="Task title"
             onChange={(e) => {
-              newTicket.title = e.target.value;
+              newTask.title = e.target.value;
+            }}
+            fullWidth
+            required
+          />
+          <TextField
+            autoFocus
+            id="deadline"
+            label="Deadline"
+            margin="normal"
+            helperText="Deadline"
+            onChange={(e) => {
+              newTask.deadline = e.target.value;
             }}
             fullWidth
             required
@@ -74,7 +115,7 @@ export default function AddNewTask() {
             margin="normal"
             helperText="Task content"
             onChange={(e) => {
-              newTicket.content = e.target.value;
+              newTask.content = e.target.value;
             }}
             variant="outlined"
             rows="3"

@@ -40,7 +40,7 @@ export const saveFilePost = async (req: Request, res: Response) => {
 
   req.busboy.on("file", (fieldName, file, filename) => {
     console.log(`Upload of '${filename}' started`);
-
+    
     // Create a write stream of the new file
     const fStream = fs.createWriteStream(path.join(mainPath, filename));
 

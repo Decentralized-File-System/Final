@@ -14,10 +14,12 @@ import Paper from "@material-ui/core/Paper";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import StatusSelection from "./StatusSelection";
+import Button from "@material-ui/core/Button";
 import { task } from "../types";
 import { useEffect } from "react";
 import { Chip } from "@material-ui/core";
 import { useState } from "react";
+import { useData } from "../context/AppDataContext";
 
 const useRowStyles = makeStyles({
   root: {
@@ -94,6 +96,7 @@ function Row({ task, index }: propsRowType) {
 
   const classes = useRowStyles();
 
+
   return (
     <React.Fragment>
       <TableRow
@@ -113,7 +116,6 @@ function Row({ task, index }: propsRowType) {
         </TableCell>
         <TableCell>{task.userName}</TableCell>
         <TableCell>
-          {console.log(statusColor)}
           <Chip color={statusColor} label={task.status} />
         </TableCell>
         <TableCell>{new Date(task.createdAt).toDateString()}</TableCell>
@@ -127,11 +129,14 @@ function Row({ task, index }: propsRowType) {
         </TableCell>
         <TableCell>
           {task.status !== "Done" ? (
-            <StatusSelection
-              currentStatus={task.status}
-              color={statusColor}
-              label={task.status}
-            />
+            <>
+              <StatusSelection
+                task={task}
+                currentStatus={task.status}
+                color={statusColor}
+                label={task.status}
+              />
+            </>
           ) : null}
         </TableCell>
       </TableRow>
@@ -161,6 +166,10 @@ type propsType = {
 };
 
 export default function CollapsibleTable({ tasks }: propsType) {
+  const {updateStatuses} = useData();
+  const changeStatusHandler = () => {
+    updateStatuses();
+  };
   return (
     <div className="tasks-div-container">
       <TableContainer component={Paper}>
@@ -178,7 +187,10 @@ export default function CollapsibleTable({ tasks }: propsType) {
                 Deadline at
               </TableCell>
               <TableCell style={{ fontWeight: "bolder" }}>
-                Change Status
+                Change Status -
+                <Button onClick={changeStatusHandler} variant="contained" style={{ display: "inline" }}>
+                  Submit
+                </Button>
               </TableCell>
             </TableRow>
           </TableHead>

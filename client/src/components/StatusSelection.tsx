@@ -7,6 +7,8 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import { Chip } from "@material-ui/core";
 import { bytesToSize } from "../Utils/function";
+import { useData } from "../context/AppDataContext";
+import { task } from "../types";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -24,13 +26,16 @@ type propsType = {
   color: string | undefined;
   label: string;
   currentStatus: string;
+  task: task;
 };
 
 export default function StatusSelection({
   color,
   label,
   currentStatus,
+  task,
 }: propsType) {
+  const { setStatusesToChange, statusesToChange } = useData();
   const classes = useStyles();
   const [status, setStatus] = React.useState("");
   const statusArray = ["Not Started", "In Progress", "Done"].filter(
@@ -38,7 +43,33 @@ export default function StatusSelection({
   );
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    console.log(event.target.value);
+    //first check if the value is "" to pull the task to update out
+    if (event.target.value === "") {
+      const statusesToChangeUpdate = statusesToChange.filter(
+        (statusExist: any) => statusExist.taskId !== task.id
+      );
+      setStatusesToChange(statusesToChangeUpdate);
+      setStatus(event.target.value as string);
+      return;
+    }
+
+    //check if the task exist already and need to be updated
+    const checkIfTaskExist = statusesToChange
+      .map((taskToUpdate: any) => {
+        return taskToUpdate.taskId;
+      })
+      .indexOf(task.id);
+    if (checkIfTaskExist === -1) {
+      console.log(statusesToChange[checkIfTaskExist]);
+      setStatusesToChange((prev: any) => [
+        ...prev,
+        { taskId: task.id, newStatus: event.target.value },
+      ]);
+    } else {
+      const taskToUpdate = statusesToChange;
+      statusesToChange[checkIfTaskExist].newStatus = event.target.value;
+      setStatusesToChange(statusesToChange);
+    }
     setStatus(event.target.value as string);
   };
   return (
@@ -54,7 +85,7 @@ export default function StatusSelection({
             <em>None</em>
           </MenuItem>
           {statusArray.map((status, i) => (
-            <MenuItem value={i * 10}>
+            <MenuItem value={status}>
               <Chip
                 color={status !== "Done" ? "primary" : "secondary"}
                 label={status}

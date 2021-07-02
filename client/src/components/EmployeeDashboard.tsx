@@ -51,8 +51,8 @@ export const EmployeeDashboard = () => {
         </>
       ) : currentPage === "tasks" ? (
         <>
-          <CollapsibleTable tasks={tasks} />
-          <AddNewTask />
+          <CollapsibleTable  tasks={tasks} />
+          <AddNewTask getTasks={getTasks} />
         </>
       ) : currentPage === "settings" ? (
         <Settings />
