@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { BASE_URL } from "../Utils/Variables";
 
 const AuthContext = createContext<any>({});
 
@@ -13,7 +14,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const signup = (email: string, username: string, password: string) => {
     return axios.post(
-      "http://localhost:3001/api/v1/user/signup",
+      `${BASE_URL}/user/signup`,
       {
         username,
         email,
@@ -25,7 +26,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const login = (email: string, password: string) => {
     return axios.post(
-      "http://localhost:3001/api/v1/user/login",
+      `${BASE_URL}/user/login`,
       {
         email,
         password,
@@ -34,11 +35,13 @@ export const AuthProvider: React.FC = ({ children }) => {
     );
   };
 
-  //   const logout = () => {};
+  const logout = () => {
+    return axios.get(`${BASE_URL}/user/logout`, { withCredentials: true });
+  };
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/v1/user/token", { withCredentials: true })
+      .get(`${BASE_URL}/user/token`, { withCredentials: true })
       .then((data) => {
         setCurrentUser(data.data.user);
         setLoading(false);
@@ -51,7 +54,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   const value = {
     currentUser,
     login,
-    // logout,
+    logout,
     signup,
     setCurrentUser,
   };

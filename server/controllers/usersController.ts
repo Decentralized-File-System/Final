@@ -172,6 +172,10 @@ export const change_props_put = async (req: Request, res: Response) => {
       if (!auth) {
         return res.status(404).send("Incorrect password");
       }
+      const isExist = await getUserByEmail(newEmail);
+      if (isExist) {
+        return res.status(409).send("Email already exist");
+      }
       const response = await updateEmailOrPassword(
         users[0],
         newEmail,
@@ -183,6 +187,7 @@ export const change_props_put = async (req: Request, res: Response) => {
         return res.status(400).send("Failed to updated");
       }
     } catch (error) {
+      console.log(error);
       return res.status(500).send("Failed to updated");
     }
   }

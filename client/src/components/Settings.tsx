@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Divider from "@material-ui/core/Divider";
@@ -15,7 +16,8 @@ type FormValues = {
 
 export const Settings = () => {
   const { register, handleSubmit } = useForm<FormValues>();
-  const { currentUser } = useAuth();
+  const { currentUser, logout } = useAuth();
+  const history = useHistory()
 
   const submitForm: SubmitHandler<FormValues> = async (data) => {
     if (!data.newEmail && !data.newPassword) {
@@ -34,9 +36,10 @@ export const Settings = () => {
       const res = await axios.put(url, [currentUser], {
         withCredentials: true,
       });
-      console.log(res.data);
+      await logout();
+      history.push("/login")
     } catch (error) {
-      console.log(error.response.data);
+      console.log(error);
     }
   };
 

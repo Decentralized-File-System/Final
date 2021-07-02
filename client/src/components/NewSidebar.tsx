@@ -14,8 +14,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useData } from "../context/AppDataContext";
 import { useHistory } from "react-router-dom";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import axios from "axios";
-import { BASE_URL } from "../Utils/Variables";
+import { useAuth } from "../context/AuthContext";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -44,6 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function PermanentDrawerLeft() {
   const { currentPage, setCurrentPage } = useData();
+  const { logout } = useAuth();
   const history = useHistory();
   const classes = useStyles();
   const matches = useMediaQuery("(min-width:1100px)");
@@ -55,7 +55,7 @@ export default function PermanentDrawerLeft() {
 
   const logoutHandler = async () => {
     try {
-      await axios.get(`${BASE_URL}/user/logout`, { withCredentials: true });
+      await logout();
       history.push("/login");
     } catch (error) {
       console.log(error);
