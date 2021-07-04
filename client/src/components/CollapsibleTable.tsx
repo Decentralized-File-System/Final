@@ -21,7 +21,6 @@ import { Chip } from "@material-ui/core";
 import { useState } from "react";
 import { useData } from "../context/AppDataContext";
 import TablePagination from "@material-ui/core/TablePagination";
-import BounceLoader from "react-spinners/BounceLoader";
 import BeatLoader from "react-spinners/BeatLoader";
 import { css } from "@emotion/react";
 
@@ -103,6 +102,7 @@ function Row({ task, index }: propsRowType) {
   const daysPercentColor = getColorForPercentage(daysPercent);
 
   const classes = useRowStyles();
+
 
   return (
     <React.Fragment>

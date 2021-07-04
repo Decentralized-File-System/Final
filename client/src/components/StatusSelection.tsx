@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -9,6 +9,7 @@ import { Chip } from "@material-ui/core";
 import { bytesToSize } from "../Utils/function";
 import { useData } from "../context/AppDataContext";
 import { task } from "../types";
+import { useEffect } from "react";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -37,7 +38,7 @@ export default function StatusSelection({
 }: propsType) {
   const { setStatusesToChange, statusesToChange } = useData();
   const classes = useStyles();
-  const [status, setStatus] = React.useState("");
+  const [status, setStatus] = useState("");
   const statusArray = ["Not Started", "In Progress", "Done"].filter(
     (status) => status !== currentStatus && status !== "Not Started"
   );
@@ -71,6 +72,13 @@ export default function StatusSelection({
     }
     setStatus(event.target.value as string);
   };
+  
+  useEffect(() => {
+    if (statusesToChange.length === 0) {
+      setStatus("");
+    }
+  }, [statusesToChange]);
+
   return (
     <div>
       <FormControl className={classes.formControl}>
