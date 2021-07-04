@@ -1,5 +1,6 @@
 // @ts-ignore
 import { DataNode, Chunk, File, sequelize, User, Task } from "../models";
+import { Op } from "sequelize";
 import { ChunkClass } from "../utils/classes";
 import { chunk } from "../types";
 
@@ -90,6 +91,14 @@ export const getFilesByTeamId = async (teamId: string) => {
   const res = await File.findAll({
     where: { team_id: teamId },
     order: [["createdAt", "DESC"]],
+  });
+  const filesArray = res.map((data: any) => data.toJSON());
+  return filesArray;
+};
+
+export const getFileByName = async (text: string, teamId: string) => {
+  const res = await File.findAll({
+    where: { name: { [Op.like]: `%${text}%` }, team_id: teamId },
   });
   const filesArray = res.map((data: any) => data.toJSON());
   return filesArray;

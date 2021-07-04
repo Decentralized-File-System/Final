@@ -52,7 +52,11 @@ export const AdminDashboard = () => {
         </>
       ) : currentPage === "tasks" ? (
         <>
-          <CollapsibleTable getTasks={getTasks} tasks={tasks} />
+          <CollapsibleTable
+            getTasks={getTasks}
+            tasks={tasks}
+            setTasks={setTasks}
+          />
           <AddNewTask getTasks={getTasks} />
         </>
       ) : currentPage === "settings" ? (

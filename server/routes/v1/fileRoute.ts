@@ -4,6 +4,7 @@ import {
   downloadFile,
   filesGet,
   deleteFile,
+  fileByNameGet,
 } from "../../controllers/fileController";
 import busboy from "connect-busboy";
 
@@ -18,6 +19,7 @@ router.use(
 router.post("/post-file", saveFilePost);
 router.get("/download-file", downloadFile);
 router.get("/files", filesGet);
+router.get("/file-by-name", fileByNameGet);
 router.delete("/", deleteFile);
 
 export default router;

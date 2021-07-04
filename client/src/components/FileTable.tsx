@@ -2,7 +2,7 @@ import React from "react";
 import Table from "react-bootstrap/Table";
 import { file } from "../types";
 import File from "./File";
-import { TableActions } from "./TableActions";
+import { FileTableActions } from "./FileTableActions";
 
 type fileTableProps = {
   files: file[];
@@ -13,7 +13,7 @@ type fileTableProps = {
 function FileTable({ files, getFiles, setFiles }: fileTableProps) {
   return (
     <div className="fileTable-container">
-      <TableActions files={files} setFiles={setFiles} />
+      <FileTableActions files={files} setFiles={setFiles} getFiles={getFiles} />
       <Table striped bordered hover size="sm" className="file-Table">
         <thead>
           <tr>
