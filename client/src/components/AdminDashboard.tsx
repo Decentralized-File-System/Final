@@ -25,7 +25,7 @@ export const AdminDashboard = () => {
     );
     setTasks(res.data);
   };
-
+  
   const getFiles = async () => {
     try {
       const res = await axios.get(
@@ -52,7 +52,7 @@ export const AdminDashboard = () => {
         </>
       ) : currentPage === "tasks" ? (
         <>
-          <CollapsibleTable tasks={tasks} />
+          <CollapsibleTable getTasks={getTasks} tasks={tasks} />
           <AddNewTask getTasks={getTasks} />
         </>
       ) : currentPage === "settings" ? (

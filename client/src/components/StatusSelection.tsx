@@ -43,7 +43,8 @@ export default function StatusSelection({
   );
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    //first check if the value is "" to pull the task to update out
+    
+    //first check if the clicked value is "" (="NONE") to pull the task out
     if (event.target.value === "") {
       const statusesToChangeUpdate = statusesToChange.filter(
         (statusExist: any) => statusExist.taskId !== task.id
@@ -60,7 +61,6 @@ export default function StatusSelection({
       })
       .indexOf(task.id);
     if (checkIfTaskExist === -1) {
-      console.log(statusesToChange[checkIfTaskExist]);
       setStatusesToChange((prev: any) => [
         ...prev,
         { taskId: task.id, newStatus: event.target.value },

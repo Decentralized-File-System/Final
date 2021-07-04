@@ -15,13 +15,14 @@ export const EmployeeDashboard = () => {
   const { currentPage } = useData();
   const [files, setFiles] = useState<file[]>([]);
   const [tasks, setTasks] = useState<task[]>([]);
-  const { currentUser } = useAuth();
+  const { currentUser } = useAuth();  
 
   const getTasks = async () => {
     const res = await axios.get(
       `${BASE_URL}/task/all-tasks?teamId=${currentUser.teamId}`,
       { withCredentials: true }
     );
+    console.log("Setting new task");
     setTasks(res.data);
   };
 
@@ -51,7 +52,7 @@ export const EmployeeDashboard = () => {
         </>
       ) : currentPage === "tasks" ? (
         <>
-          <CollapsibleTable  tasks={tasks} />
+          <CollapsibleTable getTasks={getTasks} tasks={tasks} />
           <AddNewTask getTasks={getTasks} />
         </>
       ) : currentPage === "settings" ? (

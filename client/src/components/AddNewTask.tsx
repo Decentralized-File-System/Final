@@ -13,6 +13,15 @@ import { useAuth } from "../context/AuthContext";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { BASE_URL } from "../Utils/Variables";
+import Grid from "@material-ui/core/Grid";
+import "date-fns";
+//@ts-ignore
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
 
 const swal = withReactContent(Swal);
 
@@ -21,18 +30,22 @@ type addNewTaskProps = {
 };
 
 export default function AddNewTask({ getTasks }: addNewTaskProps) {
-  /* This component creates the add new ticket functionallity, using material-ui dialog
-  and a trigger AddButton */
-
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const { currentUser } = useAuth();
-  const [open, setOpen] = React.useState(false);
-
-  const newTask = {
+  const [open, setOpen] = useState(false);
+  const [newTask, setNewTask] = useState({
     title: "",
     content: "",
-    deadline: "",
-    email: "",
-    labels: "",
+    teamId: currentUser.teamId,
+    deadline: new Date(),
+    userName: currentUser.username,
+  });
+
+  const handleDateChange = (date: Date | null) => {
+    if (date !== null) {
+      setSelectedDate(date);
+      newTask.deadline = new Date(date);
+    }
   };
 
   const handleClickOpen = () => {
@@ -45,7 +58,11 @@ export default function AddNewTask({ getTasks }: addNewTaskProps) {
 
   const addTask = async () => {
     try {
-      axios.post(`${BASE_URL}/task/new`, newTask, { withCredentials: true });
+      await axios.post(
+        `${BASE_URL}/task/new`,
+        { task: newTask },
+        { withCredentials: true }
+      );
       const status = "Task has uploaded Successfully!";
       swal.fire({
         title: "✔",
@@ -92,23 +109,26 @@ export default function AddNewTask({ getTasks }: addNewTaskProps) {
             helperText="Task title"
             onChange={(e) => {
               newTask.title = e.target.value;
+              setNewTask(newTask);
             }}
             fullWidth
             required
           />
-          <TextField
-            autoFocus
-            id="deadline"
-            label="Deadline"
-            margin="normal"
-            helperText="Deadline"
-            onChange={(e) => {
-              newTask.deadline = e.target.value;
-            }}
-            fullWidth
-            required
-          />
-
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <Grid container justify="space-around">
+              <KeyboardDatePicker
+                margin="normal"
+                id="date-picker-dialog"
+                label="Deadline *"
+                format="MM/dd/yyyy"
+                value={selectedDate}
+                onChange={handleDateChange}
+                KeyboardButtonProps={{
+                  "aria-label": "change date",
+                }}
+              />
+            </Grid>
+          </MuiPickersUtilsProvider>
           <TextField
             id="content"
             label="Content"
@@ -116,6 +136,7 @@ export default function AddNewTask({ getTasks }: addNewTaskProps) {
             helperText="Task content"
             onChange={(e) => {
               newTask.content = e.target.value;
+              setNewTask(newTask);
             }}
             variant="outlined"
             rows="3"

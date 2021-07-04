@@ -96,7 +96,6 @@ function Row({ task, index }: propsRowType) {
 
   const classes = useRowStyles();
 
-
   return (
     <React.Fragment>
       <TableRow
@@ -163,13 +162,19 @@ function Row({ task, index }: propsRowType) {
 
 type propsType = {
   tasks: task[];
+  getTasks: Function;
 };
 
-export default function CollapsibleTable({ tasks }: propsType) {
-  const {updateStatuses} = useData();
+export default function CollapsibleTable({ tasks, getTasks }: propsType) {
+  const { updateStatuses, statusesToChange } = useData();
   const changeStatusHandler = () => {
     updateStatuses();
   };
+  useEffect(() => {
+    if (statusesToChange.length === 0) {
+      getTasks();
+    }
+  }, [statusesToChange]);
   return (
     <div className="tasks-div-container">
       <TableContainer component={Paper}>
@@ -188,7 +193,11 @@ export default function CollapsibleTable({ tasks }: propsType) {
               </TableCell>
               <TableCell style={{ fontWeight: "bolder" }}>
                 Change Status -
-                <Button onClick={changeStatusHandler} variant="contained" style={{ display: "inline" }}>
+                <Button
+                  onClick={changeStatusHandler}
+                  variant="contained"
+                  style={{ display: "inline" }}
+                >
                   Submit
                 </Button>
               </TableCell>
