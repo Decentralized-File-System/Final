@@ -11,10 +11,11 @@ export function useData() {
 export const DataProvider: React.FC = ({ children }) => {
   const [currentPage, setCurrentPage] = useState("files");
   const [statusesToChange, setStatusesToChange] = useState<any>([]);
+  const [taskLoader, setTaskLoader] = useState(false);
 
   const updateStatuses = async () => {
-    console.log(statusesToChange);
     if (statusesToChange.length !== 0) {
+      setTaskLoader(true)
       try {
         for (const newStatus of statusesToChange) {
           await axios.put(
@@ -23,8 +24,10 @@ export const DataProvider: React.FC = ({ children }) => {
             { withCredentials: true }
           );
         }
+        setTaskLoader(false)
         setStatusesToChange([]);
       } catch (error) {
+        setTaskLoader(false)
         setStatusesToChange([]);
         console.log(error.message);
       }
@@ -37,6 +40,7 @@ export const DataProvider: React.FC = ({ children }) => {
     setStatusesToChange,
     statusesToChange,
     updateStatuses,
+    taskLoader
   };
 
   return (

@@ -14,6 +14,8 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { BASE_URL } from "../Utils/Variables";
 import Grid from "@material-ui/core/Grid";
+import BounceLoader from "react-spinners/BounceLoader";
+import { css } from "@emotion/react";
 import "date-fns";
 //@ts-ignore
 import DateFnsUtils from "@date-io/date-fns";
@@ -31,6 +33,7 @@ type addNewTaskProps = {
 
 export default function AddNewTask({ getTasks }: addNewTaskProps) {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const [loading, setLoading] = useState(false);
   const { currentUser } = useAuth();
   const [open, setOpen] = useState(false);
   const [newTask, setNewTask] = useState({
@@ -58,6 +61,7 @@ export default function AddNewTask({ getTasks }: addNewTaskProps) {
 
   const addTask = async () => {
     try {
+      setLoading(true);
       await axios.post(
         `${BASE_URL}/task/new`,
         { task: newTask },
@@ -72,6 +76,7 @@ export default function AddNewTask({ getTasks }: addNewTaskProps) {
       });
       getTasks();
       setOpen(false);
+      setLoading(false);
     } catch (error) {
       console.log(error);
       const status = "It seems there's been an error with the server.";
@@ -82,6 +87,7 @@ export default function AddNewTask({ getTasks }: addNewTaskProps) {
         showConfirmButton: true,
       });
       setOpen(false);
+      setLoading(false);
     }
   };
 
@@ -146,12 +152,18 @@ export default function AddNewTask({ getTasks }: addNewTaskProps) {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={closeDialog} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={addTask} color="primary">
-            Add
-          </Button>
+          {!loading ? (
+            <>
+              <Button onClick={closeDialog} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={addTask} color="primary">
+                Add
+              </Button>
+            </>
+          ) : (
+            <BounceLoader color={"#5C94D9"} size={40} />
+          )}
         </DialogActions>
       </Dialog>
     </div>

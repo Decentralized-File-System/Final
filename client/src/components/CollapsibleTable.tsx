@@ -21,6 +21,13 @@ import { Chip } from "@material-ui/core";
 import { useState } from "react";
 import { useData } from "../context/AppDataContext";
 import TablePagination from "@material-ui/core/TablePagination";
+import BounceLoader from "react-spinners/BounceLoader";
+import BeatLoader from "react-spinners/BeatLoader";
+import { css } from "@emotion/react";
+
+const override = css`
+  margin: auto;
+`;
 
 const useRowStyles = makeStyles({
   root: {
@@ -167,9 +174,9 @@ type propsType = {
 };
 
 export default function CollapsibleTable({ tasks, getTasks }: propsType) {
-  const { updateStatuses, statusesToChange } = useData();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const { updateStatuses, statusesToChange, taskLoader } = useData();
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -181,6 +188,8 @@ export default function CollapsibleTable({ tasks, getTasks }: propsType) {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+
 
   const changeStatusHandler = () => {
     updateStatuses();
@@ -207,14 +216,22 @@ export default function CollapsibleTable({ tasks, getTasks }: propsType) {
                 Deadline at
               </TableCell>
               <TableCell style={{ fontWeight: "bolder" }}>
-                Change Status -
-                <Button
-                  onClick={changeStatusHandler}
-                  variant="contained"
-                  style={{ display: "inline" }}
-                >
-                  Submit
-                </Button>
+                {!taskLoader ? (
+                  <>
+                    Change Status -
+                    <Button
+                      onClick={changeStatusHandler}
+                      variant="contained"
+                      style={{ display: "inline" }}
+                    >
+                      Submit
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <BeatLoader color={"#5C94D9"} css={override} size={35} />
+                  </>
+                )}
               </TableCell>
             </TableRow>
           </TableHead>
@@ -225,10 +242,6 @@ export default function CollapsibleTable({ tasks, getTasks }: propsType) {
                 .map((task, i) => {
                   return <Row key={`${i} task`} task={task} index={i} />;
                 })}
-            {/* {tasks &&
-              tasks.map((task, i) => (
-                <Row key={`${i} task`} task={task} index={i} />
-              ))} */}
           </TableBody>
         </Table>
       </TableContainer>
