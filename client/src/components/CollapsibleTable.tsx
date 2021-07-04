@@ -20,6 +20,7 @@ import { useEffect } from "react";
 import { Chip } from "@material-ui/core";
 import { useState } from "react";
 import { useData } from "../context/AppDataContext";
+import TablePagination from "@material-ui/core/TablePagination";
 
 const useRowStyles = makeStyles({
   root: {
@@ -167,6 +168,20 @@ type propsType = {
 
 export default function CollapsibleTable({ tasks, getTasks }: propsType) {
   const { updateStatuses, statusesToChange } = useData();
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
   const changeStatusHandler = () => {
     updateStatuses();
   };
@@ -205,12 +220,27 @@ export default function CollapsibleTable({ tasks, getTasks }: propsType) {
           </TableHead>
           <TableBody>
             {tasks &&
+              tasks
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((task, i) => {
+                  return <Row key={`${i} task`} task={task} index={i} />;
+                })}
+            {/* {tasks &&
               tasks.map((task, i) => (
                 <Row key={`${i} task`} task={task} index={i} />
-              ))}
+              ))} */}
           </TableBody>
         </Table>
       </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 15]}
+        component="div"
+        count={tasks.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
     </div>
   );
 }
