@@ -16,12 +16,6 @@ type fileType = {
   index: number;
   getFiles: Function;
 };
-const whiteRowStyle = {
-  background: "white",
-};
-const grayRowStyle = {
-  background: "#f2f2f2",
-};
 
 const File = ({ file, index, getFiles }: fileType) => {
   const { currentUser } = useAuth();
@@ -43,47 +37,24 @@ const File = ({ file, index, getFiles }: fileType) => {
   };
 
   return (
-    <>
-      {index % 2 === 0 ? (
-        <tr style={grayRowStyle}>
-          <td>{index + 1}</td>
-          <td>{file.name}</td>
-          <td>{file.userId}</td>
-          <td>{bytesToSize(String(file.size))}</td>
-          <td>{file.type}</td>
-          <td>{new Date(file.createdAt).toDateString()}</td>
-          <td className="td-class">
-            <div style={{ display: "flex", justifyContent: "space-around" }}>
-              <Button onClick={downloadHandler} variant="outline-success">
-                Download
-              </Button>
-              {currentUser.isAdmin || currentUser.email === file.userId ? (
-                <DeleteDialog file={file} getFiles={getFiles} />
-              ) : null}
-            </div>
-          </td>
-        </tr>
-      ) : (
-        <tr style={whiteRowStyle}>
-          <td>{index + 1}</td>
-          <td>{file.name}</td>
-          <td>{file.userId}</td>
-          <td>{bytesToSize(String(file.size))}</td>
-          <td>{file.type}</td>
-          <td>{new Date(file.createdAt).toDateString()}</td>
-          <td className="td-class">
-            <div style={{ display: "flex", justifyContent: "space-around" }}>
-              <Button onClick={downloadHandler} variant="outline-success">
-                Download
-              </Button>
-              {currentUser.isAdmin || currentUser.email === file.userId ? (
-                <DeleteDialog file={file} getFiles={getFiles} />
-              ) : null}
-            </div>
-          </td>
-        </tr>
-      )}
-    </>
+    <tr className="file-tr">
+      <td>{index + 1}</td>
+      <td>{file.name}</td>
+      <td>{file.userId}</td>
+      <td>{bytesToSize(String(file.size))}</td>
+      <td>{file.type.split("/")[1]}</td>
+      <td>{new Date(file.createdAt).toDateString()}</td>
+      <td className="td-class">
+        <div style={{ display: "flex", justifyContent: "space-around" }}>
+          <Button onClick={downloadHandler} variant="outline-success">
+            Download
+          </Button>
+          {currentUser.isAdmin || currentUser.username === file.userId ? (
+            <DeleteDialog file={file} getFiles={getFiles} />
+          ) : null}
+        </div>
+      </td>
+    </tr>
   );
 };
 

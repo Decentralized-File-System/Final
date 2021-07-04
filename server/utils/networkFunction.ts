@@ -1,7 +1,6 @@
 import axios from "axios";
 import { ChunkClass } from "./classes";
-//@ts-ignore
-import nodePorts from "../utils/ports.json";
+import nodePorts from "./ports.json";
 import fs from "fs-extra";
 import path from "path";
 import { chunk } from "../types";
@@ -12,13 +11,6 @@ export const uploadChunks = async (
   fileChunkArray: ChunkClass[]
 ): Promise<string> => {
   for (const chunk of fileChunkArray) {
-    console.log("chunk sent");
-    console.log(chunk.buffer.byteLength);
-    console.log(
-      `http://${nodePorts[chunk.nodeId - 1].host}:${
-        nodePorts[chunk.nodeId - 1].port
-      }/api/v1/file/upload-file?fileId=${chunk.fileId}&index=${chunk.index}`
-    );
     const form = new FormData();
     form.append("file", chunk.buffer);
     try {
@@ -35,11 +27,9 @@ export const uploadChunks = async (
         },
       });
     } catch (error) {
-      console.log("return error");
       return error.message;
     }
   }
-  console.log("return success");
 
   return "success";
 };

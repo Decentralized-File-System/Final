@@ -25,7 +25,7 @@ export const AdminDashboard = () => {
     );
     setTasks(res.data);
   };
-  
+
   const getFiles = async () => {
     try {
       const res = await axios.get(
@@ -47,7 +47,7 @@ export const AdminDashboard = () => {
     <div>
       {currentPage === "files" ? (
         <>
-          <FileTable files={files} getFiles={getFiles} />
+          <FileTable files={files} getFiles={getFiles} setFiles={setFiles} />
           <UploadNewFileDialog getFiles={getFiles} />
         </>
       ) : currentPage === "tasks" ? (

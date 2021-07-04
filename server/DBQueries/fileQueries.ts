@@ -87,7 +87,10 @@ export const getFileById = async (fileId: string) => {
 };
 
 export const getFilesByTeamId = async (teamId: string) => {
-  const res = await File.findAll({ where: { team_id: teamId } });
+  const res = await File.findAll({
+    where: { team_id: teamId },
+    order: [["createdAt", "DESC"]],
+  });
   const filesArray = res.map((data: any) => data.toJSON());
   return filesArray;
 };

@@ -36,11 +36,11 @@ export const saveFilePost = async (req: Request, res: Response) => {
   const fileSize: number = Number(req.query.size);
   const fileType: string = String(req.query.type);
   const teamId: string = String(req.query.teamId);
-  const email: string = String(req.query.email);
+  const username: string = String(req.query.username);
 
   req.busboy.on("file", (fieldName, file, filename) => {
     console.log(`Upload of '${filename}' started`);
-    
+
     // Create a write stream of the new file
     const fStream = fs.createWriteStream(path.join(mainPath, filename));
 
@@ -120,7 +120,7 @@ export const saveFilePost = async (req: Request, res: Response) => {
           //If uploading chunks was successful updating the DB
           if (response === "success") {
             try {
-              await addFile(dataBaseFileInfo, email, teamId);
+              await addFile(dataBaseFileInfo, username, teamId);
               await addChunk(fileChunkArray);
               await updateDataNodes(fileChunkArray);
               res.status(200).send("success");
@@ -166,7 +166,7 @@ export const saveFilePost = async (req: Request, res: Response) => {
         //If upload was successful updating the DB
         if (response === "success") {
           try {
-            await addFile(dataBaseFileInfo, email, teamId);
+            await addFile(dataBaseFileInfo, username, teamId);
             await addChunk(fileChunkArray);
             await updateDataNodes(fileChunkArray);
             res.status(200).send("success");

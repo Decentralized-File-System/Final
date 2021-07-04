@@ -15,7 +15,7 @@ export const EmployeeDashboard = () => {
   const { currentPage } = useData();
   const [files, setFiles] = useState<file[]>([]);
   const [tasks, setTasks] = useState<task[]>([]);
-  const { currentUser } = useAuth();  
+  const { currentUser } = useAuth();
 
   const getTasks = async () => {
     const res = await axios.get(
@@ -47,7 +47,7 @@ export const EmployeeDashboard = () => {
     <div>
       {currentPage === "files" ? (
         <>
-          <FileTable files={files} getFiles={getFiles} />
+          <FileTable files={files} getFiles={getFiles} setFiles={setFiles} />
           <UploadNewFileDialog getFiles={getFiles} />
         </>
       ) : currentPage === "tasks" ? (

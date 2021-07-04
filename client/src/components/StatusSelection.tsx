@@ -43,7 +43,6 @@ export default function StatusSelection({
   );
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    
     //first check if the clicked value is "" (="NONE") to pull the task out
     if (event.target.value === "") {
       const statusesToChangeUpdate = statusesToChange.filter(
