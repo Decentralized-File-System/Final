@@ -103,7 +103,6 @@ function Row({ task, index }: propsRowType) {
 
   const classes = useRowStyles();
 
-
   return (
     <React.Fragment>
       <TableRow
@@ -171,6 +170,7 @@ function Row({ task, index }: propsRowType) {
 type propsType = {
   tasks: task[];
   getTasks: Function;
+  setTasks: React.Dispatch<React.SetStateAction<task[]>>;
 };
 
 export default function CollapsibleTable({ tasks, getTasks }: propsType) {
@@ -188,8 +188,6 @@ export default function CollapsibleTable({ tasks, getTasks }: propsType) {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
-
 
   const changeStatusHandler = () => {
     updateStatuses();

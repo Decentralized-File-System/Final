@@ -19,6 +19,7 @@ import {
   getFileById,
   dataNodeStorageAfterDelete,
   deleteFileAndChunks,
+  getFileByName,
 } from "../DBQueries/fileQueries";
 import {
   uploadChunks,
@@ -254,6 +255,20 @@ export const filesGet = async (req: Request, res: Response) => {
   }
   try {
     const fileArray = await getFilesByTeamId(teamId);
+    return res.status(200).json(fileArray);
+  } catch (error) {
+    res.status(500).send("failed");
+  }
+};
+
+//Get all files of a specific team and name-----------------------------------------
+export const fileByNameGet = async (req: Request, res: Response) => {
+  const { text, teamId }: any = req.query;
+  if (!teamId) {
+    return res.status(401).send("Bad request");
+  }
+  try {
+    const fileArray = await getFileByName(text, teamId);
     return res.status(200).json(fileArray);
   } catch (error) {
     res.status(500).send("failed");
