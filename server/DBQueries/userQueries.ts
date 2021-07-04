@@ -37,14 +37,18 @@ export const getAllUsers = async () => {
 
 export const getAllEmployeesWithoutTeam = async () => {
   const response = await User.findAll({
-    where: { team_id: null || "null", isAdmin: "false", isSuperAdmin: "false" },
+    where: { team_id: null, isAdmin: "false", isSuperAdmin: "false" },
   });
   const regularEmployeesArray = response.map((data: any) => data.toJSON());
   return regularEmployeesArray;
 };
 
-export const updateTeam = async (usersArray: user[], newTeamId: string) => {
+export const updateTeam = async (
+  usersArray: user[],
+  newTeamId: string | null
+) => {
   try {
+    if (newTeamId === "null") newTeamId = null;
     for (const user of usersArray) {
       await User.update(
         { teamId: newTeamId },
