@@ -3,12 +3,14 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import FileTable from "./FileTable";
+import { Settings } from "./Settings";
 import { useData } from "../context/AppDataContext";
 import { BASE_URL } from "../Utils/Variables";
 import { file, task } from "../types";
 import UploadNewFileDialog from "./UploadFileForm";
 import CollapsibleTable from "./CollapsibleTable";
 import AddNewTask from "./AddNewTask";
+import { TeamManagement } from "./TeamManagement";
 
 export const AdminDashboard = () => {
   const { currentPage } = useData();
@@ -53,6 +55,10 @@ export const AdminDashboard = () => {
           <CollapsibleTable tasks={tasks} />
           <AddNewTask getTasks={getTasks} />
         </>
+      ) : currentPage === "settings" ? (
+        <Settings />
+      ) : currentPage === "teamManagement" ? (
+        <TeamManagement />
       ) : null}
     </div>
   );

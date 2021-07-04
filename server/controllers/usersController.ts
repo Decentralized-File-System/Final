@@ -184,7 +184,7 @@ export const change_props_put = async (req: Request, res: Response) => {
       if (response === "success") {
         return res.status(200).send("Successfully updated");
       } else {
-        return res.status(400).send("Failed to updated");
+        return res.status(500).send("Failed to updated");
       }
     } catch (error) {
       console.log(error);

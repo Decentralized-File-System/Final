@@ -199,4 +199,18 @@ thead,
   background-color: ghostwhite;
   border-radius: 5px;
 }
+
+.refresh-button {
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.refresh-button:hover {
+  background-color: #faecec;
+}
+
+.refresh-button:active {
+  -webkit-transform: scale(0.8);
+          transform: scale(0.8);
+}
 /*# sourceMappingURL=App.css.map */

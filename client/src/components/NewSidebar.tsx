@@ -9,6 +9,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
+import GroupIcon from "@material-ui/icons/Group";
 import SettingsIcon from "@material-ui/icons/Settings";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useData } from "../context/AppDataContext";
@@ -43,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function PermanentDrawerLeft() {
   const { currentPage, setCurrentPage } = useData();
-  const { logout } = useAuth();
+  const { logout, currentUser } = useAuth();
   const history = useHistory();
   const classes = useStyles();
   const matches = useMediaQuery("(min-width:1100px)");
@@ -99,6 +100,20 @@ export default function PermanentDrawerLeft() {
               <ListItemText primary={"Files"} />
             </span>
           </ListItem>
+          {currentUser.isAdmin ? (
+            <ListItem
+              button
+              key={"Team management"}
+              onClick={() => navigateHandler("teamManagement")}
+            >
+              <span style={{ display: "flex" }}>
+                <ListItemIcon>
+                  <GroupIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Team management"} />
+              </span>
+            </ListItem>
+          ) : null}
           <ListItem
             button
             key={"Settings"}

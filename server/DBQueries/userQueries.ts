@@ -43,11 +43,15 @@ export const getAllEmployeesWithoutTeam = async () => {
   return regularEmployeesArray;
 };
 
-export const updateTeam = async (usersArray: user[], newTeamId: string) => {
+export const updateTeam = async (
+  usersArray: user[],
+  newTeamId: string | null
+) => {
   try {
+    if (newTeamId === "null") newTeamId = null;
     for (const user of usersArray) {
       await User.update(
-        { teamId: "Doe" },
+        { teamId: newTeamId },
         {
           where: {
             email: user.email,
