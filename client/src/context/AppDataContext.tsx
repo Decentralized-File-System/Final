@@ -90,16 +90,18 @@ export const DataProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     try {
-      getFiles();
-      getTasks();
-      getQuote();
-      getDataNodesInfo();
-      setLoading(false);
+      if(currentUser){
+        getFiles();
+        getTasks();
+        getQuote();
+        getDataNodesInfo();
+        setLoading(false);
+      }
     } catch (error) {
       console.log(error);
       setLoading(false);
     }
-  }, []);
+  }, [currentUser]);
 
   const updateStatuses = async () => {
     if (statusesToChange.length !== 0) {
