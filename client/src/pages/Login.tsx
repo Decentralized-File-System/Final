@@ -17,6 +17,7 @@ export const Login = () => {
   const submitForm: SubmitHandler<FormValues> = async (data) => {
     try {
       const res = await login(data.email, data.password);
+      console.log(res)
       setCurrentUser(res.data);
       history.push("/");
     } catch (error) {

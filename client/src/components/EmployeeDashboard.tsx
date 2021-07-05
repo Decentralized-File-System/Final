@@ -10,9 +10,11 @@ import UploadNewFileDialog from "./UploadFileForm";
 import CollapsibleTable from "./CollapsibleTable";
 import AddNewTask from "./AddNewTask";
 import { Settings } from "./Settings";
+import Dashboard from "./Dashboard";
+
 
 export const EmployeeDashboard = () => {
-  const { currentPage } = useData();
+  const { currentPage,setContextTasks } = useData();
   const [files, setFiles] = useState<file[]>([]);
   const [tasks, setTasks] = useState<task[]>([]);
   const { currentUser } = useAuth();
@@ -24,6 +26,8 @@ export const EmployeeDashboard = () => {
     );
     console.log("Setting new task");
     setTasks(res.data);
+    console.log(res.data)
+    setContextTasks(res.data);
   };
 
   const getFiles = async () => {
@@ -44,7 +48,7 @@ export const EmployeeDashboard = () => {
   }, []);
 
   return (
-    <div>
+    <div id="employee-dashboard">
       {currentPage === "files" ? (
         <>
           <FileTable files={files} getFiles={getFiles} setFiles={setFiles} />
@@ -61,6 +65,8 @@ export const EmployeeDashboard = () => {
         </>
       ) : currentPage === "settings" ? (
         <Settings />
+      ) : currentPage === "dashboard" ? (
+        <Dashboard />
       ) : null}
     </div>
   );

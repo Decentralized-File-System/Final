@@ -11,6 +11,7 @@ import UploadNewFileDialog from "./UploadFileForm";
 import CollapsibleTable from "./CollapsibleTable";
 import AddNewTask from "./AddNewTask";
 import { TeamManagement } from "./TeamManagement";
+import Dashboard from "./Dashboard";
 
 export const AdminDashboard = () => {
   const { currentPage } = useData();
@@ -42,7 +43,6 @@ export const AdminDashboard = () => {
     getTasks();
     getFiles();
   }, []);
-
   return (
     <div>
       {currentPage === "files" ? (
@@ -63,6 +63,8 @@ export const AdminDashboard = () => {
         <Settings />
       ) : currentPage === "teamManagement" ? (
         <TeamManagement />
+      ) : currentPage === "dashboard" ? (
+        <Dashboard />
       ) : null}
     </div>
   );
