@@ -7,6 +7,7 @@ import {
   getFromDateRange,
   getTaskOfTeam,
   relevantTasks,
+  getTaskByName,
 } from "../DBQueries/taskQueries";
 
 export const getAllTasksOfTeam = async (req: Request, res: Response) => {
@@ -77,5 +78,18 @@ export const getRangeOfDate = async (req: Request, res: Response) => {
     res.status(200).json(rangeTasks);
   } catch (error) {
     res.status(500).json({ message: "Error" });
+  }
+};
+
+export const taskByNameGet = async (req: Request, res: Response) => {
+  const { text, teamId }: any = req.query;
+  if (!teamId) {
+    return res.status(401).send("Bad request");
+  }
+  try {
+    const taskArray = await getTaskByName(text, teamId);
+    return res.status(200).json(taskArray);
+  } catch (error) {
+    res.status(500).send("failed");
   }
 };

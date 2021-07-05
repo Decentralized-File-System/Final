@@ -5,7 +5,10 @@ import { Op } from "sequelize";
 
 export const getTaskOfTeam = async (teamId: string) => {
   try {
-    const allTasks = await Task.findAll({ where: { team_id: teamId } });
+    const allTasks = await Task.findAll({
+      where: { team_id: teamId },
+      order: [["deadline", "ASC"]],
+    });
     return allTasks;
   } catch (error) {
     throw new Error(error);
@@ -102,4 +105,12 @@ export const getFromDateRange = async (
   } catch (error) {
     throw new Error(error);
   }
+};
+
+export const getTaskByName = async (text: string, teamId: string) => {
+  const res = await Task.findAll({
+    where: { title: { [Op.like]: `%${text}%` }, team_id: teamId },
+  });
+  const tasksArray = res.map((data: any) => data.toJSON());
+  return tasksArray;
 };

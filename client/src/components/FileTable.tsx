@@ -42,10 +42,6 @@ function FileTable({ files, getFiles, setFiles }: fileTableProps) {
           </tr>
         </thead>
         <tbody>
-          {/* {files &&
-            files.map((file: file, i: number) => (
-              <File getFiles={getFiles} file={file} index={i} key={`${i}`} />
-            ))} */}
           {files &&
             files
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)

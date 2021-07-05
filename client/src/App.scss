@@ -20,10 +20,13 @@ html {
 }
 
 .tasks-div-container {
-  max-width: 60em;
+  background-color: ghostwhite;
+  max-width: 65em;
   margin: auto;
   overflow-wrap: break-word;
   margin-top: 2em;
+  padding: 2rem;
+  border-radius: 5px;
 }
 
 .td-class {
@@ -112,9 +115,9 @@ tr {
 
 /* ===============tasks table================*/
 .deadline-div {
-  width: fit-content;
+  width: 7rem;
   padding: 0.3rem 0.6rem;
-  border-radius: 50px;
+  border-radius: 10px;
   border-width: 2px;
   border-style: solid;
   font-size: 0.8125rem;
@@ -197,4 +200,75 @@ thead,
 .change-team-div {
   display: flex;
   justify-content: space-evenly;
+}
+
+// ============table actions=========
+
+.table-actions {
+  text-align: center;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-around;
+  position: relative;
+  > div > label {
+    margin-right: 0.5rem;
+    font-weight: bold;
+  }
+  > div > select {
+    outline: none;
+    padding: 0.3rem;
+  }
+}
+
+.search-div {
+  display: flex;
+  width: 13rem;
+}
+
+.search-input {
+  width: 100%;
+  height: 1.6rem;
+  border-radius: 35px;
+  background: transparent;
+  outline: none;
+  border: 3px solid rgb(76, 87, 95);
+  padding: 0.8rem;
+  font-size: 1rem;
+  transition: width 0.5s;
+}
+
+.hidden {
+  visibility: hidden;
+  width: 0;
+}
+
+.search-button {
+  border: none;
+  background: transparent;
+  outline: none;
+  &:hover {
+    animation: circle 0.5s linear;
+  }
+}
+
+@keyframes circle {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(90deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  75% {
+    transform: rotate(270deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+#search-icon {
+  font-size: 2rem;
 }

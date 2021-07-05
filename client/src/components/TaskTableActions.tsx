@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { file, task } from "../types";
+import { task } from "../types";
 import {
-  sortByName,
-  sortByUser,
-  sortBySize,
-  sortByExtension,
-  sortByDate,
+  sortByTitleTask,
+  sortByStatusTask,
+  sortByDateTask,
+  sortByDeadlineTask,
 } from "../Utils/sortsFunctions";
 import SearchIcon from "@material-ui/icons/Search";
 import debounce from "lodash.debounce";
@@ -14,46 +13,37 @@ import { BASE_URL } from "../Utils/Variables";
 import { useAuth } from "../context/AuthContext";
 
 type tableActionsProps = {
-  files: file[];
-  setFiles: React.Dispatch<React.SetStateAction<file[]>>;
-  getFiles: Function;
+  tasks: task[];
+  setTasks: React.Dispatch<React.SetStateAction<task[]>>;
+  getTasks: Function;
 };
 
-export const FileTableActions: React.FC<tableActionsProps> = ({
-  files,
-  setFiles,
-  getFiles,
+export const TaskTableActions: React.FC<tableActionsProps> = ({
+  tasks,
+  setTasks,
+  getTasks,
 }) => {
   const [searchClass, setSearchClass] = useState("search-input hidden");
   const { currentUser } = useAuth();
   const handleSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
     let temp;
     switch (e.target.value) {
-      case "File Name":
-        temp = sortByName(files);
-        setFiles(temp);
+      case "Title":
+        temp = sortByTitleTask(tasks);
+        setTasks(temp);
         break;
-
-      case "User":
-        temp = sortByUser(files);
-        setFiles(temp);
+      case "Status":
+        temp = sortByStatusTask(tasks);
+        setTasks(temp);
         break;
-
-      case "Size":
-        temp = sortBySize(files);
-        setFiles(temp);
-        break;
-
-      case "Extension":
-        temp = sortByExtension(files);
-        setFiles(temp);
-        break;
-
       case "Uploaded at":
-        temp = sortByDate(files);
-        setFiles(temp);
+        temp = sortByDateTask(tasks);
+        setTasks(temp);
         break;
-
+      case "Deadline at":
+        temp = sortByDeadlineTask(tasks);
+        setTasks(temp);
+        break;
       default:
         break;
     }
@@ -62,12 +52,12 @@ export const FileTableActions: React.FC<tableActionsProps> = ({
   const search = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value !== "") {
       const res = await axios.get(
-        `${BASE_URL}/file/file-by-name?text=${e.target.value}&teamId=${currentUser.teamId}`,
+        `${BASE_URL}/task/task-by-name?text=${e.target.value}&teamId=${currentUser.teamId}`,
         { withCredentials: true }
       );
-      setFiles(res.data);
+      setTasks(res.data);
     } else {
-      getFiles();
+      getTasks();
     }
   };
 
@@ -89,13 +79,12 @@ export const FileTableActions: React.FC<tableActionsProps> = ({
           id="sort"
           name="sort"
           onChange={(e) => handleSort(e)}
-          defaultValue="Uploaded at"
+          defaultValue="Deadline at"
         >
-          <option value="File Name">File Name</option>
-          <option value="User">User</option>
-          <option value="Size">Size</option>
-          <option value="Extension">Extension</option>
+          <option value="Title">Title</option>
+          <option value="Status">Status</option>
           <option value="Uploaded at">Uploaded at</option>
+          <option value="Deadline at">Deadline at</option>
         </select>
       </div>
       <div className="search-div">

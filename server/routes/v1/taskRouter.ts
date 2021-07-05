@@ -8,6 +8,7 @@ import {
   getRelevant,
   getFinished,
   getRangeOfDate,
+  taskByNameGet,
 } from "../../controllers/taskController";
 
 router.get("/all-tasks", getAllTasksOfTeam);
@@ -17,5 +18,6 @@ router.get("/range", getRangeOfDate);
 router.post("/new", addNewTask);
 router.put("/update-status", updateTaskStatus);
 router.delete("/", deleteTask);
+router.get("/task-by-name", taskByNameGet);
 
 export default router;
