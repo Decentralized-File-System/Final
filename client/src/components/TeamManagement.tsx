@@ -10,8 +10,12 @@ import { BASE_URL } from "../Utils/Variables";
 import { useAuth } from "../context/AuthContext";
 import { user } from "../types";
 import { TeamMemberTab } from "./TeamMemberTab";
+import Button from "react-bootstrap/esm/Button";
 import RefreshIcon from "@material-ui/icons/Refresh";
-
+import { useRef } from "react";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+const swal = withReactContent(Swal);
 interface TabPanelProps {
   children?: React.ReactNode;
   index: any;
@@ -59,7 +63,8 @@ export const TeamManagement = () => {
   const [value, setValue] = React.useState(0);
   const [teamMembers, setTeamMembers] = useState<user[]>();
   const [freeEmployees, setFreeEmployees] = useState<user[]>();
-  const { currentUser } = useAuth();
+  const { currentUser, setCurrentUser } = useAuth();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const getTeamMembers = async () => {
     try {
@@ -135,6 +140,37 @@ export const TeamManagement = () => {
     setValue(newValue);
   };
 
+  const changeNameHandler = async () => {
+    const tempUser = Object.assign({}, currentUser);
+    tempUser.teamId = inputRef.current?.value;
+    try {
+      await axios.put(
+        `${BASE_URL}/user/change-team-id`,
+        {
+          oldId: currentUser.teamId,
+          newId: inputRef.current?.value,
+          isAdmin: currentUser.isAdmin,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      setCurrentUser(tempUser);
+      swal.fire({
+        title: "✔",
+        text: "Changed Id",
+        timer: 3000,
+        showConfirmButton: true,
+      });
+    } catch (error) {
+      swal.fire({
+        title: "Attention!",
+        text: "Failed To Change",
+        timer: 3000,
+        showConfirmButton: true,
+      });
+    }
+  };
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -145,6 +181,7 @@ export const TeamManagement = () => {
         >
           <Tab label="My team" {...a11yProps(0)} />
           <Tab label="Add member" {...a11yProps(1)} />
+          <Tab label="Edit Team Id" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
@@ -200,6 +237,12 @@ export const TeamManagement = () => {
               ))}
           </tbody>
         </table>
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        <div className="change-team-div">
+          <input ref={inputRef} type="text" placeholder={currentUser.teamId} />
+          <Button onClick={changeNameHandler}>Change Name</Button>
+        </div>
       </TabPanel>
     </div>
   );

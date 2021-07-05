@@ -1,5 +1,5 @@
 // @ts-ignore
-import { User, File } from "../models";
+import { User, File, Task } from "../models";
 import { hashSync, genSaltSync } from "bcrypt";
 import { user } from "../types";
 
@@ -127,6 +127,7 @@ export const changeTeamIdQuery = async (
   try {
     await User.update({ teamId: newTeamId }, { where: { teamId: oldTeamId } });
     await File.update({ teamId: newTeamId }, { where: { teamId: oldTeamId } });
+    await Task.update({ teamId: newTeamId }, { where: { teamId: oldTeamId } });
     return "success";
   } catch (error) {
     throw new Error(error);

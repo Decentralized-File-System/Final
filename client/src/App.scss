@@ -194,3 +194,7 @@ thead,
 .refresh-button:active {
   transform: scale(0.8);
 }
+.change-team-div {
+  display: flex;
+  justify-content: space-evenly;
+}

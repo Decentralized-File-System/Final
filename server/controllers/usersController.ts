@@ -205,7 +205,7 @@ export const token_get = (req: Request, res: Response) => {
 };
 
 export const changeTeamId = async (req: Request, res: Response) => {
-  const { oldId, newId, isAdmin }: any = req.query;
+  const { oldId, newId, isAdmin }: any = req.body;
   if (isAdmin) {
     try {
       await changeTeamIdQuery(oldId, newId);
