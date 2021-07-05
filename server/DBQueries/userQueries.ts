@@ -1,5 +1,5 @@
 // @ts-ignore
-import { User } from "../models";
+import { User, File } from "../models";
 import { hashSync, genSaltSync } from "bcrypt";
 import { user } from "../types";
 
@@ -118,4 +118,17 @@ export const getEmployeesByTeamId = async (teamId: string) => {
   });
   const regularEmployeesArray = response.map((data: any) => data.toJSON());
   return regularEmployeesArray;
+};
+
+export const changeTeamIdQuery = async (
+  oldTeamId: string,
+  newTeamId: string
+) => {
+  try {
+    await User.update({ teamId: newTeamId }, { where: { teamId: oldTeamId } });
+    await File.update({ teamId: newTeamId }, { where: { teamId: oldTeamId } });
+    return "success";
+  } catch (error) {
+    throw new Error(error);
+  }
 };
