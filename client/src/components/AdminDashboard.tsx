@@ -14,7 +14,7 @@ import { TeamManagement } from "./TeamManagement";
 import Dashboard from "./Dashboard";
 
 export const AdminDashboard = () => {
-  const { currentPage } = useData();
+  const { currentPage, setContextTasks } = useData();
   const [files, setFiles] = useState<file[]>([]);
   const [tasks, setTasks] = useState<task[]>([]);
   const { currentUser } = useAuth();
@@ -34,6 +34,7 @@ export const AdminDashboard = () => {
         { withCredentials: true }
       );
       setFiles(res.data);
+      setContextTasks(res.data);
     } catch (error) {
       console.log(error);
     }
