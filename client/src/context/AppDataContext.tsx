@@ -90,11 +90,13 @@ export const DataProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     try {
-      if(currentUser){
+      if (currentUser) {
         getFiles();
         getTasks();
         getQuote();
         getDataNodesInfo();
+        setLoading(false);
+      } else {
         setLoading(false);
       }
     } catch (error) {

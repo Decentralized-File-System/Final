@@ -7,6 +7,7 @@ const PrivateRoute: React.FC<RouteProps> = ({
   ...rest
 }) => {
   const { currentUser } = useAuth();
+  console.log(currentUser);
   if (!Component) return null;
   return (
     <Route
