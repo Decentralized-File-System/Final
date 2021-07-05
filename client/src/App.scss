@@ -38,6 +38,14 @@ html {
 
 /* ============ Login - Signup =============== */
 
+.login-spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40%;
+  height: 50%;
+}
+
 .login-signup-container {
   display: flex;
   justify-content: center;
@@ -49,8 +57,7 @@ html {
   background-color: f2f2f2;
   border-radius: 50px;
   padding: 5rem;
-  width: 40%;
-  height: 50%;
+
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   transition-property: width;
   transition-duration: 2s;
