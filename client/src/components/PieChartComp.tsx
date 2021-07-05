@@ -46,7 +46,6 @@ type PieChartCompProps = {
 
 export default function PieChartComp() {
   const { pieData } = useData();
-  console.log(pieData);
   return (
     <div className="pie-chart-container">
       <h4>Disk Info</h4>
@@ -77,7 +76,7 @@ export default function PieChartComp() {
       </PieChart>
       <div className="tagsColor pie-chart-tags" style={{ display: "flex" }}>
         {TAGS.map((tag, i) => (
-          <span style={{ marginRight: "2em", display:"flex" }}>
+          <span style={{ marginRight: "2em", display: "flex" }}>
             <div
               style={{
                 width: "20px",

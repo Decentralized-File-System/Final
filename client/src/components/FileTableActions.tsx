@@ -60,14 +60,18 @@ export const FileTableActions: React.FC<tableActionsProps> = ({
   };
 
   const search = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value !== "") {
-      const res = await axios.get(
-        `${BASE_URL}/file/file-by-name?text=${e.target.value}&teamId=${currentUser.teamId}`,
-        { withCredentials: true }
-      );
-      setFiles(res.data);
-    } else {
-      getFiles();
+    try {
+      if (e.target.value !== "") {
+        const res = await axios.get(
+          `${BASE_URL}/file/file-by-name?text=${e.target.value}&teamId=${currentUser.teamId}`,
+          { withCredentials: true }
+        );
+        setFiles(res.data);
+      } else {
+        getFiles();
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

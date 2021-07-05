@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { file, task } from "../types";
 import { BASE_URL } from "../Utils/Variables";
+import { useAuth } from "./AuthContext";
 
 const appDataContext = createContext<any>({});
 
@@ -9,17 +11,44 @@ export function useData() {
 }
 
 export const DataProvider: React.FC = ({ children }) => {
-  const [currentPage, setCurrentPage] = useState("files");
+  const { currentUser } = useAuth();
+  const [loading, setLoading] = useState(true);
+  const [files, setFiles] = useState<file[]>([]);
+  const [tasks, setTasks] = useState<task[]>([]);
+  const [currentPage, setCurrentPage] = useState("dashboard");
   const [statusesToChange, setStatusesToChange] = useState<any>([]);
   const [taskLoader, setTaskLoader] = useState(false);
   const [quote, setQuote] = useState<any>();
-  const [contextTasks, setContextTasks] = useState<any>();
   const [pieChart, setPieChart] = useState({
     type: "pie",
     available: 0,
     inUse: 0,
   });
   const [pieData, setPieData] = useState<any>([]);
+
+  const getTasks = async () => {
+    try {
+      const res = await axios.get(
+        `${BASE_URL}/task/all-tasks?teamId=${currentUser.teamId}`,
+        { withCredentials: true }
+      );
+      setTasks(res.data);
+    } catch (error) {
+      throw Error(error);
+    }
+  };
+
+  const getFiles = async () => {
+    try {
+      const res = await axios.get(
+        `${BASE_URL}/file/files?teamId=${currentUser.teamId}`,
+        { withCredentials: true }
+      );
+      setFiles(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getDataNodesInfo = async () => {
     try {
@@ -29,12 +58,9 @@ export const DataProvider: React.FC = ({ children }) => {
       let available = 0;
       let totalStorage = 0;
       for (const dataNode of res.data) {
-        console.log(dataNode);
         available += Number(dataNode.availableStorage);
         totalStorage += Number(dataNode.totalStorage);
       }
-      console.log(totalStorage);
-      console.log(available);
       const inUse = totalStorage - available;
       setPieChart({
         type: "pie",
@@ -46,7 +72,7 @@ export const DataProvider: React.FC = ({ children }) => {
         { name: "in-use", value: inUse },
       ]);
     } catch (error) {
-      console.log(error);
+      throw Error(error);
     }
   };
 
@@ -58,12 +84,21 @@ export const DataProvider: React.FC = ({ children }) => {
       });
       setQuote(quote.data);
     } catch (error) {
-      console.log(error.message);
+      throw Error(error);
     }
   };
+
   useEffect(() => {
-    getQuote();
-    getDataNodesInfo();
+    try {
+      getFiles();
+      getTasks();
+      getQuote();
+      getDataNodesInfo();
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
   }, []);
 
   const updateStatuses = async () => {
@@ -96,11 +131,17 @@ export const DataProvider: React.FC = ({ children }) => {
     taskLoader,
     quote,
     pieData,
-    setContextTasks,
-    contextTasks
+    files,
+    setFiles,
+    getFiles,
+    tasks,
+    setTasks,
+    getTasks,
   };
 
   return (
-    <appDataContext.Provider value={value}>{children}</appDataContext.Provider>
+    <appDataContext.Provider value={value}>
+      {!loading && children}
+    </appDataContext.Provider>
   );
 };

@@ -17,7 +17,6 @@ export const Login = () => {
   const submitForm: SubmitHandler<FormValues> = async (data) => {
     try {
       const res = await login(data.email, data.password);
-      console.log(res)
       setCurrentUser(res.data);
       history.push("/");
     } catch (error) {
@@ -29,8 +28,8 @@ export const Login = () => {
     history.push("/signup");
   };
   return (
-    <div className="login-signup-container" >
-      <div className="login-signup-card " style={{background:"white"}}>
+    <div className="login-signup-container">
+      <div className="login-signup-card " style={{ background: "white" }}>
         <h1>Login</h1>
         <Form onSubmit={handleSubmit(submitForm)}>
           <Form.Group className="mb-3">

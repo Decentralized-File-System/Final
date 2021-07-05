@@ -5,14 +5,10 @@ import { file } from "../types";
 import File from "./File";
 import { FileTableActions } from "./FileTableActions";
 import TablePagination from "@material-ui/core/TablePagination";
+import { useData } from "../context/AppDataContext";
 
-type fileTableProps = {
-  files: file[];
-  getFiles: Function;
-  setFiles: React.Dispatch<React.SetStateAction<file[]>>;
-};
-
-function FileTable({ files, getFiles, setFiles }: fileTableProps) {
+function FileTable() {
+  const { files, setFiles, getFiles } = useData();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -45,15 +41,8 @@ function FileTable({ files, getFiles, setFiles }: fileTableProps) {
           {files &&
             files
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((file, i) => {
-                return (
-                  <File
-                    getFiles={getFiles}
-                    file={file}
-                    index={i}
-                    key={`${i}`}
-                  />
-                );
+              .map((file: file, i: number) => {
+                return <File file={file} index={i} key={`${i}`} />;
               })}
         </tbody>
       </Table>

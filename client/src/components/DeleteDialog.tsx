@@ -10,15 +10,16 @@ import axios from "axios";
 import { BASE_URL } from "../Utils/Variables";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { useData } from "../context/AppDataContext";
 
 const swal = withReactContent(Swal);
 
 type DeleteDialogProps = {
   file: file;
-  getFiles: Function;
 };
 
-export default function DeleteDialog({ file, getFiles }: DeleteDialogProps) {
+export default function DeleteDialog({ file }: DeleteDialogProps) {
+  const { getFiles } = useData();
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -44,7 +45,6 @@ export default function DeleteDialog({ file, getFiles }: DeleteDialogProps) {
       });
       getFiles();
     } catch (error) {
-      console.log(error.message);
       const status = "There was a problem, the file did not deleted.";
       swal.fire({
         title: "Sorry",

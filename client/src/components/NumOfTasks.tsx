@@ -3,47 +3,46 @@ import { useEffect } from "react";
 import { useData } from "../context/AppDataContext";
 
 function NumOfTasks() {
-  const { contextTasks } = useData();
+  const { tasks } = useData();
   const [numOfTasks, setNumOfTasks] = useState(0);
 
   function animateValue(start: number, end: number, duration: number) {
     if (start === end) return;
-    var range = end - start;
-    var current = start;
-    var increment = end > start ? 1 : -1;
-    var stepTime = Math.abs(Math.floor(duration / range));
-    var timer = setInterval(function () {
+    let range = end - start;
+    let current = start;
+    let increment = end > start ? 1 : -1;
+    let stepTime = Math.abs(Math.floor(duration / range));
+    let timer = setInterval(function () {
       current += increment;
       setNumOfTasks(current);
-      if (current == end) {
+      if (current === end) {
         clearInterval(timer);
       }
     }, stepTime);
   }
 
   useEffect(() => {
-    // animateValue(0, contextTasks.length, (contextTasks.length / 5) *1000);
     let duration = 0;
-    if (contextTasks.length >= 0 && contextTasks.length <= 20) {
+    if (tasks.length >= 0 && tasks.length <= 20) {
       duration = 1500;
     }
-    if (contextTasks.length >= 20 && contextTasks.length <= 40) {
+    if (tasks.length >= 20 && tasks.length <= 40) {
       duration = 3000;
     }
-    if (contextTasks.length >= 40 && contextTasks.length <= 60) {
+    if (tasks.length >= 40 && tasks.length <= 60) {
       duration = 4000;
     }
-    if (contextTasks.length >= 60) {
+    if (tasks.length >= 60) {
       duration = 5000;
     }
-    animateValue(0, contextTasks.length, duration);
-  }, []);
+    animateValue(0, tasks.length, duration);
+  }, [tasks]);
 
   return (
     <>
       <div>
         <h4 className="roboto-font">Number of Tasks</h4>
-      <div className="num-of-tasks">{numOfTasks}</div>
+        <div className="num-of-tasks">{numOfTasks}</div>
       </div>
     </>
   );

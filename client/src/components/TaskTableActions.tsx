@@ -11,18 +11,10 @@ import debounce from "lodash.debounce";
 import axios from "axios";
 import { BASE_URL } from "../Utils/Variables";
 import { useAuth } from "../context/AuthContext";
+import { useData } from "../context/AppDataContext";
 
-type tableActionsProps = {
-  tasks: task[];
-  setTasks: React.Dispatch<React.SetStateAction<task[]>>;
-  getTasks: Function;
-};
-
-export const TaskTableActions: React.FC<tableActionsProps> = ({
-  tasks,
-  setTasks,
-  getTasks,
-}) => {
+export const TaskTableActions = () => {
+  const { tasks, getTasks, setTasks } = useData();
   const [searchClass, setSearchClass] = useState("search-input hidden");
   const { currentUser } = useAuth();
   const handleSort = (e: React.ChangeEvent<HTMLSelectElement>) => {

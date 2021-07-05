@@ -70,7 +70,6 @@ export default function Sidebar() {
   };
 
   const navigateHandler = (destination: string) => {
-    console.log(destination);
     setCurrentPage(destination);
   };
 
