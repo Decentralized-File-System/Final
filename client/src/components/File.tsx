@@ -8,16 +8,16 @@ import DeleteDialog from "./DeleteDialog";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { bytesToSize } from "../Utils/function";
+import { useData } from "../context/AppDataContext";
 
 const swal = withReactContent(Swal);
 
 type fileType = {
   file: file;
   index: number;
-  getFiles: Function;
 };
 
-const File = ({ file, index, getFiles }: fileType) => {
+const File = ({ file, index }: fileType) => {
   const { currentUser } = useAuth();
   const downloadHandler = async () => {
     try {
@@ -50,7 +50,7 @@ const File = ({ file, index, getFiles }: fileType) => {
             Download
           </Button>
           {currentUser.isAdmin || currentUser.username === file.userId ? (
-            <DeleteDialog file={file} getFiles={getFiles} />
+            <DeleteDialog file={file} />
           ) : null}
         </div>
       </td>

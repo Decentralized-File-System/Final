@@ -6,6 +6,11 @@ export type user = {
   isSuperAdmin: boolean;
   email: string;
 };
+export type quote = {
+  text:string;
+  author: string;
+}
+
 export type file = {
   id: number;
   name: string;

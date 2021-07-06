@@ -110,7 +110,6 @@ export const TeamManagement = () => {
           withCredentials: true,
         }
       );
-      console.log(res.data);
     } catch (error) {
       console.log(error);
     }
@@ -125,7 +124,6 @@ export const TeamManagement = () => {
           withCredentials: true,
         }
       );
-      console.log(res.data);
     } catch (error) {
       console.log(error);
     }

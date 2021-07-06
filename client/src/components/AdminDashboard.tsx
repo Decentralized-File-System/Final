@@ -11,58 +11,29 @@ import UploadNewFileDialog from "./UploadFileForm";
 import CollapsibleTable from "./CollapsibleTable";
 import AddNewTask from "./AddNewTask";
 import { TeamManagement } from "./TeamManagement";
+import Dashboard from "./Dashboard";
 
 export const AdminDashboard = () => {
   const { currentPage } = useData();
-  const [files, setFiles] = useState<file[]>([]);
-  const [tasks, setTasks] = useState<task[]>([]);
   const { currentUser } = useAuth();
-
-  const getTasks = async () => {
-    const res = await axios.get(
-      `${BASE_URL}/task/all-tasks?teamId=${currentUser.teamId}`,
-      { withCredentials: true }
-    );
-    setTasks(res.data);
-  };
-
-  const getFiles = async () => {
-    try {
-      const res = await axios.get(
-        `${BASE_URL}/file/files?teamId=${currentUser.teamId}`,
-        { withCredentials: true }
-      );
-      setFiles(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getTasks();
-    getFiles();
-  }, []);
-
   return (
     <div>
       {currentPage === "files" ? (
         <>
-          <FileTable files={files} getFiles={getFiles} setFiles={setFiles} />
-          <UploadNewFileDialog getFiles={getFiles} />
+          <FileTable />
+          <UploadNewFileDialog />
         </>
       ) : currentPage === "tasks" ? (
         <>
-          <CollapsibleTable
-            getTasks={getTasks}
-            tasks={tasks}
-            setTasks={setTasks}
-          />
-          <AddNewTask getTasks={getTasks} />
+          <CollapsibleTable />
+          <AddNewTask />
         </>
       ) : currentPage === "settings" ? (
         <Settings />
       ) : currentPage === "teamManagement" ? (
         <TeamManagement />
+      ) : currentPage === "dashboard" ? (
+        <Dashboard />
       ) : null}
     </div>
   );

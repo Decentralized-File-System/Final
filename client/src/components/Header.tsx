@@ -3,6 +3,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import companyLogo from "../Images/1440x1440Logo.png";
+import { useAuth } from "../context/AuthContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,13 +28,16 @@ const headerStyle = {
 };
 
 export default function Header() {
+  const { currentUser } = useAuth();
   const classes = useStyles();
   return (
     <div id="header" className={classes.root} style={{ background: "#555" }}>
       <AppBar position="static" className="header-bar" style={headerStyle}>
         <Toolbar className={classes.toolbar}>
           <Typography className={classes.title} variant="h5" noWrap>
-            <div className="clock-header">{/* <Clock /> */}</div>
+            <div
+              style={{ float: "right", paddingTop: "1rem" }}
+            >{`Welcome, ${currentUser.username}`}</div>
             <div className="logo">
               <img
                 src={companyLogo}

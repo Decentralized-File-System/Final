@@ -50,7 +50,6 @@ export default function PermanentDrawerLeft() {
   const matches = useMediaQuery("(min-width:1100px)");
 
   const navigateHandler = (destination: string) => {
-    console.log(destination);
     setCurrentPage(destination);
   };
 
@@ -76,6 +75,18 @@ export default function PermanentDrawerLeft() {
       >
         <Divider />
         <List>
+          <ListItem
+            button
+            key={"Dashboard"}
+            onClick={() => navigateHandler("dashboard")}
+          >
+            <span style={{ display: "flex" }}>
+              <ListItemIcon>
+                <FileCopyIcon />
+              </ListItemIcon>
+              <ListItemText primary={"Dashboard"} />
+            </span>
+          </ListItem>
           <ListItem
             button
             key={"Tasks"}

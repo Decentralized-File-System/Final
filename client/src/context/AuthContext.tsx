@@ -47,6 +47,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         setLoading(false);
       })
       .catch((err) => {
+        console.log(err);
         setLoading(false);
       });
   }, []);

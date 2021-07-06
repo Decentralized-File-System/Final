@@ -23,6 +23,7 @@ import { useData } from "../context/AppDataContext";
 import TablePagination from "@material-ui/core/TablePagination";
 import BeatLoader from "react-spinners/BeatLoader";
 import { css } from "@emotion/react";
+import { TaskTableActions } from "./TaskTableActions";
 
 const override = css`
   margin: auto;
@@ -166,14 +167,8 @@ function Row({ task, index }: propsRowType) {
     </React.Fragment>
   );
 }
-
-type propsType = {
-  tasks: task[];
-  getTasks: Function;
-  setTasks: React.Dispatch<React.SetStateAction<task[]>>;
-};
-
-export default function CollapsibleTable({ tasks, getTasks }: propsType) {
+export default function CollapsibleTable() {
+  const { tasks, getTasks } = useData();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const { updateStatuses, statusesToChange, taskLoader } = useData();
@@ -199,6 +194,7 @@ export default function CollapsibleTable({ tasks, getTasks }: propsType) {
   }, [statusesToChange]);
   return (
     <div className="tasks-div-container">
+      <TaskTableActions />
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table">
           <TableHead>
@@ -237,7 +233,7 @@ export default function CollapsibleTable({ tasks, getTasks }: propsType) {
             {tasks &&
               tasks
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((task, i) => {
+                .map((task: task, i: number) => {
                   return <Row key={`${i} task`} task={task} index={i} />;
                 })}
           </TableBody>

@@ -12,19 +12,14 @@ import { Chip } from "@material-ui/core";
 import { useAuth } from "../context/AuthContext";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { useData } from "../context/AppDataContext";
 
 const swal = withReactContent(Swal);
 
-type UploadNewFileDialogProps = {
-  getFiles: Function;
-};
-
-export default function UploadNewFileDialog({
-  getFiles,
-}: UploadNewFileDialogProps) {
+export default function UploadNewFileDialog() {
   /* This component creates the add new ticket functionallity, using material-ui dialog
   and a trigger AddButton */
-
+  const { getFiles } = useData();
   const { currentUser } = useAuth();
   const [file, setFile] = useState<any>(null);
   const [open, setOpen] = React.useState(false);
@@ -71,7 +66,6 @@ export default function UploadNewFileDialog({
       getFiles();
       setFile(null);
     } catch (error) {
-      console.log(error);
       const status = "It seems there's been an error with the server.";
       swal.fire({
         title: "Attention!",

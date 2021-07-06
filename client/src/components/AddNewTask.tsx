@@ -24,14 +24,12 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
+import { useData } from "../context/AppDataContext";
 
 const swal = withReactContent(Swal);
 
-type addNewTaskProps = {
-  getTasks: Function;
-};
-
-export default function AddNewTask({ getTasks }: addNewTaskProps) {
+export default function AddNewTask() {
+  const { getTasks } = useData();
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [loading, setLoading] = useState(false);
   const { currentUser } = useAuth();
@@ -78,7 +76,6 @@ export default function AddNewTask({ getTasks }: addNewTaskProps) {
       setOpen(false);
       setLoading(false);
     } catch (error) {
-      console.log(error);
       const status = "It seems there's been an error with the server.";
       swal.fire({
         title: "Attention!",
