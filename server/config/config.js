@@ -8,9 +8,9 @@ module.exports = {
     dialect: "postgres",
     logging: false,
     dialectOptions: {
-      // ssl: {
-      //   rejectUnauthorized: false,
-      // },
+      ssl: {
+        rejectUnauthorized: false,
+      },
     },
   },
   test: {
