@@ -18,6 +18,19 @@ export const addFolderQuery = async (
     throw new Error(error);
   }
 };
+const contentOfFolder = async (folderId: string, teamId: string) => {
+  try {
+    const folders = await Folder.findAll({
+      where: { parentFolderId: folderId, teamId: teamId },
+    });
+    const files = await File.findAll({
+      where: { parentFolderId: folderId, teamId: teamId },
+    });
+    return { folders, files };
+  } catch (error) {
+    throw new Error(error);
+  }
+};
 
 export const contentOfFolderQuery = async (
   folderId: string,
@@ -36,24 +49,38 @@ export const contentOfFolderQuery = async (
   }
 };
 
-// const showAllNestedQuery = async (
-//   folders: any[],
-//   files: any[],
-//   folderId: string,
-//   teamId: string
-// ) => {
-//   if (folders.length == 0 && files.length === 0) {
-//     return;
-//   }
-//   const content = await contentOfFolderQuery(folderId, teamId);
-//   const contentFiles = content.files;
-//   const contentFolders = content.folders;
-//   contentFolders.map(async (folder: any) => {
-//     const innerContent = await contentOfFolderQuery(folder.id, folder.teamId);
-//     return;
-//   });
-// };
+const showAllNestedQuery = async (folderId: string, teamId: string) => {
+  const filesToDelete: any = [];
+  const contentOfFolderFunction: any = async (
+    folderIdInner: string,
+    teamIdInner: string
+  ) => {
+    const content = await contentOfFolder(folderIdInner, teamIdInner);
+    if (content.folders.length === 0) {
+      const objFiles = content.files.map((file: any) => {
+        return file.toJSON();
+      });
+      objFiles.forEach((element: any) => {
+        filesToDelete.push(element);
+      });
+      return;
+    }
+    const objFiles = content.files.map((file: any) => {
+      return file.toJSON();
+    });
+    objFiles.forEach((element: any) => {
+      filesToDelete.push(element);
+    });
+    for (const folder of content.folders) {
+      await contentOfFolderFunction(folder.id, folder.teamId);
+    }
+  };
 
-// export const deleteFolder = async (folderId: string) => {
-//   await Folder.destroy({ where: { id: folderId } });
-// };
+  await contentOfFolderFunction(folderId, teamId);
+
+  let foldersToDelete = filesToDelete.map((file: any) => {
+    return file.parentFolderId;
+  });
+  foldersToDelete = [...new Set(foldersToDelete)];
+  return { filesToDelete, foldersToDelete };
+};
