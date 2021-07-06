@@ -84,3 +84,32 @@ const showAllNestedQuery = async (folderId: string, teamId: string) => {
   foldersToDelete = [...new Set(foldersToDelete)];
   return { filesToDelete, foldersToDelete };
 };
+
+export const deleteFolderQuery = async (folderId: string, teamId: string) => {
+  const nested = await showAllNestedQuery(folderId, teamId);
+  const filePromiseArray = nested.filesToDelete.map((file: any) => {
+    return File.destroy({ where: { id: file.id } });
+  });
+  const folderPromiseArray = nested.filesToDelete.map((folder: any) => {
+    return Folder.destroy({ where: { id: folder.id } });
+  });
+  try {
+    await Promise.all(filePromiseArray);
+    await Promise.all(folderPromiseArray);
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const getFolderRouteQuery = async (folderId: string) => {
+  const folder = await Folder.findOne({ where: { id: folderId } });
+  let parentFolderId = folder.toJSON().parentFolderId;
+  const routeArray: any = [];
+  routeArray.push(parentFolderId);
+  while (parentFolderId !== "master") {
+    const innerFolder = await Folder.findOne({ where: { id: parentFolderId } });
+    parentFolderId = innerFolder.toJSON().parentFolderId;
+    routeArray.push(parentFolderId);
+  }
+  return routeArray;
+};

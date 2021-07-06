@@ -3,9 +3,13 @@ const router = Router();
 import {
   addFolder,
   getContentOfFolder,
+  deleteFolder,
+  getFolderRoute,
 } from "../../controllers/folderController";
 
-router.post("/add", addFolder);
 router.get("/content", getContentOfFolder);
+router.get("/route", getFolderRoute);
+router.post("/add", addFolder);
+router.delete("/", deleteFolder);
 
 export default router;
