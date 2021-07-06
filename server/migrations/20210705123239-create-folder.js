@@ -1,7 +1,8 @@
 "use strict";
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("files", {
+    await queryInterface.createTable("folders", {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -10,17 +11,8 @@ module.exports = {
       name: {
         type: Sequelize.STRING,
       },
-      user_id: {
-        type: Sequelize.STRING,
-      },
       team_id: {
         type: Sequelize.STRING,
-      },
-      type: {
-        type: Sequelize.STRING,
-      },
-      size: {
-        type: Sequelize.INTEGER,
       },
       parent_folder_id: {
         type: Sequelize.STRING,
@@ -35,7 +27,8 @@ module.exports = {
       },
     });
   },
+
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("files");
+    await queryInterface.dropTable("folders");
   },
 };
