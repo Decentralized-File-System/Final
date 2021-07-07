@@ -38,8 +38,8 @@ export const saveFilePost = async (req: Request, res: Response) => {
   const fileType: string = String(req.query.type);
   const teamId: string = String(req.query.teamId);
   const username: string = String(req.query.username);
-  const description: string = String(req.body.description)
-
+  const description: string = String(req.query.description)
+  console.log(description)
   req.busboy.on("file", (fieldName, file, filename) => {
     console.log(`Upload of '${filename}' started`);
 

@@ -44,14 +44,16 @@ const File = ({ file, index }: fileType) => {
         <td>{index + 1}</td>
         <td>
           {file.name}{" "}
-          <span
-            id="description-question-mark"
-            onMouseEnter={() => setDescriptionDivShown(true)}
-            onMouseLeave={() => setDescriptionDivShown(false)}
-            style={{ float: "right" }}
-          >
-            ❔
-          </span>
+          {file.description ? (
+            <span
+              id="description-question-mark"
+              onMouseEnter={() => setDescriptionDivShown(true)}
+              onMouseLeave={() => setDescriptionDivShown(false)}
+              style={{ float: "right" }}
+            >
+              ❔
+            </span>
+          ) : null}
         </td>
         <td>{file.userId}</td>
         <td>{bytesToSize(String(file.size))}</td>

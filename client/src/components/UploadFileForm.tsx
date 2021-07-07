@@ -31,13 +31,7 @@ export default function UploadNewFileDialog({
   const { currentUser } = useAuth();
   const [file, setFile] = useState<any>(null);
   const [open, setOpen] = React.useState(false);
-
-  const newTicket = {
-    title: "",
-    content: "",
-    email: "",
-    labels: "",
-  };
+  const [fileDescription, setFileDescription] = useState("");
 
   const handleDelete = () => {
     setFile(null);
@@ -61,7 +55,7 @@ export default function UploadNewFileDialog({
     formData.append("file", file);
     try {
       const res = await axios.post(
-        `http://localhost:3001/api/v1/file/post-file?size=${file.size}&type=${file.type}&teamId=${currentUser.teamId}&username=${currentUser.name}`,
+        `http://localhost:3001/api/v1/file/post-file?size=${file.size}&type=${file.type}&teamId=${currentUser.teamId}&username=${currentUser.name}&description=${fileDescription}`,
         formData,
         {
           withCredentials: true,
@@ -106,23 +100,19 @@ export default function UploadNewFileDialog({
       >
         <DialogTitle id="form-dialog-title">New File</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Please fill the details below. Note: fields marked with * are
-            required!
-          </DialogContentText>
           <TextField
             id="content"
-            label="File description"
+            label="File description..."
             margin="normal"
-            helperText="File description"
+            helperText="File description (150 characters)"
             onChange={(e) => {
-              newTicket.content = e.target.value;
+              setFileDescription(e.target.value);
             }}
+            inputProps={{ maxLength: 150 }}
             variant="outlined"
             rows="3"
             multiline
             fullWidth
-            required
           />
           <Button variant="contained" component="label">
             Choose file
