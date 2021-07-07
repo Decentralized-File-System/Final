@@ -12,6 +12,9 @@ import axios from "axios";
 import { BASE_URL } from "../Utils/Variables";
 import { useAuth } from "../context/AuthContext";
 import { useData } from "../context/AppDataContext";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+const swal = withReactContent(Swal);
 
 export const TaskTableActions = () => {
   const { tasks, getTasks, setTasks } = useData();
@@ -42,14 +45,23 @@ export const TaskTableActions = () => {
   };
 
   const search = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value !== "") {
-      const res = await axios.get(
-        `${BASE_URL}/task/task-by-name?text=${e.target.value}&teamId=${currentUser.teamId}`,
-        { withCredentials: true }
-      );
-      setTasks(res.data);
-    } else {
-      getTasks();
+    try {
+      if (e.target.value !== "") {
+        const res = await axios.get(
+          `${BASE_URL}/task/task-by-name?text=${e.target.value}&teamId=${currentUser.teamId}`,
+          { withCredentials: true }
+        );
+        setTasks(res.data);
+      } else {
+        getTasks();
+      }
+    } catch (error) {
+      swal.fire({
+        title: "Attention!",
+        text: error.response.data.message,
+        timer: 3000,
+        showConfirmButton: true,
+      });
     }
   };
 

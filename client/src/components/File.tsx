@@ -34,7 +34,12 @@ const File = ({ file, index }: fileType) => {
       document.body.appendChild(link);
       link.click();
     } catch (error) {
-      console.log(error.message);
+      swal.fire({
+        title: "Attention!",
+        text: error.response.data.message,
+        timer: 3000,
+        showConfirmButton: true,
+      });
     }
   };
 

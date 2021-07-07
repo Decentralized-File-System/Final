@@ -38,7 +38,7 @@ export const Login = () => {
       history.push("/");
     } catch (error) {
       setLoading(false);
-      setError(error.response.data);
+      setError(error.response.data.message);
     }
   };
 

@@ -12,6 +12,9 @@ import debounce from "lodash.debounce";
 import axios from "axios";
 import { BASE_URL } from "../Utils/Variables";
 import { useAuth } from "../context/AuthContext";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+const swal = withReactContent(Swal);
 
 type tableActionsProps = {
   files: file[];
@@ -71,7 +74,12 @@ export const FileTableActions: React.FC<tableActionsProps> = ({
         getFiles();
       }
     } catch (error) {
-      console.log(error);
+      swal.fire({
+        title: "Attention!",
+        text: error.response.data.message,
+        timer: 3000,
+        showConfirmButton: true,
+      });
     }
   };
 

@@ -7,9 +7,9 @@ export type user = {
   email: string;
 };
 export type quote = {
-  text:string;
+  text: string;
   author: string;
-}
+};
 
 export type file = {
   id: number;

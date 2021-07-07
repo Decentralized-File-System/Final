@@ -16,6 +16,7 @@ import { useRef } from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 const swal = withReactContent(Swal);
+
 interface TabPanelProps {
   children?: React.ReactNode;
   index: any;
@@ -60,9 +61,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const TeamManagement = () => {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
   const [teamMembers, setTeamMembers] = useState<user[]>();
   const [freeEmployees, setFreeEmployees] = useState<user[]>();
+  const [teamMembersError, setTeamMembersError] = useState("");
+  const [freeEmployeesError, setFreeEmployeesError] = useState("");
   const { currentUser, setCurrentUser } = useAuth();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -77,7 +80,7 @@ export const TeamManagement = () => {
       );
       setTeamMembers(res.data.usersArray);
     } catch (error) {
-      console.log(error);
+      setTeamMembersError(error.response.data.message);
     }
   };
 
@@ -92,7 +95,7 @@ export const TeamManagement = () => {
       );
       setFreeEmployees(res.data.usersArray);
     } catch (error) {
-      console.log(error);
+      setFreeEmployeesError(error.response.data.message);
     }
   };
 
@@ -103,29 +106,47 @@ export const TeamManagement = () => {
 
   const removeMember = async (user: user) => {
     try {
-      const res = await axios.put(
-        `${BASE_URL}/user/change-props?teamId=${null}`,
-        [user],
-        {
-          withCredentials: true,
-        }
-      );
+      await axios.put(`${BASE_URL}/user/change-props?teamId=${null}`, [user], {
+        withCredentials: true,
+      });
+      swal.fire({
+        title: "✔",
+        text: "Member removed successfully",
+        timer: 3000,
+        showConfirmButton: true,
+      });
     } catch (error) {
-      console.log(error);
+      swal.fire({
+        title: "Attention!",
+        text: error.response.data.message,
+        timer: 3000,
+        showConfirmButton: true,
+      });
     }
   };
 
   const addMember = async (user: user) => {
     try {
-      const res = await axios.put(
+      await axios.put(
         `${BASE_URL}/user/change-props?teamId=${currentUser.teamId}`,
         [user],
         {
           withCredentials: true,
         }
       );
+      swal.fire({
+        title: "✔",
+        text: "Member added successfully",
+        timer: 3000,
+        showConfirmButton: true,
+      });
     } catch (error) {
-      console.log(error);
+      swal.fire({
+        title: "Attention!",
+        text: error.response.data.message,
+        timer: 3000,
+        showConfirmButton: true,
+      });
     }
   };
 
@@ -183,6 +204,7 @@ export const TeamManagement = () => {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
+        <div className="error-div">{teamMembersError}</div>
         <table className="table">
           <thead>
             <tr>
@@ -210,6 +232,7 @@ export const TeamManagement = () => {
         </table>
       </TabPanel>
       <TabPanel value={value} index={1}>
+        <div className="error-div">{freeEmployeesError}</div>
         <table className="table">
           <thead>
             <tr>

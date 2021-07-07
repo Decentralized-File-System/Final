@@ -16,6 +16,9 @@ import { useData } from "../context/AppDataContext";
 import { useHistory } from "react-router-dom";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { useAuth } from "../context/AuthContext";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+const swal = withReactContent(Swal);
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -58,7 +61,12 @@ export default function PermanentDrawerLeft() {
       await logout();
       history.push("/login");
     } catch (error) {
-      console.log(error);
+      swal.fire({
+        title: "Attention!",
+        text: error.response.data.message,
+        timer: 3000,
+        showConfirmButton: true,
+      });
     }
   };
 
@@ -87,30 +95,34 @@ export default function PermanentDrawerLeft() {
               <ListItemText primary={"Dashboard"} />
             </span>
           </ListItem>
-          <ListItem
-            button
-            key={"Tasks"}
-            onClick={() => navigateHandler("tasks")}
-          >
-            <span style={{ display: "flex" }}>
-              <ListItemIcon>
-                <AssignmentIcon />
-              </ListItemIcon>
-              <ListItemText primary={"Tasks"} />
-            </span>
-          </ListItem>
-          <ListItem
-            button
-            key={"Files"}
-            onClick={() => navigateHandler("files")}
-          >
-            <span style={{ display: "flex" }}>
-              <ListItemIcon>
-                <FileCopyIcon />
-              </ListItemIcon>
-              <ListItemText primary={"Files"} />
-            </span>
-          </ListItem>
+          {!currentUser.isSuperAdmin ? (
+            <>
+              <ListItem
+                button
+                key={"Tasks"}
+                onClick={() => navigateHandler("tasks")}
+              >
+                <span style={{ display: "flex" }}>
+                  <ListItemIcon>
+                    <AssignmentIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={"Tasks"} />
+                </span>
+              </ListItem>
+              <ListItem
+                button
+                key={"Files"}
+                onClick={() => navigateHandler("files")}
+              >
+                <span style={{ display: "flex" }}>
+                  <ListItemIcon>
+                    <FileCopyIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={"Files"} />
+                </span>
+              </ListItem>
+            </>
+          ) : null}
           {currentUser.isAdmin ? (
             <ListItem
               button
@@ -121,7 +133,13 @@ export default function PermanentDrawerLeft() {
                 <ListItemIcon>
                   <GroupIcon />
                 </ListItemIcon>
-                <ListItemText primary={"Team management"} />
+                <ListItemText
+                  primary={
+                    !currentUser.isSuperAdmin
+                      ? "Team management"
+                      : "Admin management"
+                  }
+                />
               </span>
             </ListItem>
           ) : null}

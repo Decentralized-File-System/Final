@@ -9,12 +9,13 @@ import Sidebar from "../components/NewSidebar";
 
 export const Main = () => {
   const { currentUser } = useAuth();
-  console.log(currentUser);
+
   return (
     <div>
       <Header />
       {currentUser.isSuperAdmin ? (
         <>
+          <Sidebar />
           <SuperDashboard />
         </>
       ) : currentUser.isAdmin ? (

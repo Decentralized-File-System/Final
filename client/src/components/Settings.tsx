@@ -7,6 +7,9 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { BASE_URL } from "../Utils/Variables";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+const swal = withReactContent(Swal);
 
 type FormValues = {
   currentPassword: string;
@@ -17,7 +20,7 @@ type FormValues = {
 export const Settings = () => {
   const { register, handleSubmit } = useForm<FormValues>();
   const { currentUser, logout } = useAuth();
-  const history = useHistory()
+  const history = useHistory();
 
   const submitForm: SubmitHandler<FormValues> = async (data) => {
     if (!data.newEmail && !data.newPassword) {
@@ -36,10 +39,21 @@ export const Settings = () => {
       const res = await axios.put(url, [currentUser], {
         withCredentials: true,
       });
+      swal.fire({
+        title: "✔",
+        text: "Information updated successfully, you will be redirect to login page.",
+        timer: 3000,
+        showConfirmButton: true,
+      });
       await logout();
-      history.push("/login")
+      history.push("/login");
     } catch (error) {
-      console.log(error);
+      swal.fire({
+        title: "Attention!",
+        text: error.response.data.message,
+        timer: 3000,
+        showConfirmButton: true,
+      });
     }
   };
 

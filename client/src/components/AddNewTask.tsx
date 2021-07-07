@@ -76,10 +76,9 @@ export default function AddNewTask() {
       setOpen(false);
       setLoading(false);
     } catch (error) {
-      const status = "It seems there's been an error with the server.";
       swal.fire({
         title: "Attention!",
-        text: status,
+        text: error.response.data.message,
         timer: 3000,
         showConfirmButton: true,
       });
