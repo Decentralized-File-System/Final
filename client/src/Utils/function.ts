@@ -47,3 +47,12 @@ export const bytesToSize = (bytes: string) => {
   }
   return number;
 };
+
+
+export function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window;
+  return {
+    width,
+    height
+  };
+}

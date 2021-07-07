@@ -6,6 +6,8 @@ import { useHistory } from "react-router-dom";
 import GridLoader from "react-spinners/GridLoader";
 import { css } from "@emotion/react";
 import { useState } from "react";
+import { getWindowDimensions } from "../Utils/function";
+import { useEffect } from "react";
 
 const override = css`
   display: block;
@@ -20,6 +22,7 @@ type FormValues = {
 };
 
 export const SignUp = () => {
+  const [loaderSize, setLoaderSize] = useState<number>();
   const [loading, setLoading] = useState(false);
   const history = useHistory();
   const { register, handleSubmit } = useForm<FormValues>();
@@ -41,6 +44,22 @@ export const SignUp = () => {
   const anchorHandler = () => {
     history.push("/login");
   };
+
+  useEffect(() => {
+    const windowDimensions = getWindowDimensions();
+    if (windowDimensions.width > 1000) {
+      setLoaderSize(101);
+    }
+    if (windowDimensions.width <= 1000 && windowDimensions.width > 800) {
+      setLoaderSize(81);
+    }
+    if (windowDimensions.width <= 800 && windowDimensions.width > 600) {
+      setLoaderSize(60);
+    }
+    if (windowDimensions.width <= 600 && windowDimensions.width > 400) {
+      setLoaderSize(40);
+    }
+  }, []);
 
   return (
     <div className="login-signup-container">

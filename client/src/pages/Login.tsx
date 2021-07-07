@@ -6,6 +6,8 @@ import { useAuth } from "../context/AuthContext";
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
 import { css } from "@emotion/react";
+import { getWindowDimensions } from "../Utils/function";
+import { useEffect } from "react";
 
 const override = css`
   display: block;
@@ -19,6 +21,7 @@ type FormValues = {
 };
 
 export const Login = () => {
+  const [loaderSize, setLoaderSize] = useState<number>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const history = useHistory();
@@ -38,10 +41,26 @@ export const Login = () => {
       setError(error.response.data);
     }
   };
-
+  console.log(loaderSize);
   const anchorHandler = () => {
     history.push("/signup");
   };
+
+  useEffect(() => {
+    const windowDimensions = getWindowDimensions();
+    if (windowDimensions.width > 1000) {
+      setLoaderSize(101);
+    }
+    if (windowDimensions.width <= 1000 && windowDimensions.width > 800) {
+      setLoaderSize(81);
+    }
+    if (windowDimensions.width <= 800 && windowDimensions.width > 600) {
+      setLoaderSize(60);
+    }
+    if (windowDimensions.width <= 600 && windowDimensions.width > 400) {
+      setLoaderSize(40);
+    }
+  }, []);
   return (
     <div className="login-signup-container">
       <div className="login-signup-card " style={{ background: "white" }}>
@@ -78,7 +97,11 @@ export const Login = () => {
           </>
         ) : (
           <div className="login-spinner-container">
-            <GridLoader size={94} color={"rgb(76, 87, 95)"} css={override} />
+            <GridLoader
+              size={loaderSize}
+              color={"rgb(76, 87, 95)"}
+              css={override}
+            />
           </div>
         )}
       </div>
