@@ -1,6 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,300&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100&family=Roboto:ital,wght@1,300&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,400i,700");
+
 #root {
   background-color: #555;
 }
@@ -57,7 +59,7 @@ html {
   background-color: f2f2f2;
   border-radius: 50px;
   padding: 5rem;
-
+  width: 41%;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   transition-property: width;
   transition-duration: 2s;
@@ -352,4 +354,50 @@ thead,
 
 #search-icon {
   font-size: 2rem;
+}
+
+// ================page 404 ================
+
+.not-found-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  text-align: center;
+}
+
+.h1-not-found {
+  color: $heading;
+  font-size: 12.5rem;
+  letter-spacing: 0.1em;
+  margin: 0.025em 0;
+  text-shadow: 0.05em 0.05em 0 rgba(0, 0, 0, 0.25);
+  white-space: nowrap;
+
+  & > .span-not-found {
+    animation: spooky 1.5s alternate infinite linear;
+    color: $ghost;
+    display: inline-block;
+  }
+}
+
+.h2-not-found {
+  color: $heading;
+  margin-bottom: 0.4em;
+}
+
+.p-not-found {
+  color: #ccc;
+  margin-top: 0;
+}
+
+@keyframes spooky {
+  from {
+    transform: translatey(0.15em) scaley(0.95);
+  }
+
+  to {
+    transform: translatey(-0.15em);
+  }
 }
