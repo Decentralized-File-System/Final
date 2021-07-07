@@ -24,11 +24,13 @@ type FormValues = {
 export const SignUp = () => {
   const [loaderSize, setLoaderSize] = useState<number>();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const history = useHistory();
   const { register, handleSubmit } = useForm<FormValues>();
   const { signup, setCurrentUser } = useAuth();
 
   const submitForm: SubmitHandler<FormValues> = async (data) => {
+    setError("");
     try {
       setLoading(true);
       const res = await signup(data.email, data.username, data.password);
@@ -37,7 +39,7 @@ export const SignUp = () => {
       history.push("/");
     } catch (error) {
       setLoading(false);
-      console.log(error.response.data);
+      setError(error.response.data);
     }
   };
 
@@ -67,6 +69,7 @@ export const SignUp = () => {
         {!loading ? (
           <>
             <h1>Sign Up</h1>
+            <div className="error-div">{error}</div>
             <Form onSubmit={handleSubmit(submitForm)}>
               <Form.Group className="mb-3">
                 <Form.Label>Email address</Form.Label>

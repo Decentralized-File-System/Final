@@ -7,6 +7,7 @@ export const get_random_quote = async (req: Request, res: Response) => {
     const quote = await getRandomQuote(quoteId);
     return res.status(201).json({ text: quote.text, author: quote.author });
   } catch (error) {
-    return res.status(500).send(error.message);
+    console.log(error);
+    return res.status(500).send("Failed to get quotes");
   }
 };

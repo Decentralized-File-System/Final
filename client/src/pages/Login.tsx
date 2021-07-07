@@ -41,7 +41,7 @@ export const Login = () => {
       setError(error.response.data);
     }
   };
-  console.log(loaderSize);
+
   const anchorHandler = () => {
     history.push("/signup");
   };
@@ -67,8 +67,8 @@ export const Login = () => {
         {!loading ? (
           <>
             <h1>Login</h1>
+            <div className="error-div">{error}</div>
             <Form onSubmit={handleSubmit(submitForm)}>
-              <div className="error-div">{error}</div>
               <Form.Group className="mb-3">
                 <Form.Label>Email address</Form.Label>
                 <Form.Control

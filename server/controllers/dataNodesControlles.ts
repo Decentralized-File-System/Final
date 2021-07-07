@@ -6,6 +6,7 @@ export const getDataNodesInfo = async (req: Request, res: Response) => {
     const dataNodesData = await getDataNodesData();
     return res.status(201).json(dataNodesData);
   } catch (error) {
-    return res.status(500).send(error.message);
+    console.log(error);
+    return res.status(500).send("Failed to get dataNodes info");
   }
 };

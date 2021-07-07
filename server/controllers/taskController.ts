@@ -14,9 +14,10 @@ export const getAllTasksOfTeam = async (req: Request, res: Response) => {
   const teamId = String(req.query.teamId);
   try {
     const tasks = await getTaskOfTeam(teamId);
-    res.json(tasks);
+    res.status(200).json(tasks);
   } catch (error) {
-    res.json({ message: "Error" });
+    console.log(error);
+    res.status(500).json("Failed to load tasks");
   }
 };
 
@@ -24,9 +25,10 @@ export const addNewTask = async (req: Request, res: Response) => {
   const { task } = req.body;
   try {
     await addTask(task);
-    res.json({ message: "Success" });
+    res.status(200).json({ message: "Success" });
   } catch (error) {
-    res.json({ message: "Error" });
+    console.log(error);
+    res.status(500).send("Failed to add new task");
   }
 };
 
@@ -35,9 +37,10 @@ export const updateTaskStatus = async (req: Request, res: Response) => {
   const status = String(req.query.status);
   try {
     await changeStatus(taskId, status);
-    res.json({ message: "Success" });
+    res.status(200).json({ message: "Success" });
   } catch (error) {
-    res.json({ message: "Error" });
+    console.log(error);
+    res.status(500).send("Failed to update task");
   }
 };
 
@@ -47,7 +50,8 @@ export const deleteTask = async (req: Request, res: Response) => {
     await deleteTaskById(taskId);
     res.status(200).json({ message: "success" });
   } catch (error) {
-    res.status(500).json({ message: "Error" });
+    console.log(error);
+    res.status(500).send("Failed to delete task");
   }
 };
 
@@ -57,7 +61,8 @@ export const getRelevant = async (req: Request, res: Response) => {
     const relevant = await relevantTasks(teamId);
     res.status(200).json(relevant);
   } catch (error) {
-    res.status(500).json({ message: "Error" });
+    console.log(error);
+    res.status(500).send("Failed to get tasks");
   }
 };
 
@@ -67,7 +72,8 @@ export const getFinished = async (req: Request, res: Response) => {
     const finished = await finishedTasks(teamId);
     res.status(200).json(finished);
   } catch (error) {
-    res.status(500).json({ message: "Error" });
+    console.log(error);
+    res.status(500).send("Failed to get tasks");
   }
 };
 
@@ -77,7 +83,8 @@ export const getRangeOfDate = async (req: Request, res: Response) => {
     const rangeTasks = await getFromDateRange(teamId, start, finish);
     res.status(200).json(rangeTasks);
   } catch (error) {
-    res.status(500).json({ message: "Error" });
+    console.log(error);
+    res.status(500).send("Failed to get tasks");
   }
 };
 
@@ -90,6 +97,7 @@ export const taskByNameGet = async (req: Request, res: Response) => {
     const taskArray = await getTaskByName(text, teamId);
     return res.status(200).json(taskArray);
   } catch (error) {
-    res.status(500).send("failed");
+    console.log(error);
+    res.status(500).send("Failed to get tasks");
   }
 };

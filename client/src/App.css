@@ -83,6 +83,11 @@ html {
   cursor: pointer;
 }
 
+.error-div {
+  color: crimson;
+  text-align: center;
+}
+
 /* ===================================== */
 /* Table user*/
 .table {

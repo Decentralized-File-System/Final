@@ -126,6 +126,7 @@ export const saveFilePost = async (req: Request, res: Response) => {
               await updateDataNodes(fileChunkArray);
               res.status(200).send("success");
             } catch (error) {
+              console.log(error);
               return res.status(500).send("fail");
             }
           } else {
@@ -172,6 +173,7 @@ export const saveFilePost = async (req: Request, res: Response) => {
             await updateDataNodes(fileChunkArray);
             res.status(200).send("success");
           } catch (error) {
+            console.log(error);
             return res.status(500).send("fail");
           }
         } else {
@@ -182,6 +184,7 @@ export const saveFilePost = async (req: Request, res: Response) => {
 
     fStream.on("error", (err) => {
       fs.unlinkSync(path.join(mainPath, filename));
+      console.log(err);
       res.status(500).send("fail");
     });
   });
@@ -242,8 +245,8 @@ export const downloadFile = async (req: Request, res: Response) => {
       }
     });
   } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ message: error });
+    console.log(error);
+    res.status(500).send("Failed to download file");
   }
 };
 
@@ -257,7 +260,8 @@ export const filesGet = async (req: Request, res: Response) => {
     const fileArray = await getFilesByTeamId(teamId);
     return res.status(200).json(fileArray);
   } catch (error) {
-    res.status(500).send("failed");
+    console.log(error);
+    res.status(500).send("Failed to get files");
   }
 };
 
@@ -271,7 +275,8 @@ export const fileByNameGet = async (req: Request, res: Response) => {
     const fileArray = await getFileByName(text, teamId);
     return res.status(200).json(fileArray);
   } catch (error) {
-    res.status(500).send("failed");
+    console.log(error);
+    res.status(500).send("Failed to get files");
   }
 };
 
@@ -283,9 +288,9 @@ export const deleteFile = async (req: Request, res: Response) => {
     await dataNodeStorageAfterDelete(chunks);
     await deleteFileAndChunks(fileId);
     await deleteChunks(chunks);
-    res.status(200).json({ message: "Success deleting" });
+    res.status(200).json({ message: "Success deleting file" });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Error deleting" });
+    res.status(500).json({ message: "Error deleting file" });
   }
 };

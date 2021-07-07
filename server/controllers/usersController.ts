@@ -38,11 +38,11 @@ export const signUp_post = async (req: Request, res: Response) => {
     const isUsernameExist = await getUserByUserName(username);
     const isEmailExist = await getUserByEmail(email);
 
-    if (isUsernameExist) {
-      return res.status(409).send("Username already exist");
-    }
     if (isEmailExist) {
       return res.status(409).send("Email already exist");
+    }
+    if (isUsernameExist) {
+      return res.status(409).send("Username already exist");
     }
 
     const newUser: user = {
@@ -71,6 +71,7 @@ export const signUp_post = async (req: Request, res: Response) => {
       teamId: null,
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).send("Signup failed");
   }
 };
@@ -109,6 +110,7 @@ export const login_post = async (req: Request, res: Response) => {
       isSuperAdmin: existUser.isSuperAdmin,
     });
   } catch (error) {
+    console.log(error);
     res.status(500).send(error);
   }
 };
@@ -124,6 +126,7 @@ export const users_get = async (req: Request, res: Response) => {
       const usersArray = await getAllUsers();
       return res.status(200).json({ usersArray });
     } catch (error) {
+      console.log(error);
       return res.status(500).send("failed");
     }
   }
@@ -133,6 +136,7 @@ export const users_get = async (req: Request, res: Response) => {
         const usersArray = await getAllEmployeesWithoutTeam();
         return res.status(200).json({ usersArray });
       } catch (error) {
+        console.log(error);
         return res.status(500).send("failed");
       }
     } else {
@@ -140,6 +144,7 @@ export const users_get = async (req: Request, res: Response) => {
         const usersArray = await getEmployeesByTeamId(teamId);
         return res.status(200).json({ usersArray });
       } catch (error) {
+        console.log(error);
         return res.status(500).send("failed");
       }
     }
@@ -211,6 +216,7 @@ export const changeTeamId = async (req: Request, res: Response) => {
       await changeTeamIdQuery(oldId, newId);
       res.status(200).json({ message: "Success updating team id" });
     } catch (error) {
+      console.log(error);
       res.status(500).json({ message: "Failed to update team id" });
     }
   } else {
