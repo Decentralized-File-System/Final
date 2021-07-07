@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { file } from "../types";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { bytesToSize } from "../Utils/function";
 import { useData } from "../context/AppDataContext";
+import Typography from "@material-ui/core/Typography";
 
 const swal = withReactContent(Swal);
 
@@ -18,6 +19,7 @@ type fileType = {
 };
 
 const File = ({ file, index }: fileType) => {
+  const [descriptionDivShown, setDescriptionDivShown] = useState(false);
   const { currentUser } = useAuth();
   const downloadHandler = async () => {
     try {
@@ -37,24 +39,43 @@ const File = ({ file, index }: fileType) => {
   };
 
   return (
-    <tr className="file-tr">
-      <td>{index + 1}</td>
-      <td>{file.name}</td>
-      <td>{file.userId}</td>
-      <td>{bytesToSize(String(file.size))}</td>
-      <td>{file.type.split("/")[1]}</td>
-      <td>{new Date(file.createdAt).toDateString()}</td>
-      <td className="td-class">
-        <div style={{ display: "flex", justifyContent: "space-around" }}>
-          <Button onClick={downloadHandler} variant="outline-success">
-            Download
-          </Button>
-          {currentUser.isAdmin || currentUser.name === file.userId ? (
-            <DeleteDialog file={file} />
-          ) : null}
+    <>
+      <tr className="file-tr">
+        <td>{index + 1}</td>
+        <td>
+          {file.name}{" "}
+          <span
+            id="description-question-mark"
+            onMouseEnter={() => setDescriptionDivShown(true)}
+            onMouseLeave={() => setDescriptionDivShown(false)}
+            style={{ float: "right" }}
+          >
+            ❔
+          </span>
+        </td>
+        <td>{file.userId}</td>
+        <td>{bytesToSize(String(file.size))}</td>
+        <td>{file.type.split("/")[1]}</td>
+        <td>{new Date(file.createdAt).toDateString()}</td>
+        <td className="td-class">
+          <div style={{ display: "flex", justifyContent: "space-around" }}>
+            <Button onClick={downloadHandler} variant="outline-success">
+              Download
+            </Button>
+            {currentUser.isAdmin || currentUser.name === file.userId ? (
+              <DeleteDialog file={file} />
+            ) : null}
+          </div>
+        </td>
+      </tr>
+      {descriptionDivShown ? (
+        <div className="file-description-div-container">
+          <Typography className="file-description-div">
+            {file.description}
+          </Typography>
         </div>
-      </td>
-    </tr>
+      ) : null}
+    </>
   );
 };
 

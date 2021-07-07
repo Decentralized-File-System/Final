@@ -17,6 +17,7 @@ export type file = {
   userId: number;
   teamId: string;
   type: string;
+  description: string;
   size: number;
   createdAt: Date;
 };

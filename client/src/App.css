@@ -227,6 +227,28 @@ tr {
   border-radius: 5px;
 }
 
+.file-description-div-container {
+  position: absolute;
+  margin: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background-color: #fed262;
+  border-radius: 10px;
+}
+
+.file-description-div {
+  padding: 1rem;
+  float: right;
+}
+
+#description-question-mark:hover {
+  cursor: pointer;
+}
+
 /* ===============tasks table================*/
 .deadline-div {
   width: 7rem;

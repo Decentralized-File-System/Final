@@ -38,6 +38,7 @@ export const saveFilePost = async (req: Request, res: Response) => {
   const fileType: string = String(req.query.type);
   const teamId: string = String(req.query.teamId);
   const username: string = String(req.query.username);
+  const description: string = String(req.body.description)
 
   req.busboy.on("file", (fieldName, file, filename) => {
     console.log(`Upload of '${filename}' started`);
@@ -93,6 +94,7 @@ export const saveFilePost = async (req: Request, res: Response) => {
             name: filename,
             type: fileType,
             size: fileSize,
+            description: description,
             id: uuidv4(),
           };
 
@@ -155,6 +157,7 @@ export const saveFilePost = async (req: Request, res: Response) => {
           name: filename,
           type: fileType,
           size: fileSize,
+          description: description,
           id: file.id,
         };
         try {

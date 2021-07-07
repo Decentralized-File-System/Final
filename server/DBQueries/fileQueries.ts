@@ -29,7 +29,13 @@ export const addChunk = async (chunksArray: ChunkClass[]) => {
 };
 
 export const addFile = async (
-  file: { name: string; size: number; type: string; id: string },
+  file: {
+    name: string;
+    size: number;
+    type: string;
+    id: string;
+    description: string;
+  },
   userId: string,
   teamId: string
 ) => {
@@ -38,6 +44,7 @@ export const addFile = async (
     name: file.name,
     userId,
     teamId,
+    description: file.description,
     type: file.type,
     size: file.size,
     createdAt: new Date(),
