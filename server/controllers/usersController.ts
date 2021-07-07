@@ -88,7 +88,7 @@ export const login_post = async (req: Request, res: Response) => {
       return res.status(404).send("Incorrect email or password");
     }
     const userToken: any = {
-      username: existUser.name,
+      name: existUser.name,
       email: existUser.email,
       teamId: existUser.teamId,
       isAdmin: existUser.isAdmin,

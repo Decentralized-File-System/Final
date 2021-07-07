@@ -49,7 +49,7 @@ const File = ({ file, index }: fileType) => {
           <Button onClick={downloadHandler} variant="outline-success">
             Download
           </Button>
-          {currentUser.isAdmin || currentUser.username === file.userId ? (
+          {currentUser.isAdmin || currentUser.name === file.userId ? (
             <DeleteDialog file={file} />
           ) : null}
         </div>

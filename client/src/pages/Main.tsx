@@ -9,6 +9,7 @@ import Sidebar from "../components/NewSidebar";
 
 export const Main = () => {
   const { currentUser } = useAuth();
+  console.log(currentUser);
   return (
     <div>
       <Header />

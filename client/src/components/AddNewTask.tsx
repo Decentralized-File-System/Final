@@ -39,7 +39,7 @@ export default function AddNewTask() {
     content: "",
     teamId: currentUser.teamId,
     deadline: new Date(),
-    userName: currentUser.username,
+    userName: currentUser.name,
   });
 
   const handleDateChange = (date: Date | null) => {

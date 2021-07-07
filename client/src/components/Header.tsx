@@ -37,7 +37,7 @@ export default function Header() {
           <Typography className={classes.title} variant="h5" noWrap>
             <div
               style={{ float: "right", paddingTop: "1rem" }}
-            >{`Welcome, ${currentUser.username}`}</div>
+            >{`Welcome, ${currentUser.name}`}</div>
             <div className="logo">
               <img
                 src={companyLogo}

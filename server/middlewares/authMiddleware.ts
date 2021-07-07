@@ -47,7 +47,7 @@ const checkUser: RequestHandler = async (req, res, next) => {
                   httpOnly: true,
                 });
                 res.locals.user = {
-                  username: user.name,
+                  name: user.name,
                   email: user.email,
                   isAdmin: user.isAdmin,
                   isSuperAdmin: user.isSuperAdmin,
@@ -63,7 +63,7 @@ const checkUser: RequestHandler = async (req, res, next) => {
       } else {
         const user = await getUserByEmail(decoded.user.email);
         const newUser = {
-          username: user.name,
+          name: user.name,
           email: user.email,
           isAdmin: user.isAdmin,
           isSuperAdmin: user.isSuperAdmin,

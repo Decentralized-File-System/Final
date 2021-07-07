@@ -52,7 +52,7 @@ export default function UploadNewFileDialog() {
     formData.append("file", file);
     try {
       const res = await axios.post(
-        `http://localhost:3001/api/v1/file/post-file?size=${file.size}&type=${file.type}&teamId=${currentUser.teamId}&username=${currentUser.username}`,
+        `http://localhost:3001/api/v1/file/post-file?size=${file.size}&type=${file.type}&teamId=${currentUser.teamId}&username=${currentUser.name}`,
         formData,
         { withCredentials: true }
       );
