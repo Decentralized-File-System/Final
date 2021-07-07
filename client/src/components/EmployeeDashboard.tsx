@@ -13,13 +13,15 @@ import Dashboard from "./Dashboard";
 
 export const EmployeeDashboard = () => {
   const { currentPage } = useData();
+  const [loaded, setLoaded] = useState(0);
+  const [showBar, setShowBar] = useState(false);
 
   return (
     <div id="employee-dashboard">
       {currentPage === "files" ? (
         <>
-          <FileTable />
-          <UploadNewFileDialog />
+          <FileTable loaded={loaded} showBar={showBar} />
+          <UploadNewFileDialog setLoaded={setLoaded} setShowBar={setShowBar} />
         </>
       ) : currentPage === "tasks" ? (
         <>

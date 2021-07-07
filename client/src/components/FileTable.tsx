@@ -6,8 +6,14 @@ import File from "./File";
 import { FileTableActions } from "./FileTableActions";
 import TablePagination from "@material-ui/core/TablePagination";
 import { useData } from "../context/AppDataContext";
+import { Progress } from "reactstrap";
 
-function FileTable() {
+export type fileTableType = {
+  loaded: number;
+  showBar: boolean;
+};
+
+function FileTable({ loaded, showBar }: fileTableType) {
   const { files, setFiles, getFiles } = useData();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -55,6 +61,13 @@ function FileTable() {
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
       />
+      <div>
+        {showBar && (
+          <Progress max="100" color="success" value={loaded}>
+            {Math.round(loaded)}%
+          </Progress>
+        )}
+      </div>
     </div>
   );
 }

@@ -16,12 +16,15 @@ import Dashboard from "./Dashboard";
 export const AdminDashboard = () => {
   const { currentPage } = useData();
   const { currentUser } = useAuth();
+  const [loaded, setLoaded] = useState(0);
+  const [showBar, setShowBar] = useState(false);
+
   return (
     <div>
       {currentPage === "files" ? (
         <>
-          <FileTable />
-          <UploadNewFileDialog />
+          <FileTable loaded={loaded} showBar={showBar} />
+          <UploadNewFileDialog setLoaded={setLoaded} setShowBar={setShowBar} />
         </>
       ) : currentPage === "tasks" ? (
         <>

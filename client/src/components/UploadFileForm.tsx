@@ -16,7 +16,15 @@ import { useData } from "../context/AppDataContext";
 
 const swal = withReactContent(Swal);
 
-export default function UploadNewFileDialog() {
+export type fileTableType = {
+  setLoaded: Function;
+  setShowBar: Function;
+};
+
+export default function UploadNewFileDialog({
+  setLoaded,
+  setShowBar,
+}: fileTableType) {
   /* This component creates the add new ticket functionallity, using material-ui dialog
   and a trigger AddButton */
   const { getFiles } = useData();
@@ -48,13 +56,19 @@ export default function UploadNewFileDialog() {
       return;
     }
     closeDialog();
+    setShowBar(true);
     const formData = new FormData();
     formData.append("file", file);
     try {
       const res = await axios.post(
         `http://localhost:3001/api/v1/file/post-file?size=${file.size}&type=${file.type}&teamId=${currentUser.teamId}&username=${currentUser.name}`,
         formData,
-        { withCredentials: true }
+        {
+          withCredentials: true,
+          onUploadProgress: (progress) => {
+            setLoaded((progress.loaded / progress.total) * 100);
+          },
+        }
       );
       const status = "File has uploaded Successfully!";
       swal.fire({
@@ -63,6 +77,8 @@ export default function UploadNewFileDialog() {
         timer: 3000,
         showConfirmButton: true,
       });
+      setLoaded(0);
+      setShowBar(false);
       getFiles();
       setFile(null);
     } catch (error) {
