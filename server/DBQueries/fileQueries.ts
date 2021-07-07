@@ -5,9 +5,13 @@ import { ChunkClass } from "../utils/classes";
 import { chunk } from "../types";
 
 export const getAllNodesData = async () => {
-  const response = await DataNode.findAll({ order: [["id", "ASC"]] });
-  const nodes = response.map((data: any) => data.toJSON());
-  return nodes;
+  try {
+    const response = await DataNode.findAll({ order: [["id", "ASC"]] });
+    const nodes = response.map((data: any) => data.toJSON());
+    return nodes;
+  } catch (error) {
+    throw new Error(error);
+  }
 };
 
 export const addChunk = async (chunksArray: ChunkClass[]) => {
@@ -89,26 +93,38 @@ export const getChunks = async (fileId: string) => {
 };
 
 export const getFileById = async (fileId: string) => {
-  const res = await File.findOne({ where: { id: fileId } });
-  const data = res.toJSON();
-  return data;
+  try {
+    const res = await File.findOne({ where: { id: fileId } });
+    const data = res.toJSON();
+    return data;
+  } catch (error) {
+    throw new Error(error);
+  }
 };
 
 export const getFilesByTeamId = async (teamId: string) => {
-  const res = await File.findAll({
-    where: { team_id: teamId },
-    order: [["createdAt", "DESC"]],
-  });
-  const filesArray = res.map((data: any) => data.toJSON());
-  return filesArray;
+  try {
+    const res = await File.findAll({
+      where: { team_id: teamId },
+      order: [["createdAt", "DESC"]],
+    });
+    const filesArray = res.map((data: any) => data.toJSON());
+    return filesArray;
+  } catch (error) {
+    throw new Error(error);
+  }
 };
 
 export const getFileByName = async (text: string, teamId: string) => {
-  const res = await File.findAll({
-    where: { name: { [Op.like]: `%${text}%` }, team_id: teamId },
-  });
-  const filesArray = res.map((data: any) => data.toJSON());
-  return filesArray;
+  try {
+    const res = await File.findAll({
+      where: { name: { [Op.like]: `%${text}%` }, team_id: teamId },
+    });
+    const filesArray = res.map((data: any) => data.toJSON());
+    return filesArray;
+  } catch (error) {
+    throw new Error(error);
+  }
 };
 
 export const dataNodeStorageAfterDelete = async (chunksArray: chunk[]) => {

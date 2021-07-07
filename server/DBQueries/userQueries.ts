@@ -30,17 +30,25 @@ export const getUserByEmail = async (userEmail: string) => {
 };
 
 export const getAllUsers = async () => {
-  const response = await User.findAll({ order: [["id", "ASC"]] });
-  const usersArray = response.map((data: any) => data.toJSON());
-  return usersArray;
+  try {
+    const response = await User.findAll({ order: [["id", "ASC"]] });
+    const usersArray = response.map((data: any) => data.toJSON());
+    return usersArray;
+  } catch (error) {
+    throw new Error(error);
+  }
 };
 
 export const getAllEmployeesWithoutTeam = async () => {
-  const response = await User.findAll({
-    where: { team_id: null, isAdmin: "false", isSuperAdmin: "false" },
-  });
-  const regularEmployeesArray = response.map((data: any) => data.toJSON());
-  return regularEmployeesArray;
+  try {
+    const response = await User.findAll({
+      where: { team_id: null, isAdmin: "false", isSuperAdmin: "false" },
+    });
+    const regularEmployeesArray = response.map((data: any) => data.toJSON());
+    return regularEmployeesArray;
+  } catch (error) {
+    throw new Error(error);
+  }
 };
 
 export const updateTeam = async (
@@ -61,7 +69,7 @@ export const updateTeam = async (
     }
     return "success";
   } catch (error) {
-    return "failed";
+    throw new Error(error);
   }
 };
 
@@ -79,7 +87,7 @@ export const updateAdmin = async (usersArray: user[], adminBool: string) => {
     }
     return "success";
   } catch (error) {
-    return "failed";
+    throw new Error(error);
   }
 };
 
@@ -107,17 +115,20 @@ export const updateEmailOrPassword = async (
     });
     return "success";
   } catch (error) {
-    console.log(error);
-    return "failed";
+    throw new Error(error);
   }
 };
 
 export const getEmployeesByTeamId = async (teamId: string) => {
-  const response = await User.findAll({
-    where: { team_id: teamId, isAdmin: "false", isSuperAdmin: "false" },
-  });
-  const regularEmployeesArray = response.map((data: any) => data.toJSON());
-  return regularEmployeesArray;
+  try {
+    const response = await User.findAll({
+      where: { team_id: teamId, isAdmin: "false", isSuperAdmin: "false" },
+    });
+    const regularEmployeesArray = response.map((data: any) => data.toJSON());
+    return regularEmployeesArray;
+  } catch (error) {
+    throw new Error(error);
+  }
 };
 
 export const changeTeamIdQuery = async (

@@ -8,6 +8,6 @@ export const get_random_quote = async (req: Request, res: Response) => {
     return res.status(201).json({ text: quote.text, author: quote.author });
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Failed to get quotes");
+    return res.status(500).json({ message: "Failed to get quotes" });
   }
 };

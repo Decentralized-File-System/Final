@@ -39,10 +39,10 @@ export const signUp_post = async (req: Request, res: Response) => {
     const isEmailExist = await getUserByEmail(email);
 
     if (isEmailExist) {
-      return res.status(409).send("Email already exist");
+      return res.status(409).json({ message: "Email already exist" });
     }
     if (isUsernameExist) {
-      return res.status(409).send("Username already exist");
+      return res.status(409).json({ message: "Username already exist" });
     }
 
     const newUser: user = {
@@ -72,7 +72,7 @@ export const signUp_post = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Signup failed");
+    return res.status(500).json({ message: "Signup failed" });
   }
 };
 
@@ -82,11 +82,11 @@ export const login_post = async (req: Request, res: Response) => {
   try {
     const existUser = await getUserByEmail(email);
     if (!existUser) {
-      return res.status(404).send("Incorrect email or password");
+      return res.status(404).json({ message: "Incorrect email or password" });
     }
     const auth = compareSync(password, existUser.password);
     if (!auth) {
-      return res.status(404).send("Incorrect email or password");
+      return res.status(404).json({ message: "Incorrect email or password" });
     }
     const userToken: any = {
       name: existUser.name,
@@ -111,7 +111,7 @@ export const login_post = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).send(error);
+    res.status(500).json({ message: "Failed to log in" });
   }
 };
 
@@ -119,7 +119,7 @@ export const users_get = async (req: Request, res: Response) => {
   const { user } = req.body;
   const { teamId }: any = req.query;
   if (!user.isSuperAdmin && !user.isAdmin) {
-    return res.status(401).send("Bad request");
+    return res.status(401).json({ message: "Bad request" });
   }
   if (user.isSuperAdmin) {
     try {
@@ -127,7 +127,7 @@ export const users_get = async (req: Request, res: Response) => {
       return res.status(200).json({ usersArray });
     } catch (error) {
       console.log(error);
-      return res.status(500).send("failed");
+      return res.status(500).json({ message: "Failed to get all users" });
     }
   }
   if (user.isAdmin) {
@@ -137,7 +137,7 @@ export const users_get = async (req: Request, res: Response) => {
         return res.status(200).json({ usersArray });
       } catch (error) {
         console.log(error);
-        return res.status(500).send("failed");
+        return res.status(500).json({ message: "Failed Get all employees" });
       }
     } else {
       try {
@@ -145,7 +145,7 @@ export const users_get = async (req: Request, res: Response) => {
         return res.status(200).json({ usersArray });
       } catch (error) {
         console.log(error);
-        return res.status(500).send("failed");
+        return res.status(500).json({ message: "Failed to get employees" });
       }
     }
   }
@@ -158,17 +158,17 @@ export const change_props_put = async (req: Request, res: Response) => {
   if (teamId) {
     const response = await updateTeam(users, teamId);
     if (response === "success") {
-      return res.status(200).send("Successfully updated");
+      return res.status(200).json({ message: "Successfully updated team" });
     } else {
-      return res.status(400).send("Failed to updated");
+      return res.status(400).json({ message: "Failed to updated team" });
     }
   }
   if (isAdmin) {
     const response = await updateAdmin(users, isAdmin);
     if (response === "success") {
-      return res.status(200).send("Successfully updated");
+      return res.status(200).json("Successfully updated admin status");
     } else {
-      return res.status(400).send("Failed to updated");
+      return res.status(400).json("Failed to updated admin status");
     }
   }
   if (currentPassword) {
@@ -176,11 +176,11 @@ export const change_props_put = async (req: Request, res: Response) => {
       const user = await getUserByEmail(users[0].email);
       const auth = compareSync(currentPassword, user.password);
       if (!auth) {
-        return res.status(404).send("Incorrect password");
+        return res.status(404).json({ message: "Incorrect password" });
       }
       const isExist = await getUserByEmail(newEmail);
       if (isExist) {
-        return res.status(409).send("Email already exist");
+        return res.status(409).json({ message: "Email already exist" });
       }
       const response = await updateEmailOrPassword(
         users[0],
@@ -188,13 +188,13 @@ export const change_props_put = async (req: Request, res: Response) => {
         newPassword
       );
       if (response === "success") {
-        return res.status(200).send("Successfully updated");
+        return res.status(200).json({ message: "Successfully updated" });
       } else {
-        return res.status(500).send("Failed to updated");
+        return res.status(500).json({ message: "Failed to updated" });
       }
     } catch (error) {
       console.log(error);
-      return res.status(500).send("Failed to updated");
+      return res.status(500).json({ message: "Failed to updated" });
     }
   }
 };
@@ -202,7 +202,7 @@ export const change_props_put = async (req: Request, res: Response) => {
 export const logout_get = (req: Request, res: Response) => {
   res.cookie("Access-Token", "logged out", { maxAge: 1 });
   res.cookie("Refresh-Token", "logged out", { maxAge: 1 });
-  res.status(200).send("user logged out");
+  res.status(200).json({ message: "User logged out" });
 };
 
 export const token_get = (req: Request, res: Response) => {

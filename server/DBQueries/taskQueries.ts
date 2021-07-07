@@ -108,9 +108,13 @@ export const getFromDateRange = async (
 };
 
 export const getTaskByName = async (text: string, teamId: string) => {
-  const res = await Task.findAll({
-    where: { title: { [Op.like]: `%${text}%` }, team_id: teamId },
-  });
-  const tasksArray = res.map((data: any) => data.toJSON());
-  return tasksArray;
+  try {
+    const res = await Task.findAll({
+      where: { title: { [Op.like]: `%${text}%` }, team_id: teamId },
+    });
+    const tasksArray = res.map((data: any) => data.toJSON());
+    return tasksArray;
+  } catch (error) {
+    throw new Error(error);
+  }
 };

@@ -28,7 +28,7 @@ export const addNewTask = async (req: Request, res: Response) => {
     res.status(200).json({ message: "Success" });
   } catch (error) {
     console.log(error);
-    res.status(500).send("Failed to add new task");
+    res.status(500).json({ message: "Failed to add new task" });
   }
 };
 
@@ -40,7 +40,7 @@ export const updateTaskStatus = async (req: Request, res: Response) => {
     res.status(200).json({ message: "Success" });
   } catch (error) {
     console.log(error);
-    res.status(500).send("Failed to update task");
+    res.status(500).json({ message: "Failed to update task" });
   }
 };
 
@@ -51,7 +51,7 @@ export const deleteTask = async (req: Request, res: Response) => {
     res.status(200).json({ message: "success" });
   } catch (error) {
     console.log(error);
-    res.status(500).send("Failed to delete task");
+    res.status(500).json({ message: "Failed to delete task" });
   }
 };
 
@@ -62,7 +62,7 @@ export const getRelevant = async (req: Request, res: Response) => {
     res.status(200).json(relevant);
   } catch (error) {
     console.log(error);
-    res.status(500).send("Failed to get tasks");
+    res.status(500).json({ message: "Failed to get tasks" });
   }
 };
 
@@ -73,7 +73,7 @@ export const getFinished = async (req: Request, res: Response) => {
     res.status(200).json(finished);
   } catch (error) {
     console.log(error);
-    res.status(500).send("Failed to get tasks");
+    res.status(500).json({ message: "Failed to get tasks" });
   }
 };
 
@@ -84,20 +84,20 @@ export const getRangeOfDate = async (req: Request, res: Response) => {
     res.status(200).json(rangeTasks);
   } catch (error) {
     console.log(error);
-    res.status(500).send("Failed to get tasks");
+    res.status(500).json({ message: "Failed to get tasks" });
   }
 };
 
 export const taskByNameGet = async (req: Request, res: Response) => {
   const { text, teamId }: any = req.query;
   if (!teamId) {
-    return res.status(401).send("Bad request");
+    return res.status(401).json({ message: "Bad request" });
   }
   try {
     const taskArray = await getTaskByName(text, teamId);
     return res.status(200).json(taskArray);
   } catch (error) {
     console.log(error);
-    res.status(500).send("Failed to get tasks");
+    res.status(500).json({ message: "Failed to get tasks" });
   }
 };
