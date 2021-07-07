@@ -105,7 +105,7 @@ function Row({ task, index }: propsRowType) {
   const classes = useRowStyles();
 
   return (
-    <React.Fragment>
+    <>
       <TableRow
         className={`${classes.root} ${index % 2 === 0 ? "grey-row" : ""}`}
       >
@@ -164,11 +164,11 @@ function Row({ task, index }: propsRowType) {
           </Collapse>
         </TableCell>
       </TableRow>
-    </React.Fragment>
+    </>
   );
 }
 export default function CollapsibleTable() {
-  const { tasks, getTasks } = useData();
+  const { tasks, getTasks, tasksError } = useData();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const { updateStatuses, statusesToChange, taskLoader } = useData();
@@ -239,6 +239,7 @@ export default function CollapsibleTable() {
           </TableBody>
         </Table>
       </TableContainer>
+      <div className="error-div">{tasksError ? "Failed to get tasks" : ""}</div>
       <TablePagination
         rowsPerPageOptions={[5, 10, 15]}
         component="div"

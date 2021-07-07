@@ -15,6 +15,8 @@ export const DataProvider: React.FC = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [files, setFiles] = useState<file[]>([]);
   const [tasks, setTasks] = useState<task[]>([]);
+  const [tasksError, setTasksError] = useState(false);
+  const [filesError, setFilesError] = useState(false);
   const [currentPage, setCurrentPage] = useState("dashboard");
   const [statusesToChange, setStatusesToChange] = useState<any>([]);
   const [taskLoader, setTaskLoader] = useState(false);
@@ -34,7 +36,7 @@ export const DataProvider: React.FC = ({ children }) => {
       );
       setTasks(res.data);
     } catch (error) {
-      throw Error(error);
+      setTasksError(true);
     }
   };
 
@@ -46,7 +48,7 @@ export const DataProvider: React.FC = ({ children }) => {
       );
       setFiles(res.data);
     } catch (error) {
-      console.log(error);
+      setFilesError(true);
     }
   };
 
@@ -100,7 +102,6 @@ export const DataProvider: React.FC = ({ children }) => {
         setLoading(false);
       }
     } catch (error) {
-      console.log(error);
       setLoading(false);
     }
   }, [currentUser]);
@@ -141,6 +142,8 @@ export const DataProvider: React.FC = ({ children }) => {
     tasks,
     setTasks,
     getTasks,
+    tasksError,
+    filesError,
   };
 
   return (

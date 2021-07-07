@@ -14,7 +14,7 @@ export type fileTableType = {
 };
 
 function FileTable({ loaded, showBar }: fileTableType) {
-  const { files, setFiles, getFiles } = useData();
+  const { files, setFiles, getFiles, filesError } = useData();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -52,6 +52,7 @@ function FileTable({ loaded, showBar }: fileTableType) {
               })}
         </tbody>
       </Table>
+      <div className="error-div">{filesError ? "Failed to get files" : ""}</div>
       <TablePagination
         rowsPerPageOptions={[10, 15, 20]}
         component="div"
