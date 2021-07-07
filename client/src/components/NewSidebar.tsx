@@ -1,4 +1,3 @@
-import React from "react";
 import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -11,7 +10,6 @@ import AssignmentIcon from "@material-ui/icons/Assignment";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import GroupIcon from "@material-ui/icons/Group";
 import SettingsIcon from "@material-ui/icons/Settings";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useData } from "../context/AppDataContext";
 import { useHistory } from "react-router-dom";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
@@ -46,11 +44,10 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function PermanentDrawerLeft() {
-  const { currentPage, setCurrentPage } = useData();
+  const { setCurrentPage } = useData();
   const { logout, currentUser } = useAuth();
   const history = useHistory();
   const classes = useStyles();
-  const matches = useMediaQuery("(min-width:1100px)");
 
   const navigateHandler = (destination: string) => {
     setCurrentPage(destination);

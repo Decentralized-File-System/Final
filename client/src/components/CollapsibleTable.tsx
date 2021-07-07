@@ -87,9 +87,7 @@ const getColorForPercentage = (pct: number) => {
 
 function Row({ task, index }: propsRowType) {
   const [open, setOpen] = React.useState(false);
-  const [daysDifference, setDaysDifference] = useState<number>(
-    getNumberOfDays(new Date(), task.deadline)
-  );
+  const daysDifference = getNumberOfDays(new Date(), task.deadline);
 
   const statusColor =
     task.status === "Done"
@@ -187,11 +185,13 @@ export default function CollapsibleTable() {
   const changeStatusHandler = () => {
     updateStatuses();
   };
+
   useEffect(() => {
     if (statusesToChange.length === 0) {
       getTasks();
     }
   }, [statusesToChange]);
+
   return (
     <div className="tasks-div-container">
       <TaskTableActions />

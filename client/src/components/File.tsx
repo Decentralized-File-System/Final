@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { file } from "../types";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
@@ -8,7 +8,6 @@ import DeleteDialog from "./DeleteDialog";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { bytesToSize } from "../Utils/function";
-import { useData } from "../context/AppDataContext";
 import Typography from "@material-ui/core/Typography";
 
 const swal = withReactContent(Swal);
@@ -36,7 +35,7 @@ const File = ({ file, index }: fileType) => {
     } catch (error) {
       swal.fire({
         title: "Attention!",
-        text: error.response.data.message,
+        text: "Failed to download file",
         timer: 3000,
         showConfirmButton: true,
       });

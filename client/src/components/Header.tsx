@@ -35,9 +35,9 @@ export default function Header() {
       <AppBar position="static" className="header-bar" style={headerStyle}>
         <Toolbar className={classes.toolbar}>
           <Typography className={classes.title} variant="h5" noWrap>
-            <div
-              style={{ float: "right", paddingTop: "1rem" }}
-            >{`Welcome, ${currentUser.name}`}</div>
+            <div style={{ float: "right", paddingTop: "1rem" }}>
+              {currentUser ? `Welcome, ${currentUser.name}` : ""}
+            </div>
             <div className="logo">
               <img
                 src={companyLogo}

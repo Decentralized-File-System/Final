@@ -211,12 +211,7 @@ export const downloadFile = async (req: Request, res: Response) => {
     const promiseArr = chunkArray.map((chunk: any) => {
       return downloadChunks(String(fileId), chunk.nodeId, chunk.orderIndex);
     });
-    try {
-      await Promise.all(promiseArr);
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({ message: "Failed to download chunks" });
-    }
+    await Promise.all(promiseArr);
 
     const chunksFiles = fs.readdirSync(chunksFolderPath);
 
@@ -246,21 +241,23 @@ export const downloadFile = async (req: Request, res: Response) => {
       console.log(error);
       return res.status(500).json({ message: "Failed to download file" });
     }
-    res.status(200).download(path.join(mainPath, String(fileName)), (err) => {
-      if (err) {
-        throw err;
-      } else {
-        //Deleting file from local server
-        fs.unlink(path.join(mainPath, String(fileName)), (err) => {
-          if (err) {
-            throw err;
-          }
-        });
-      }
-    });
+    return res
+      .status(200)
+      .download(path.join(mainPath, String(fileName)), (err) => {
+        if (err) {
+          throw err;
+        } else {
+          //Deleting file from local server
+          fs.unlink(path.join(mainPath, String(fileName)), (err) => {
+            if (err) {
+              throw err;
+            }
+          });
+        }
+      });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Failed to download file" });
+    return res.status(500).json({ message: "Failed to download file" });
   }
 };
 

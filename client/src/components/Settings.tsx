@@ -36,7 +36,7 @@ export const Settings = () => {
       url = `${BASE_URL}/user/change-props?currentPassword=${data.currentPassword}&newPassword=${data.newPassword}`;
     }
     try {
-      const res = await axios.put(url, [currentUser], {
+      await axios.put(url, [currentUser], {
         withCredentials: true,
       });
       swal.fire({
@@ -46,7 +46,9 @@ export const Settings = () => {
         showConfirmButton: true,
       });
       await logout();
-      history.push("/login");
+      setTimeout(() => {
+        history.push("/login");
+      }, 2000);
     } catch (error) {
       swal.fire({
         title: "Attention!",

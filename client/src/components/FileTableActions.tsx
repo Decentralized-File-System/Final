@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { file, task } from "../types";
+import { file } from "../types";
 import {
   sortByName,
   sortByUser,

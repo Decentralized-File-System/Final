@@ -16,8 +16,8 @@ export const uploadChunks = async (
     try {
       await axios({
         method: "post",
-        url: `http://${nodePorts[chunk.nodeId - 1].host}:${
-          nodePorts[chunk.nodeId - 1].port
+        url: `${
+          nodePorts[chunk.nodeId - 1].url
         }/api/v1/file/upload-file?fileId=${chunk.fileId}&index=${chunk.index}`,
         data: form,
         maxContentLength: Infinity,
@@ -41,7 +41,7 @@ export const downloadChunks = async (
 ) => {
   const chunksFolder = `${__dirname}/../chunks`;
   const node = nodePorts.filter((node: any) => node.id === nodeId)[0];
-  const nodeURL = `http://${node.host}:${node.port}/api/v1/file/download-file?fileId=${fileId}&index=${orderIndex}`;
+  const nodeURL = `${node.url}/api/v1/file/download-file?fileId=${fileId}&index=${orderIndex}`;
   try {
     const res = await axios.get(nodeURL);
     fs.writeFileSync(
@@ -49,7 +49,6 @@ export const downloadChunks = async (
       Buffer.from(res.data, "base64")
     );
   } catch (error) {
-    console.log(error);
     throw Error(error.message);
   }
 };
@@ -57,9 +56,7 @@ export const downloadChunks = async (
 export const deleteChunks = async (chunkArray: chunk[]) => {
   const promiseArray = chunkArray.map((chunk) => {
     return axios.delete(
-      `http://${nodePorts[chunk.nodeId - 1].host}:${
-        nodePorts[chunk.nodeId - 1].port
-      }/api/v1/file?fileId=${chunk.fileId}`
+      `${nodePorts[chunk.nodeId - 1].url}/api/v1/file?fileId=${chunk.fileId}`
     );
   });
   try {

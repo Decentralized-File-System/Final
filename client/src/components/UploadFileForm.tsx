@@ -4,7 +4,6 @@ import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import axios from "axios";
 import AddButton from "./AddButton";
@@ -54,7 +53,7 @@ export default function UploadNewFileDialog({
     const formData = new FormData();
     formData.append("file", file);
     try {
-      const res = await axios.post(
+      await axios.post(
         `http://localhost:3001/api/v1/file/post-file?size=${file.size}&type=${file.type}&teamId=${currentUser.teamId}&username=${currentUser.name}&description=${fileDescription}`,
         formData,
         {

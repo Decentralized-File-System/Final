@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { task } from "../types";
 import {
   sortByTitleTask,
   sortByStatusTask,

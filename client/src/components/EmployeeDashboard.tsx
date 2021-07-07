@@ -1,9 +1,6 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
+import { useState } from "react";
 import FileTable from "./FileTable";
 import { useData } from "../context/AppDataContext";
-import { BASE_URL } from "../Utils/Variables";
-import { file, task } from "../types";
 import UploadNewFileDialog from "./UploadFileForm";
 import CollapsibleTable from "./CollapsibleTable";
 import AddNewTask from "./AddNewTask";

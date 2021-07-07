@@ -40,10 +40,6 @@ const renderCustomizedLabel = ({
   );
 };
 
-type PieChartCompProps = {
-  data: any;
-};
-
 export default function PieChartComp() {
   const { pieData } = useData();
   return (

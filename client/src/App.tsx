@@ -14,11 +14,14 @@ import { AuthProvider } from "./context/AuthContext";
 import { DataProvider } from "./context/AppDataContext";
 import PrivateRoute from "./components/PrivateRoute";
 import NotFound from "./pages/NotFound";
+import Header from "./components/Header";
+
 function App() {
   return (
     <div className="App">
       <AuthProvider>
         <DataProvider>
+          <Header />
           <Router>
             <Switch>
               <PrivateRoute exact path="/" component={Main} />

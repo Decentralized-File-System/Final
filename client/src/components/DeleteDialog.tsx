@@ -33,7 +33,7 @@ export default function DeleteDialog({ file }: DeleteDialogProps) {
   const deleteHandler = async () => {
     handleClose();
     try {
-      const res = await axios.delete(`${BASE_URL}/file?fileId=${file.id}`, {
+      await axios.delete(`${BASE_URL}/file?fileId=${file.id}`, {
         withCredentials: true,
       });
       const status = "File has deleted Successfully!";
