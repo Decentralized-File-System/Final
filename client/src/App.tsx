@@ -15,26 +15,41 @@ import { DataProvider } from "./context/AppDataContext";
 import PrivateRoute from "./components/PrivateRoute";
 import NotFound from "./pages/NotFound";
 import Header from "./components/Header";
+import SetUpLogoImg from "./components/SetUpLogoImg";
+import { useState } from "react";
+import { useEffect } from "react";
 
 function App() {
+  const [setupLogoShown, setSetupLogoShown] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setSetupLogoShown(false);
+    }, 3000);
+  }, []);
+
   return (
     <div className="App">
-      <AuthProvider>
-        <DataProvider>
-          <Header />
-          <Router>
-            <Switch>
-              <PrivateRoute exact path="/" component={Main} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/signup" component={SignUp} />
-              <Route path="/404" component={NotFound} />
-              <Route>
-                <Redirect to="/404"></Redirect>
-              </Route>
-            </Switch>
-          </Router>
-        </DataProvider>
-      </AuthProvider>
+      {setupLogoShown ? (
+        <SetUpLogoImg setSetupLogoShown={setSetupLogoShown} />
+      ) : (
+        <AuthProvider>
+          <DataProvider>
+            <Header />
+            <Router>
+              <Switch>
+                <PrivateRoute exact path="/" component={Main} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/signup" component={SignUp} />
+                <Route path="/404" component={NotFound} />
+                <Route>
+                  <Redirect to="/404"></Redirect>
+                </Route>
+              </Switch>
+            </Router>
+          </DataProvider>
+        </AuthProvider>
+      )}
     </div>
   );
 }

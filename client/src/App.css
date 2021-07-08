@@ -2,6 +2,53 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100&family=Roboto:ital,wght@1,300&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Montserrat:400,400i,700");
+.setup-logo {
+  width: 40vw;
+  height: 90vh;
+  margin: auto;
+}
+
+.setup-logo-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.setup-logo-container > .setup-logo {
+  -webkit-animation: logo 2s alternate infinite linear;
+          animation: logo 2s alternate infinite linear;
+  display: inline-block;
+}
+
+.fade-out {
+  -webkit-animation: fadeOut 1s;
+          animation: fadeOut 1s;
+  -webkit-animation-delay: 2s;
+          animation-delay: 2s;
+  opacity: 1;
+}
+
+@-webkit-keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 #root {
   background-color: #555;
 }
@@ -521,6 +568,28 @@ thead,
 }
 
 @keyframes spooky {
+  from {
+    -webkit-transform: translatey(0.15em) scaley(0.95);
+            transform: translatey(0.15em) scaley(0.95);
+  }
+  to {
+    -webkit-transform: translatey(-0.15em);
+            transform: translatey(-0.15em);
+  }
+}
+
+@-webkit-keyframes logo {
+  from {
+    -webkit-transform: translatey(0.15em) scaley(0.95);
+            transform: translatey(0.15em) scaley(0.95);
+  }
+  to {
+    -webkit-transform: translatey(-0.15em);
+            transform: translatey(-0.15em);
+  }
+}
+
+@keyframes logo {
   from {
     -webkit-transform: translatey(0.15em) scaley(0.95);
             transform: translatey(0.15em) scaley(0.95);
