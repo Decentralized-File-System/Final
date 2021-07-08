@@ -82,6 +82,7 @@ export default function UploadNewFileDialog({
         timer: 3000,
         showConfirmButton: true,
       });
+      setLoaded(0);
       setShowBar(false);
       setOpen(false);
       setFile(null);
