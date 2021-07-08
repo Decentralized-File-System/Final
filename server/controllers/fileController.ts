@@ -68,7 +68,7 @@ export const saveFilePost = async (req: Request, res: Response) => {
       );
 
       //Checks if the file size is above 1GB
-      if (fileSize >= 1073741824 /*1GB*/) {
+      if (fileSize >= 0 /*1073741824 1GB*/) {
         const readStream = fs.createReadStream(path.join(mainPath, filename), {
           highWaterMark: 2 * 1024 * 1024,
         });
@@ -140,57 +140,58 @@ export const saveFilePost = async (req: Request, res: Response) => {
         });
 
         //If file size is BELOW 1GB!!----------------------------------------------------
-      } else {
-        //Reading the file and getting file buffer
-        const fileBuffer = readFileSync(path.join(mainPath, filename));
-        const file: ServerFile = {
-          name: filename,
-          data: fileBuffer,
-          size: fileBuffer.length,
-          id: uuidv4(),
-        };
-
-        //Splitting the file according to the percent available for each node
-        const fileChunkArray = splitFile(file, dataNodesAvailablePercentage);
-
-        //uploading chunks
-        const response = await uploadChunks(fileChunkArray);
-
-        const dataBaseFileInfo = {
-          name: filename,
-          type: fileType,
-          size: fileSize,
-          description: description,
-          id: file.id,
-        };
-        try {
-          //deleting file
-          await fs.unlink(path.join(mainPath, filename));
-          console.log("File successfully deleted");
-        } catch (error) {
-          console.log(error);
-          console.error("Failed to delete file");
-        }
-
-        //If upload was successful updating the DB
-        if (response === "success") {
-          try {
-            await addFile(dataBaseFileInfo, username, teamId);
-            await addChunk(fileChunkArray);
-            await updateDataNodes(fileChunkArray);
-            return res
-              .status(200)
-              .json({ message: "Uploaded to DB successfully" });
-          } catch (error) {
-            console.log(error);
-            return res
-              .status(500)
-              .json({ message: "Failed to update database" });
-          }
-        } else {
-          return res.status(500).json({ message: "Failed to upload chunks" });
-        }
       }
+      // else {
+      //   //Reading the file and getting file buffer
+      //   const fileBuffer = readFileSync(path.join(mainPath, filename));
+      //   const file: ServerFile = {
+      //     name: filename,
+      //     data: fileBuffer,
+      //     size: fileBuffer.length,
+      //     id: uuidv4(),
+      //   };
+
+      //   //Splitting the file according to the percent available for each node
+      //   const fileChunkArray = splitFile(file, dataNodesAvailablePercentage);
+
+      //   //uploading chunks
+      //   const response = await uploadChunks(fileChunkArray);
+
+      //   const dataBaseFileInfo = {
+      //     name: filename,
+      //     type: fileType,
+      //     size: fileSize,
+      //     description: description,
+      //     id: file.id,
+      //   };
+      //   try {
+      //     //deleting file
+      //     await fs.unlink(path.join(mainPath, filename));
+      //     console.log("File successfully deleted");
+      //   } catch (error) {
+      //     console.log(error);
+      //     console.error("Failed to delete file");
+      //   }
+
+      //   //If upload was successful updating the DB
+      //   if (response === "success") {
+      //     try {
+      //       await addFile(dataBaseFileInfo, username, teamId);
+      //       await addChunk(fileChunkArray);
+      //       await updateDataNodes(fileChunkArray);
+      //       return res
+      //         .status(200)
+      //         .json({ message: "Uploaded to DB successfully" });
+      //     } catch (error) {
+      //       console.log(error);
+      //       return res
+      //         .status(500)
+      //         .json({ message: "Failed to update database" });
+      //     }
+      //   } else {
+      //     return res.status(500).json({ message: "Failed to upload chunks" });
+      //   }
+      // }
     });
 
     fStream.on("error", (err) => {
