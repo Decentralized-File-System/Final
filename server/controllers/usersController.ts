@@ -111,7 +111,7 @@ export const login_post = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Failed to log in" });
+    return res.status(500).json({ message: "Failed to log in" });
   }
 };
 
@@ -202,11 +202,11 @@ export const change_props_put = async (req: Request, res: Response) => {
 export const logout_get = (req: Request, res: Response) => {
   res.cookie("Access-Token", "logged out", { maxAge: 1 });
   res.cookie("Refresh-Token", "logged out", { maxAge: 1 });
-  res.status(200).json({ message: "User logged out" });
+  return res.status(200).json({ message: "User logged out" });
 };
 
 export const token_get = (req: Request, res: Response) => {
-  res.status(200).json({ user: res.locals.user });
+  return res.status(200).json({ user: res.locals.user });
 };
 
 export const changeTeamId = async (req: Request, res: Response) => {
@@ -214,12 +214,12 @@ export const changeTeamId = async (req: Request, res: Response) => {
   if (isAdmin) {
     try {
       await changeTeamIdQuery(oldId, newId);
-      res.status(200).json({ message: "Success updating team id" });
+      return res.status(200).json({ message: "Success updating team id" });
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Failed to update team id" });
+      return res.status(500).json({ message: "Failed to update team id" });
     }
   } else {
-    res.status(401).json({ message: "Unauthorized user" });
+    return res.status(401).json({ message: "Unauthorized user" });
   }
 };

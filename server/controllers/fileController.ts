@@ -135,7 +135,7 @@ export const saveFilePost = async (req: Request, res: Response) => {
                 .json({ message: "Failed to update database" });
             }
           } else {
-            res.status(500).json({ message: "Failed to upload chunks" });
+            return res.status(500).json({ message: "Failed to upload chunks" });
           }
         });
 
@@ -178,7 +178,9 @@ export const saveFilePost = async (req: Request, res: Response) => {
             await addFile(dataBaseFileInfo, username, teamId);
             await addChunk(fileChunkArray);
             await updateDataNodes(fileChunkArray);
-            res.status(200).json({ message: "Uploaded to DB successfully" });
+            return res
+              .status(200)
+              .json({ message: "Uploaded to DB successfully" });
           } catch (error) {
             console.log(error);
             return res
@@ -186,7 +188,7 @@ export const saveFilePost = async (req: Request, res: Response) => {
               .json({ message: "Failed to update database" });
           }
         } else {
-          res.status(500).json({ message: "Failed to upload chunks" });
+          return res.status(500).json({ message: "Failed to upload chunks" });
         }
       }
     });
@@ -194,7 +196,7 @@ export const saveFilePost = async (req: Request, res: Response) => {
     fStream.on("error", (err) => {
       fs.unlinkSync(path.join(mainPath, filename));
       console.log(err);
-      res.status(500).json({ message: "Stream error" });
+      return res.status(500).json({ message: "Stream error" });
     });
   });
 };
@@ -272,7 +274,7 @@ export const filesGet = async (req: Request, res: Response) => {
     return res.status(200).json(fileArray);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Failed to get files" });
+    return res.status(500).json({ message: "Failed to get files" });
   }
 };
 
@@ -287,7 +289,7 @@ export const fileByNameGet = async (req: Request, res: Response) => {
     return res.status(200).json(fileArray);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Failed to get files" });
+    return res.status(500).json({ message: "Failed to get files" });
   }
 };
 
@@ -299,9 +301,9 @@ export const deleteFile = async (req: Request, res: Response) => {
     await dataNodeStorageAfterDelete(chunks);
     await deleteFileAndChunks(fileId);
     await deleteChunks(chunks);
-    res.status(200).json({ message: "Success deleting file" });
+    return res.status(200).json({ message: "Success deleting file" });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Error deleting file" });
+    return res.status(500).json({ message: "Error deleting file" });
   }
 };
