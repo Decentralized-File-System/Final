@@ -44,8 +44,8 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function PermanentDrawerLeft() {
-  const { setCurrentPage } = useData();
-  const { logout, currentUser } = useAuth();
+  const { setCurrentPage, setFiles, setTasks } = useData();
+  const { logout, currentUser, setCurrentUser } = useAuth();
   const history = useHistory();
   const classes = useStyles();
 
@@ -56,6 +56,10 @@ export default function PermanentDrawerLeft() {
   const logoutHandler = async () => {
     try {
       await logout();
+      setCurrentUser(null);
+      setFiles([]);
+      setTasks([]);
+      setCurrentPage("dashboard");
       history.push("/login");
     } catch (error) {
       swal.fire({
