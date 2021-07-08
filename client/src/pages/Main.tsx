@@ -3,7 +3,6 @@ import { AdminDashboard } from "../components/AdminDashboard";
 import { EmployeeDashboard } from "../components/EmployeeDashboard";
 import SuperDashboard from "../components/SuperDashboard";
 import { useAuth } from "../context/AuthContext";
-import Sidebar from "../components/NewSidebar";
 
 export const Main = () => {
   const { currentUser } = useAuth();
@@ -11,20 +10,11 @@ export const Main = () => {
   return (
     <div>
       {currentUser.isSuperAdmin ? (
-        <>
-          <Sidebar />
-          <SuperDashboard />
-        </>
+        <SuperDashboard />
       ) : currentUser.isAdmin ? (
-        <>
-          <Sidebar />
-          <AdminDashboard />
-        </>
+        <AdminDashboard />
       ) : (
-        <>
-          <Sidebar />
-          <EmployeeDashboard />
-        </>
+        <EmployeeDashboard />
       )}
     </div>
   );

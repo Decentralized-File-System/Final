@@ -78,7 +78,13 @@ html {
   overflow-wrap: break-word;
   margin-top: 2em;
   padding: 2rem;
+  padding-top: 1rem;
+  padding-bottom: 0;
   border-radius: 5px;
+}
+
+.task-table-row {
+  height: 0.2vh;
 }
 
 .td-class {

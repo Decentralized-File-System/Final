@@ -30,6 +30,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     drawerPaper: {
       top: "inherit",
+      position: "absolute",
+      height: "87vh",
       [theme.breakpoints.down("sm")]: {
         width: "7.5%",
       },

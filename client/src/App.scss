@@ -3,14 +3,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Montserrat:400,400i,700");
 
+// ==================setup-logo-============
 .setup-logo {
   width: 40vw;
   height: 90vh;
   margin: auto;
-  // & > .setup-logo {
-  //   animation: spooky 2s alternate infinite linear;
-  //   display: inline-block;
-  // }
 }
 .setup-logo-container {
   position: fixed;
@@ -38,7 +35,7 @@
     opacity: 0;
   }
 }
-
+// ====================================
 #root {
   background-color: #555;
 }
@@ -67,7 +64,13 @@ html {
   overflow-wrap: break-word;
   margin-top: 2em;
   padding: 2rem;
+  padding-top: 1rem;
+  padding-bottom: 0;
   border-radius: 5px;
+}
+
+.task-table-row{
+  height: 0.2vh;
 }
 
 .td-class {

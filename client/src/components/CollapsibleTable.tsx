@@ -105,7 +105,7 @@ function Row({ task, index }: propsRowType) {
   return (
     <>
       <TableRow
-        className={`${classes.root} ${index % 2 === 0 ? "grey-row" : ""}`}
+        className={`task-table-row ${classes.root} ${index % 2 === 0 ? "grey-row" : ""}`}
       >
         <TableCell>
           <IconButton
