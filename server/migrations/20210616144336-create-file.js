@@ -23,7 +23,7 @@ module.exports = {
         type: Sequelize.TEXT,
       },
       size: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BIGINT,
       },
       parent_folder_id: {
         type: Sequelize.STRING,

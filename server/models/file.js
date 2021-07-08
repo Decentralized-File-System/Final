@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       teamId: DataTypes.STRING,
       type: DataTypes.STRING,
       description: DataTypes.TEXT,
-      size: DataTypes.INTEGER,
+      size: DataTypes.BIGINT,
       parentFolderId: DataTypes.STRING,
     },
     {
