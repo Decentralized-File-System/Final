@@ -64,9 +64,22 @@ function FileTable({ loaded, showBar }: fileTableType) {
       />
       <div>
         {showBar && (
-          <Progress max="100" color="success" value={loaded}>
-            {Math.round(loaded)}%
-          </Progress>
+          <>
+            <div>
+              {Math.round(loaded) === 100 ? (
+                <>
+                  Finishing upload<span className="dot-1">.</span>
+                  <span className="dot-2">.</span>
+                  <span className="dot-3">.</span>
+                </>
+              ) : (
+                ""
+              )}
+            </div>
+            <Progress max="100" color="success" value={loaded}>
+              {Math.round(loaded)}%
+            </Progress>
+          </>
         )}
       </div>
     </div>

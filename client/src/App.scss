@@ -69,7 +69,7 @@ html {
   border-radius: 5px;
 }
 
-.task-table-row{
+.task-table-row {
   height: 0.2vh;
 }
 
@@ -256,6 +256,36 @@ tr {
 
 #description-question-mark:hover {
   cursor: pointer;
+}
+
+.dot-1 {
+  animation: dot-1 1s infinite linear;
+  font-size: 3rem;
+}
+
+.dot-2 {
+  animation: dot-1 1s infinite linear;
+  animation-delay: 0.75s;
+  font-size: 3rem;
+}
+
+.dot-3 {
+  animation: dot-1 1s infinite linear;
+  animation-delay: 1s;
+  font-size: 3rem;
+}
+
+@keyframes dot-1 {
+  0% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 0.5;
+  }
+  60%,
+  100% {
+    opacity: 0;
+  }
 }
 /* ===============tasks table================*/
 .deadline-div {

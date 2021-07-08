@@ -144,6 +144,7 @@ export const DataProvider: React.FC = ({ children }) => {
     getTasks,
     tasksError,
     filesError,
+    getDataNodesInfo,
   };
 
   return (

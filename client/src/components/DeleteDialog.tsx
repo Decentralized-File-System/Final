@@ -19,7 +19,7 @@ type DeleteDialogProps = {
 };
 
 export default function DeleteDialog({ file }: DeleteDialogProps) {
-  const { getFiles } = useData();
+  const { getFiles, getDataNodesInfo } = useData();
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -43,6 +43,7 @@ export default function DeleteDialog({ file }: DeleteDialogProps) {
         timer: 3000,
         showConfirmButton: true,
       });
+      getDataNodesInfo();
       getFiles();
     } catch (error) {
       const status = "There was a problem, the file did not deleted.";

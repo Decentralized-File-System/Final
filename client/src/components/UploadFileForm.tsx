@@ -26,7 +26,7 @@ export default function UploadNewFileDialog({
 }: fileTableType) {
   /* This component creates the add new ticket functionallity, using material-ui dialog
   and a trigger AddButton */
-  const { getFiles } = useData();
+  const { getFiles, getDataNodesInfo } = useData();
   const { currentUser } = useAuth();
   const [file, setFile] = useState<any>(null);
   const [open, setOpen] = React.useState(false);
@@ -70,6 +70,7 @@ export default function UploadNewFileDialog({
         timer: 3000,
         showConfirmButton: true,
       });
+      getDataNodesInfo();
       setLoaded(0);
       setShowBar(false);
       getFiles();
