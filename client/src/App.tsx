@@ -35,8 +35,8 @@ function App() {
       ) : (
         <AuthProvider>
           <DataProvider>
-            <Header />
             <Router>
+              <Header />
               <Switch>
                 <PrivateRoute exact path="/" component={Main} />
                 <Route exact path="/login" component={Login} />

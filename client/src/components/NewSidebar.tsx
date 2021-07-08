@@ -64,6 +64,7 @@ export default function PermanentDrawerLeft() {
       setCurrentPage("dashboard");
       history.push("/login");
     } catch (error) {
+      console.log(error);
       swal.fire({
         title: "Attention!",
         text: error.response.data.message,
@@ -74,101 +75,105 @@ export default function PermanentDrawerLeft() {
   };
 
   return (
-    <div className={`${classes.root} sideBar`}>
-      <CssBaseline />
-      <Drawer
-        className={classes.drawer}
-        variant="permanent"
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-        anchor="left"
-      >
-        <Divider />
-        <List>
-          <ListItem
-            button
-            key={"Dashboard"}
-            onClick={() => navigateHandler("dashboard")}
+    <>
+      {currentUser ? (
+        <div className={`${classes.root} sideBar`}>
+          <CssBaseline />
+          <Drawer
+            className={classes.drawer}
+            variant="permanent"
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+            anchor="left"
           >
-            <span style={{ display: "flex" }}>
-              <ListItemIcon>
-                <FileCopyIcon />
-              </ListItemIcon>
-              <ListItemText primary={"Dashboard"} />
-            </span>
-          </ListItem>
-          {!currentUser.isSuperAdmin ? (
-            <>
+            <Divider />
+            <List>
               <ListItem
                 button
-                key={"Tasks"}
-                onClick={() => navigateHandler("tasks")}
-              >
-                <span style={{ display: "flex" }}>
-                  <ListItemIcon>
-                    <AssignmentIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={"Tasks"} />
-                </span>
-              </ListItem>
-              <ListItem
-                button
-                key={"Files"}
-                onClick={() => navigateHandler("files")}
+                key={"Dashboard"}
+                onClick={() => navigateHandler("dashboard")}
               >
                 <span style={{ display: "flex" }}>
                   <ListItemIcon>
                     <FileCopyIcon />
                   </ListItemIcon>
-                  <ListItemText primary={"Files"} />
+                  <ListItemText primary={"Dashboard"} />
                 </span>
               </ListItem>
-            </>
-          ) : null}
-          {currentUser.isAdmin ? (
-            <ListItem
-              button
-              key={"Team management"}
-              onClick={() => navigateHandler("teamManagement")}
-            >
-              <span style={{ display: "flex" }}>
+              {!currentUser.isSuperAdmin ? (
+                <>
+                  <ListItem
+                    button
+                    key={"Tasks"}
+                    onClick={() => navigateHandler("tasks")}
+                  >
+                    <span style={{ display: "flex" }}>
+                      <ListItemIcon>
+                        <AssignmentIcon />
+                      </ListItemIcon>
+                      <ListItemText primary={"Tasks"} />
+                    </span>
+                  </ListItem>
+                  <ListItem
+                    button
+                    key={"Files"}
+                    onClick={() => navigateHandler("files")}
+                  >
+                    <span style={{ display: "flex" }}>
+                      <ListItemIcon>
+                        <FileCopyIcon />
+                      </ListItemIcon>
+                      <ListItemText primary={"Files"} />
+                    </span>
+                  </ListItem>
+                </>
+              ) : null}
+              {currentUser.isAdmin ? (
+                <ListItem
+                  button
+                  key={"Team management"}
+                  onClick={() => navigateHandler("teamManagement")}
+                >
+                  <span style={{ display: "flex" }}>
+                    <ListItemIcon>
+                      <GroupIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={
+                        !currentUser.isSuperAdmin
+                          ? "Team management"
+                          : "Admin management"
+                      }
+                    />
+                  </span>
+                </ListItem>
+              ) : null}
+              <ListItem
+                button
+                key={"Settings"}
+                onClick={() => navigateHandler("settings")}
+              >
+                <span style={{ display: "flex" }}>
+                  <ListItemIcon>
+                    <SettingsIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={"Settings"} />
+                </span>
+              </ListItem>
+            </List>
+            <Divider />
+            <List>
+              <ListItem button onClick={logoutHandler}>
                 <ListItemIcon>
-                  <GroupIcon />
+                  <ExitToAppIcon />
                 </ListItemIcon>
-                <ListItemText
-                  primary={
-                    !currentUser.isSuperAdmin
-                      ? "Team management"
-                      : "Admin management"
-                  }
-                />
-              </span>
-            </ListItem>
-          ) : null}
-          <ListItem
-            button
-            key={"Settings"}
-            onClick={() => navigateHandler("settings")}
-          >
-            <span style={{ display: "flex" }}>
-              <ListItemIcon>
-                <SettingsIcon />
-              </ListItemIcon>
-              <ListItemText primary={"Settings"} />
-            </span>
-          </ListItem>
-        </List>
-        <Divider />
-        <List>
-          <ListItem button onClick={logoutHandler}>
-            <ListItemIcon>
-              <ExitToAppIcon />
-            </ListItemIcon>
-            <ListItemText primary={"Logout"} />
-          </ListItem>
-        </List>
-      </Drawer>
-    </div>
+                <ListItemText primary={"Logout"} />
+              </ListItem>
+            </List>
+          </Drawer>
+        </div>
+      ) : null}
+    </>
   );
 }
