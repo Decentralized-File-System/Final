@@ -15,16 +15,28 @@ const swal = withReactContent(Swal);
 type fileType = {
   file: file;
   index: number;
+  setLoaded: Function;
+  setShowBar: Function;
 };
 
-const File = ({ file, index }: fileType) => {
+const File = ({ file, index, setLoaded, setShowBar }: fileType) => {
   const [descriptionDivShown, setDescriptionDivShown] = useState(false);
   const { currentUser } = useAuth();
+
   const downloadHandler = async () => {
     try {
+      setShowBar(true);
       const res = await axios.get(
         `${BASE_URL}/file/download-file?fileId=${file.id}&&fileName=${file.name}`,
-        { responseType: "blob", withCredentials: true }
+        {
+          responseType: "blob",
+          withCredentials: true,
+          onDownloadProgress: (progressEvent) => {
+            setLoaded(
+              Math.round((progressEvent.loaded * 100) / progressEvent.total)
+            );
+          },
+        }
       );
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
@@ -32,6 +44,8 @@ const File = ({ file, index }: fileType) => {
       link.setAttribute("download", file.name);
       document.body.appendChild(link);
       link.click();
+      setLoaded(0);
+      setShowBar(false);
     } catch (error) {
       swal.fire({
         title: "Attention!",

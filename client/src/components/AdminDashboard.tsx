@@ -17,7 +17,12 @@ export const AdminDashboard = () => {
     <div>
       {currentPage === "files" ? (
         <>
-          <FileTable loaded={loaded} showBar={showBar} />
+          <FileTable
+            loaded={loaded}
+            showBar={showBar}
+            setLoaded={setLoaded}
+            setShowBar={setShowBar}
+          />
           <UploadNewFileDialog setLoaded={setLoaded} setShowBar={setShowBar} />
         </>
       ) : currentPage === "tasks" ? (

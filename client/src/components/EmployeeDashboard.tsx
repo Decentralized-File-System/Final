@@ -16,7 +16,12 @@ export const EmployeeDashboard = () => {
     <div id="employee-dashboard">
       {currentPage === "files" ? (
         <>
-          <FileTable loaded={loaded} showBar={showBar} />
+          <FileTable
+            loaded={loaded}
+            showBar={showBar}
+            setLoaded={setLoaded}
+            setShowBar={setShowBar}
+          />
           <UploadNewFileDialog setLoaded={setLoaded} setShowBar={setShowBar} />
         </>
       ) : currentPage === "tasks" ? (

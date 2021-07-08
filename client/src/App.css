@@ -329,8 +329,8 @@ tr {
 .dot-3 {
   -webkit-animation: dot-1 1s infinite linear;
           animation: dot-1 1s infinite linear;
-  -webkit-animation-delay: 1s;
-          animation-delay: 1s;
+  -webkit-animation-delay: 1.5s;
+          animation-delay: 1.5s;
   font-size: 3rem;
 }
 
