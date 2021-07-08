@@ -37,7 +37,8 @@ export const uploadChunks = async (
 export const downloadChunks = async (
   fileId: string,
   nodeId: number,
-  orderIndex: number
+  orderIndex: number,
+  tempId: string
 ) => {
   const chunksFolder = `${__dirname}/../chunks`;
   const node = nodePorts.filter((node: any) => node.id === nodeId)[0];
@@ -45,7 +46,7 @@ export const downloadChunks = async (
   try {
     const res = await axios.get(nodeURL);
     fs.writeFileSync(
-      path.join(chunksFolder, String(orderIndex)),
+      path.join(chunksFolder, `${tempId}=${String(orderIndex)}`),
       Buffer.from(res.data, "base64")
     );
   } catch (error) {

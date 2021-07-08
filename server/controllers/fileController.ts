@@ -204,6 +204,7 @@ export const saveFilePost = async (req: Request, res: Response) => {
 //Downloading chunks from data nodes-----------------------------------------------
 export const downloadFile = async (req: Request, res: Response) => {
   const { fileId, fileName } = req.query;
+  const tempId = uuidv4();
   const chunksFolderPath = `${__dirname}/../chunks`;
   let bufferArray: any = [];
 
@@ -211,15 +212,24 @@ export const downloadFile = async (req: Request, res: Response) => {
     //getting chunks info from DB
     const chunkArray = await getChunks(String(fileId));
     const promiseArr = chunkArray.map((chunk: any) => {
-      return downloadChunks(String(fileId), chunk.nodeId, chunk.orderIndex);
+      return downloadChunks(
+        String(fileId),
+        chunk.nodeId,
+        chunk.orderIndex,
+        tempId
+      );
     });
     await Promise.all(promiseArr);
 
     const chunksFiles = fs.readdirSync(chunksFolderPath);
 
-    const promiseArray = chunksFiles.map((file) => {
-      return fs.readFile(path.join(chunksFolderPath, file));
-    });
+    const promiseArray = chunksFiles
+      .map((file) => {
+        if (file.includes(tempId)) {
+          return fs.readFile(path.join(chunksFolderPath, file));
+        }
+      })
+      .filter((file) => file !== undefined);
 
     try {
       // Getting all chunks buffers from local server
@@ -227,15 +237,22 @@ export const downloadFile = async (req: Request, res: Response) => {
 
       //Concat to one buffer
       bufferArray = Buffer.concat(bufferArray);
-      fs.writeFileSync(`${__dirname}/../main/${fileName}`, bufferArray);
+      fs.writeFileSync(
+        `${__dirname}/../main/${tempId}=${fileName}`,
+        bufferArray
+      );
       console.log("write file success");
       const chunkFileDir = fs.readdirSync(chunkPath);
       console.log("Read dir success");
 
       //Deleting chunks from local server
-      const chunkPromise = chunkFileDir.map((chunk) => {
-        return fs.unlink(path.join(chunkPath, chunk));
-      });
+      const chunkPromise = chunkFileDir
+        .map((chunk) => {
+          if (chunk.includes(tempId)) {
+            return fs.unlink(path.join(chunkPath, chunk));
+          }
+        })
+        .filter((chunk) => chunk !== undefined);
 
       await Promise.all(chunkPromise);
       console.log("Deleted chunks successfully");
@@ -245,16 +262,19 @@ export const downloadFile = async (req: Request, res: Response) => {
     }
     return res
       .status(200)
-      .download(path.join(mainPath, String(fileName)), (err) => {
+      .download(path.join(mainPath, `${tempId}=${String(fileName)}`), (err) => {
         if (err) {
           throw err;
         } else {
           //Deleting file from local server
-          fs.unlink(path.join(mainPath, String(fileName)), (err) => {
-            if (err) {
-              throw err;
+          fs.unlink(
+            path.join(mainPath, `${tempId}=${String(fileName)}`),
+            (err) => {
+              if (err) {
+                throw err;
+              }
             }
-          });
+          );
         }
       });
   } catch (error) {
