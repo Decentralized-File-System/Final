@@ -9863,7 +9863,7 @@ module.exports = {
       },
     ]);
   },
-};
-down: async (queryInterface, Sequelize) => {
-  await queryInterface.bulkDelete("quotes", null, {});
+  down: async (queryInterface, Sequelize) => {
+    await queryInterface.bulkDelete("quotes", null, {});
+  },
 };
