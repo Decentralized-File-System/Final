@@ -109,6 +109,8 @@ export const TeamManagement = () => {
       await axios.put(`${BASE_URL}/user/change-props?teamId=${null}`, [user], {
         withCredentials: true,
       });
+      getTeamMembers();
+      getFreeEmployees();
       swal.fire({
         title: "✔",
         text: "Member removed successfully",
@@ -134,6 +136,8 @@ export const TeamManagement = () => {
           withCredentials: true,
         }
       );
+      getTeamMembers();
+      getFreeEmployees();
       swal.fire({
         title: "✔",
         text: "Member added successfully",
