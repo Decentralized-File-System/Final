@@ -67,15 +67,20 @@ export const saveFilePost = async (req: Request, res: Response) => {
         dataNodesAvailablePercentage
       );
 
+      const highWaterMark = fileSize > 2097152 ? 2097152 : 1;
       const readStream = fs.createReadStream(path.join(mainPath, filename), {
-        highWaterMark: 2 * 1024 * 1024,
+        highWaterMark: highWaterMark,
       });
       let bufferBulk: Buffer[] = [];
       const bufferBulkArray: any = [];
       let index = 0;
       console.log("reading started");
+
       readStream.on("data", (chunk: Buffer) => {
-        if (bufferBulk.length * 2097152 < storagePerNodeArr[index].storage) {
+        if (
+          bufferBulk.length * highWaterMark <
+          storagePerNodeArr[index].storage
+        ) {
           bufferBulk.push(chunk);
         } else {
           bufferBulkArray.push(bufferBulk);
