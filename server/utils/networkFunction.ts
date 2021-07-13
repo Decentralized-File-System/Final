@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ChunkClass } from "./classes";
-import nodePorts from "./ports.json";
+import nodePorts from "./ports";
 import fs from "fs-extra";
 import path from "path";
 import { chunk } from "../types";
