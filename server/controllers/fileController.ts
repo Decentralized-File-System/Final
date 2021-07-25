@@ -27,6 +27,10 @@ import {
   deleteChunks,
 } from "../utils/networkFunction";
 import { ChunkClass } from "../utils/classes";
+import { ErrorLogs } from "../classes/Logger";
+
+export const errorLogs = new ErrorLogs();
+const log = errorLogs.getLogger("errors");
 
 const mainPath = path.join(__dirname, "../main");
 const chunkPath = path.join(__dirname, "../chunks");
@@ -138,6 +142,7 @@ export const saveFilePost = async (req: Request, res: Response) => {
               .json({ message: "Failed to update database" });
           }
         } else {
+          log.error("Failed to upload file");
           return res.status(500).json({ message: "Failed to upload chunks" });
         }
       });
@@ -228,6 +233,7 @@ export const downloadFile = async (req: Request, res: Response) => {
         }
       });
   } catch (error) {
+    log.error("Failed to download file", error);
     console.log(error);
     return res.status(500).json({ message: "Failed to download file" });
   }

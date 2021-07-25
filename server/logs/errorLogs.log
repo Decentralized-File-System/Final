@@ -1,0 +1,9 @@
+[2021-07-25T16:52:25.623] [ERROR] errors - Failed to upload file
+[2021-07-25T16:53:09.232] [ERROR] errors - Failed to upload file
+[2021-07-25T16:54:40.095] [ERROR] errors - Failed to upload file
+[2021-07-25T16:58:15.242] [ERROR] errors - Failed to upload file
+[2021-07-25T17:01:01.277] [ERROR] errors - Failed to download file Error: Request failed with status code 404
+    at /home/dvir/Desktop/dev/Final/server/utils/networkFunction.ts:54:11
+    at Generator.throw (<anonymous>)
+    at rejected (/home/dvir/Desktop/dev/Final/server/utils/networkFunction.ts:6:65)
+    at processTicksAndRejections (internal/process/task_queues.js:95:5)
